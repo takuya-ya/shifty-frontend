@@ -11,8 +11,8 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     networks:
-      - sail
+      - shifty-network
 
 networks:
-  sail:
+  shifty-network:
     external: true
