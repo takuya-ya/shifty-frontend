@@ -1,5 +1,8 @@
 FROM node:20-alpine
 
+# Install common tools for development: bash, curl, ca-certificates
+RUN apk add --no-cache bash curl ca-certificates
+
 WORKDIR /app
 
 # 依存を先にコピーしてキャッシュ利用
