@@ -13,6 +13,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/sanctum': {
+        target: 'http://shifty.app',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 })
