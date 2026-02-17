@@ -9,12 +9,12 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://shifty.app',
+        target: 'http://backend',
         changeOrigin: true,
         secure: false,
       },
       '/sanctum': {
-        target: 'http://shifty.app',
+        target: 'http://backend',
         changeOrigin: true,
         secure: false,
       },
