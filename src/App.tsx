@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 import { LoginForm } from './features/auth/components/LoginForm'
-import { getCookie } from './shared/utils/cookie'
+import { RegisterForm } from './features/auth/components/RegisterForm'
+import { apiClient } from './shared/api/client'
 
 function App() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [view, setView] = useState<'login' | 'register'>('login')
 
   const checkAuth = async () => {
     try {
-      const res = await fetch('/api/user', {
-        headers: {
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        credentials: 'include',
-      })
+      const res = await apiClient('/api/user')
       if (res.ok) {
         const data = await res.json()
         setUser(data)
@@ -35,16 +31,9 @@ function App() {
   }, [])
 
   const handleLogout = async () => {
-    const xsrfToken = getCookie('XSRF-TOKEN')
     try {
-      await fetch('/api/logout', {
+      await apiClient('/api/logout', {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
-        },
-        credentials: 'include',
       })
       setUser(null)
     } catch (err) {
@@ -73,7 +62,22 @@ function App() {
       ) : (
         <div>
           <p>ログインしていません。</p>
-          <LoginForm onLoginSuccess={(u) => setUser(u)} />
+          {view === 'login' ? (
+            <div>
+              <LoginForm onLoginSuccess={(u) => setUser(u)} />
+              <button
+                onClick={() => setView('register')}
+                style={{ marginTop: '10px', backgroundColor: 'transparent', color: '#007bff', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                新規登録はこちら
+              </button>
+            </div>
+          ) : (
+            <RegisterForm
+              onRegisterSuccess={(u) => setUser(u)}
+              onSwitchToLogin={() => setView('login')}
+            />
+          )}
         </div>
       )}
     </div>
