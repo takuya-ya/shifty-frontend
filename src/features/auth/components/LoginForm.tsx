@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getCookie } from '../../../shared/utils/cookie';
+import { apiClient } from '../../../shared/api/client';
 
 interface LoginFormProps {
   onLoginSuccess: (user: any) => void;
@@ -23,18 +23,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         credentials: 'include',
       });
 
-      const xsrfToken = getCookie('XSRF-TOKEN');
-
       // 2. ログイン実行
-      const response = await fetch('/api/login', {
+      const response = await apiClient('/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
-        },
-        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
