@@ -5,9 +5,9 @@ import { getCookie } from '../utils/cookie';
  */
 export const apiClient = async (endpoint: string, options: RequestInit = {}) => {
   const baseUrl = import.meta.env.VITE_API_URL || '';
-  
+
   const xsrfToken = getCookie('XSRF-TOKEN');
-  
+
   const defaultHeaders: Record<string, string> = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -27,10 +27,6 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
     // クッキー（Sanctum）を送信するために必要
     credentials: 'include',
   });
-
-  if (!response.ok && response.status !== 422) {
-    throw new Error(response.statusText);
-  }
 
   return response;
 };

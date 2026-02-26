@@ -23,17 +23,23 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         credentials: 'include',
       });
 
-      // 2. ログイン実行
+      // 2. ログイン実行（204 No Content が返るためボディなし）
       const response = await apiClient('/api/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        onLoginSuccess(data.user);
+        // ログイン成功 → ユーザー情報を取得
+        const userRes = await apiClient('/api/user');
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          onLoginSuccess(userData);
+        } else {
+          setError('ユーザー情報の取得に失敗しました。');
+        }
       } else {
+        const data = await response.json();
         setError(data.message || 'ログインに失敗しました。');
       }
     } catch (err) {
