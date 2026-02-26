@@ -61,42 +61,36 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px', maxWidth: '400px' }}>
-      <h2>ログイン</h2>
+    <div className="max-w-[400px] p-5 border border-gray-300 rounded-lg">
+      <h2 className="text-xl font-bold mb-4">ログイン</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>メールアドレス:</label>
+        <div className="mb-2.5">
+          <label className="block mb-1">メールアドレス:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '8px' }}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>パスワード:</label>
+        <div className="mb-2.5">
+          <label className="block mb-1">パスワード:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ width: '100%', padding: '8px' }}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          style={{
-            width: '100%',
-            padding: '10px',
-            backgroundColor: loading ? '#ccc' : '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: loading ? 'not-allowed' : 'pointer'
-          }}
+          className={`w-full py-2.5 rounded-md text-white border-none mt-4 ${
+            loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'
+          }`}
         >
           {loading ? '送信中...' : 'ログイン'}
         </button>

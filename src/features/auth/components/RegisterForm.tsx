@@ -69,66 +69,73 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, o
   };
 
   return (
-    <div className="max-w-sm border border-gray-300 p-5 rounded-lg">
-      <h2>新規登録</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-2.5">
-          <label className="block mb-1">名前:</label>
+    <div className="max-w-[400px] w-full p-8 border border-gray-300 rounded-lg bg-white">
+      <h2 className="text-xl font-bold mb-8 text-center">新規登録</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block mb-2 text-sm font-medium">名前</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
             required
           />
         </div>
-        <div className="mb-2.5">
-          <label className="block mb-1">メールアドレス:</label>
+        <div>
+          <label className="block mb-2 text-sm font-medium">メールアドレス</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
             required
           />
         </div>
-        <div className="mb-2.5">
-          <label className="block mb-1">パスワード:</label>
+        <div>
+          <label className="block mb-2 text-sm font-medium">パスワード</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
             required
           />
         </div>
-        <div className="mb-2.5">
-          <label className="block mb-1">パスワード(確認):</label>
+        <div>
+          <label className="block mb-2 text-sm font-medium">パスワード(確認)</label>
           <input
             type="password"
             value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
             required
           />
         </div>
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-2.5 rounded-md text-white border-none mb-2.5 ${
-            loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 cursor-pointer'
-          }`}
-        >
-          {loading ? '送信中...' : '登録'}
-        </button>
-        <button
-          type="button"
-          onClick={onSwitchToLogin}
-          className="w-full py-2.5 bg-transparent text-blue-500 border-none cursor-pointer underline"
-        >
-          ログインはこちら
-        </button>
+
+        {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 rounded-md text-white border-none font-bold ${
+              loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 cursor-pointer'
+            }`}
+          >
+            {loading ? '送信中...' : '登録する'}
+          </button>
+        </div>
+
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={onSwitchToLogin}
+            className="text-sm text-blue-500 hover:underline bg-transparent border-none cursor-pointer"
+          >
+            ログインはこちら
+          </button>
+        </div>
       </form>
     </div>
   );
