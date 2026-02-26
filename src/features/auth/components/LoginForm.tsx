@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { apiClient } from '../../../shared/api/client';
+import type { User } from '../types';
 
 interface LoginFormProps {
-  onLoginSuccess: (user: any) => void;
+  onLoginSuccess: (user: User) => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {

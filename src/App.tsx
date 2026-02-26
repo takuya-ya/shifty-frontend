@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import { LoginForm } from './features/auth/components/LoginForm'
 import { RegisterForm } from './features/auth/components/RegisterForm'
+import type { User } from './features/auth/types'
 import { apiClient } from './shared/api/client'
 
 function App() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'login' | 'register'>('login')
 

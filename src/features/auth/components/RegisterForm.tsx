@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { apiClient } from '../../../shared/api/client';
+import type { User } from '../types';
 
 interface RegisterFormProps {
-  onRegisterSuccess: (user: any) => void;
+  onRegisterSuccess: (user: User) => void;
   onSwitchToLogin: () => void;
 }
 
