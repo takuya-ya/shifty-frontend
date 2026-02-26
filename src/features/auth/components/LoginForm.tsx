@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { apiClient } from '../../../shared/api/client';
+import { getCsrfCookie } from '../api/auth';
 import type { User } from '../types';
 
 interface LoginFormProps {
@@ -19,10 +20,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
 
     try {
       // 1. CSRF Cookieの取得
-      await fetch('/sanctum/csrf-cookie', {
-        method: 'GET',
-        credentials: 'include',
-      });
+      await getCsrfCookie();
 
       // 2. ログイン実行（204 No Content が返るためボディなし）
       const response = await apiClient('/api/login', {

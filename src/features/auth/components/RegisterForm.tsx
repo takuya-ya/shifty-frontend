@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { apiClient } from '../../../shared/api/client';
+import { getCsrfCookie } from '../api/auth';
 import type { User } from '../types';
 
 interface RegisterFormProps {
@@ -22,10 +23,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, o
 
     try {
       // 1. CSRF Cookieの取得
-      await fetch('/sanctum/csrf-cookie', {
-        method: 'GET',
-        credentials: 'include',
-      });
+      await getCsrfCookie();
 
       // 2. 登録実行
       const response = await apiClient('/api/register', {
