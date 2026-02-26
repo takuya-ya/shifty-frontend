@@ -28,20 +28,31 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (response.ok) {
-        // ログイン成功 → ユーザー情報を取得
-        const userRes = await apiClient('/api/user');
-        if (userRes.ok) {
-          const userData = await userRes.json();
-          onLoginSuccess(userData);
-        } else {
-          setError('ユーザー情報の取得に失敗しました。');
-        }
-      } else {
-        const data = await response.json();
+      if (!response.ok) {
+        // レスポンスのパース失敗も考慮
+        const data = await response.json().catch(() => ({}));
         setError(data.message || 'ログインに失敗しました。');
+        return; // 早期リターンで後続処理を止める
       }
+
+      // 3. ユーザー情報を取得
+      const userRes = await apiClient('/api/user');
+
+      if (!userRes.ok) {
+        setError('ユーザー情報の取得に失敗しました。');
+        return;
+      }
+
+      // パース失敗をキャッチ → 外側の catch に委譲しない
+      const userData = await userRes.json().catch(() => null);
+      if (!userData) {
+        setError('ユーザー情報の解析に失敗しました。');
+        return;
+      }
+
+      onLoginSuccess(userData);
     } catch (err) {
+      // 通信エラー（fetch自体の失敗）のみここに到達させる
       setError('通信エラーが発生しました。');
       console.error(err);
     } finally {

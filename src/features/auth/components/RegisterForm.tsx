@@ -36,19 +36,31 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, o
         }),
       });
 
-      if (response.ok) {
-        // 登録成功時は通常そのままログイン状態になる
-        // 本来ならユーザー情報を取得するAPIを叩くのが確実
-        const userRes = await apiClient('/api/user');
-        if (userRes.ok) {
-            const userData = await userRes.json();
-            onRegisterSuccess(userData);
-        }
-      } else {
-        const data = await response.json();
+      if (!response.ok) {
+        // レスポンスのパース失敗も考慮
+        const data = await response.json().catch(() => ({}));
         setError(data.message || '登録に失敗しました。');
+        return; // 早期リターンで後続処理を止める
       }
+
+      // 3. ユーザー情報を取得
+      const userRes = await apiClient('/api/user');
+
+      if (!userRes.ok) {
+        setError('ユーザー情報の取得に失敗しました。');
+        return;
+      }
+
+      // パース失敗をキャッチ → 外側の catch に委譲しない
+      const userData = await userRes.json().catch(() => null);
+      if (!userData) {
+        setError('ユーザー情報の解析に失敗しました。');
+        return;
+      }
+
+      onRegisterSuccess(userData);
     } catch (err) {
+      // 通信エラー（fetch自体の失敗）のみここに到達させる
       setError('通信エラーが発生しました。');
       console.error(err);
     } finally {
@@ -57,7 +69,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, o
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px', maxWidth: '400px' }}>
     <div className="max-w-sm border border-gray-300 p-5 rounded-lg">
       <h2>新規登録</h2>
       <form onSubmit={handleSubmit}>
@@ -115,6 +126,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, o
           type="button"
           onClick={onSwitchToLogin}
           className="w-full py-2.5 bg-transparent text-blue-500 border-none cursor-pointer underline"
+        >
           ログインはこちら
         </button>
       </form>
