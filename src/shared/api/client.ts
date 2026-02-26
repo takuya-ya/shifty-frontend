@@ -4,8 +4,6 @@ import { getCookie } from '../utils/cookie';
  * APIリクエストのベースとなるクライアント
  */
 export const apiClient = async (endpoint: string, options: RequestInit = {}) => {
-  const baseUrl = import.meta.env.VITE_API_URL || '';
-
   const xsrfToken = getCookie('XSRF-TOKEN');
 
   const defaultHeaders: Record<string, string> = {
@@ -18,7 +16,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
     defaultHeaders['X-XSRF-TOKEN'] = xsrfToken;
   }
 
-  const response = await fetch(`${baseUrl}${endpoint}`, {
+  const response = await fetch(endpoint, {
     ...options,
     headers: {
       ...defaultHeaders,
