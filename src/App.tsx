@@ -43,11 +43,11 @@ function App() {
   }
 
   if (loading) {
-    return <div style={{ padding: 20 }}>読み込み中...</div>
+    return <div className="p-5">読み込み中...</div>
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="p-5">
       <h1>Shifty 認証テスト</h1>
 
       {user ? (
@@ -55,7 +55,7 @@ function App() {
           <p>ログイン中: {user.name} ({user.email})</p>
           <button
             onClick={handleLogout}
-            style={{ padding: '8px 16px', cursor: 'pointer' }}
+            className="px-4 py-2 cursor-pointer"
           >
             ログアウト
           </button>
@@ -68,7 +68,7 @@ function App() {
               <LoginForm onLoginSuccess={(u) => setUser(u)} />
               <button
                 onClick={() => setView('register')}
-                style={{ marginTop: '10px', backgroundColor: 'transparent', color: '#007bff', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                className="mt-2.5 bg-transparent text-blue-500 border-none cursor-pointer underline"
               >
                 新規登録はこちら
               </button>
