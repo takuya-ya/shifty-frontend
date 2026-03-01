@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { apiClient } from '../../../shared/api/client';
 import { getCsrfCookie } from '../api/auth';
-import type { User } from '../types';
+import { EmailVerificationPending } from './EmailVerificationPending';
 
 interface RegisterFormProps {
-  onRegisterSuccess: (user: User) => void;
   onSwitchToLogin: () => void;
 }
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onSwitchToLogin }) => {
+export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [verificationPending, setVerificationPending] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
+
+  // 登録成功後に認証待ち画面を表示
+  if (verificationPending) {
+    return <EmailVerificationPending email={registeredEmail} />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,22 +49,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, o
         return; // 早期リターンで後続処理を止める
       }
 
-      // 3. ユーザー情報を取得
-      const userRes = await apiClient('/api/user');
-
-      if (!userRes.ok) {
-        setError('ユーザー情報の取得に失敗しました。');
-        return;
-      }
-
-      // パース失敗をキャッチ → 外側の catch に委譲しない
-      const userData = await userRes.json().catch(() => null);
-      if (!userData) {
-        setError('ユーザー情報の解析に失敗しました。');
-        return;
-      }
-
-      onRegisterSuccess(userData);
+      // 登録成功 → メール認証待ち画面へ
+      setRegisteredEmail(email);
+      setVerificationPending(true);
     } catch (err) {
       // 通信エラー（fetch自体の失敗）のみここに到達させる
       setError('通信エラーが発生しました。');
