@@ -14,19 +14,19 @@ export const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    verifyEmail(verifyUrl)
-      .then(() => {
-        // URLからクエリパラメータを除去
+    const verify = async () => {
+      try {
+        await verifyEmail(verifyUrl);
         window.history.replaceState({}, '', '/');
         setStatus('success');
-        // 2秒後にダッシュボードへ
         setTimeout(() => onVerified(), 2000);
-      })
-      .catch((err: Error) => {
+      } catch (err: any) {
         setErrorMessage(err.message);
         setStatus('error');
-      });
-  }, []);
+      }
+    };
+    verify();
+  }, []); // 認証は1回だけ実行
 
   return (
     <div className="max-w-[400px] w-full p-8 border border-gray-300 rounded-lg bg-white text-center">
