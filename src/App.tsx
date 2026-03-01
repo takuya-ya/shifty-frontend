@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { LoginForm } from './features/auth/components/LoginForm'
 import { RegisterForm } from './features/auth/components/RegisterForm'
+import { VerifyEmailPage } from './features/auth/components/VerifyEmailPage'
 import type { User } from './features/auth/types'
 import { apiClient } from './shared/api/client'
+
+interface VerifyParams {
+  verifyUrl: string;
+}
 
 function App() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [view, setView] = useState<'login' | 'register'>('login')
+  const [view, setView] = useState<'login' | 'register' | 'verify'>('login')
+  const [verifyParams, setVerifyParams] = useState<VerifyParams | null>(null)
 
-  const checkAuth = async () => {
+  const fetchCurrentUser = async () => {
     try {
       const res = await apiClient('/api/user')
       if (res.ok) {
@@ -20,7 +26,7 @@ function App() {
         setUser(null)
       }
     } catch (err) {
-      console.error('Auth check failed', err)
+      console.error('Failed to fetch current user', err)
       setUser(null)
     } finally {
       setLoading(false)
@@ -28,7 +34,16 @@ function App() {
   }
 
   useEffect(() => {
-    checkAuth()
+    // メール認証リンクのクエリパラメータを検知
+    const params = new URLSearchParams(window.location.search)
+    const verifyPath = params.get('verify_path')
+
+    if (verifyPath) {
+      setVerifyParams({ verifyUrl: verifyPath })
+      setView('verify')
+    }
+
+    fetchCurrentUser()
   }, [])
 
   const handleLogout = async () => {
@@ -44,6 +59,22 @@ function App() {
 
   if (loading) {
     return <div className="p-5">読み込み中...</div>
+  }
+
+  // メール認証ページ
+  if (view === 'verify' && verifyParams) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <VerifyEmailPage
+          {...verifyParams}
+          onVerified={() => {
+            setView('login')
+            setVerifyParams(null)
+            fetchCurrentUser()
+          }}
+        />
+      </div>
+    )
   }
 
   return (
@@ -75,7 +106,6 @@ function App() {
             </div>
           ) : (
             <RegisterForm
-              onRegisterSuccess={(u) => setUser(u)}
               onSwitchToLogin={() => setView('login')}
             />
           )}
