@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { LoginForm } from './features/auth/components/LoginForm'
-import { getCookie } from './shared/utils/cookie'
+import { RegisterForm } from './features/auth/components/RegisterForm'
+import { VerifyEmailPage } from './features/auth/components/VerifyEmailPage'
+import type { User } from './features/auth/types'
+import { apiClient } from './shared/api/client'
+
+interface VerifyParams {
+  verifyUrl: string;
+}
 
 function App() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [view, setView] = useState<'login' | 'register' | 'verify'>('login')
+  const [verifyParams, setVerifyParams] = useState<VerifyParams | null>(null)
 
-  const checkAuth = async () => {
+  const fetchCurrentUser = async () => {
     try {
-      const res = await fetch('/api/user', {
-        headers: {
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        credentials: 'include',
-      })
+      const res = await apiClient('/api/user')
       if (res.ok) {
         const data = await res.json()
         setUser(data)
@@ -23,7 +26,7 @@ function App() {
         setUser(null)
       }
     } catch (err) {
-      console.error('Auth check failed', err)
+      console.error('Failed to fetch current user', err)
       setUser(null)
     } finally {
       setLoading(false)
@@ -31,20 +34,22 @@ function App() {
   }
 
   useEffect(() => {
-    checkAuth()
+    // メール認証リンクのクエリパラメータを検知
+    const params = new URLSearchParams(window.location.search)
+    const verifyPath = params.get('verify_path')
+
+    if (verifyPath) {
+      setVerifyParams({ verifyUrl: verifyPath })
+      setView('verify')
+    }
+
+    fetchCurrentUser()
   }, [])
 
   const handleLogout = async () => {
-    const xsrfToken = getCookie('XSRF-TOKEN')
     try {
-      await fetch('/api/logout', {
+      await apiClient('/api/logout', {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
-        },
-        credentials: 'include',
       })
       setUser(null)
     } catch (err) {
@@ -53,11 +58,27 @@ function App() {
   }
 
   if (loading) {
-    return <div style={{ padding: 20 }}>読み込み中...</div>
+    return <div className="p-5">読み込み中...</div>
+  }
+
+  // メール認証ページ
+  if (view === 'verify' && verifyParams) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <VerifyEmailPage
+          {...verifyParams}
+          onVerified={() => {
+            setView('login')
+            setVerifyParams(null)
+            fetchCurrentUser()
+          }}
+        />
+      </div>
+    )
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="p-5">
       <h1>Shifty 認証テスト</h1>
 
       {user ? (
@@ -65,7 +86,7 @@ function App() {
           <p>ログイン中: {user.name} ({user.email})</p>
           <button
             onClick={handleLogout}
-            style={{ padding: '8px 16px', cursor: 'pointer' }}
+            className="px-4 py-2 cursor-pointer"
           >
             ログアウト
           </button>
@@ -73,7 +94,21 @@ function App() {
       ) : (
         <div>
           <p>ログインしていません。</p>
-          <LoginForm onLoginSuccess={(u) => setUser(u)} />
+          {view === 'login' ? (
+            <div>
+              <LoginForm onLoginSuccess={(u) => setUser(u)} />
+              <button
+                onClick={() => setView('register')}
+                className="mt-2.5 bg-transparent text-blue-500 border-none cursor-pointer underline"
+              >
+                新規登録はこちら
+              </button>
+            </div>
+          ) : (
+            <RegisterForm
+              onSwitchToLogin={() => setView('login')}
+            />
+          )}
         </div>
       )}
     </div>
