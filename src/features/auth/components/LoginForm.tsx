@@ -23,7 +23,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
       await getCsrfCookie();
 
       // 2. ログイン実行（204 No Content が返るためボディなし）
-      const response = await apiClient('/api/login', {
+      const response = await apiClient('/api/v1/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
@@ -36,7 +36,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
       }
 
       // 3. ユーザー情報を取得
-      const userRes = await apiClient('/api/user');
+      const userRes = await apiClient('/api/v1/user');
 
       if (!userRes.ok) {
         setError('ユーザー情報の取得に失敗しました。');
