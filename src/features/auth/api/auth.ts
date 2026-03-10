@@ -29,7 +29,7 @@ export const verifyEmail = async (verifyUrl: string): Promise<void> => {
  * @returns 'sent' | 'already-verified'
  */
 export const resendVerificationEmail = async (): Promise<'sent' | 'already-verified'> => {
-  const response = await apiClient('/api/email/verification-notification', {
+  const response = await apiClient('/api/v1/email/verification-notification', {
     method: 'POST',
   });
 

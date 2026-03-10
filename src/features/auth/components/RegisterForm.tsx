@@ -32,7 +32,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
       await getCsrfCookie();
 
       // 2. 登録実行
-      const response = await apiClient('/api/register', {
+      const response = await apiClient('/api/v1/register', {
         method: 'POST',
         body: JSON.stringify({
           name,

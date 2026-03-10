@@ -18,7 +18,7 @@ function App() {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await apiClient('/api/user')
+      const res = await apiClient('/api/v1/user')
       if (res.ok) {
         const data = await res.json()
         setUser(data)
@@ -48,7 +48,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await apiClient('/api/logout', {
+      await apiClient('/api/v1/logout', {
         method: 'POST',
       })
       setUser(null)
