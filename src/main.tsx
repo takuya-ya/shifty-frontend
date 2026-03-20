@@ -1,7 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { RouterProvider } from 'react-router-dom'
 import './index.css' // 全体に適応するスタイルシート
-import App from './App.tsx' // アプリの本体（親コンポーネント）
+import { router } from './routes/config'
 
 // 1. HTML内の id="root" を持つ要素を探し、Reactの「起点」を作成
 const rootElement = document.getElementById('root')!;
@@ -10,6 +11,6 @@ const root = createRoot(rootElement);
 // 2. Reactアプリを画面に映し出す
 root.render(
   <StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </StrictMode>
 );
