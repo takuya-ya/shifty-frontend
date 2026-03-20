@@ -1,5 +1,12 @@
 import type { ReactNode } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { AdminRegisterPage } from '../pages/AdminRegisterPage'
+import { AdminShiftsPage } from '../pages/AdminShiftsPage'
+import { AdminStaffsPage } from '../pages/AdminStaffsPage'
+import { LoginPage } from '../pages/LoginPage'
+import { NotFoundPage } from '../pages/NotFoundPage'
+import { ResetPasswordPage } from '../pages/ResetPasswordPage'
+import { SettingsPage } from '../pages/SettingsPage'
 import { PATHS } from './paths'
 
 // ──────────────────────────────────────────────────────────────
@@ -27,16 +34,20 @@ export function ProtectedRoute({ children, isAuthenticated }: ProtectedRouteProp
 /** 認証不要のルート */
 const publicRoutes = [
   {
+    path: PATHS.ROOT,
+    element: <Navigate to={PATHS.LOGIN} replace />,
+  },
+  {
     path: PATHS.LOGIN,
-    element: <div>ログイン画面（仮）</div>,
+    element: <LoginPage />,
   },
   {
     path: PATHS.RESET_PASSWORD,
-    element: <div>パスワード再設定画面（仮）</div>,
+    element: <ResetPasswordPage />,
   },
   {
     path: PATHS.ADMIN_REGISTER,
-    element: <div>管理者登録画面（仮）</div>,
+    element: <AdminRegisterPage />,
   },
 ]
 
@@ -44,15 +55,15 @@ const publicRoutes = [
 const protectedRoutes = [
   {
     path: PATHS.ADMIN_SHIFTS,
-    element: <div>シフト管理画面（仮）</div>,
+    element: <AdminShiftsPage />,
   },
   {
     path: PATHS.ADMIN_STAFFS,
-    element: <div>スタッフ管理画面（仮）</div>,
+    element: <AdminStaffsPage />,
   },
   {
     path: PATHS.SETTINGS,
-    element: <div>設定画面（仮）</div>,
+    element: <SettingsPage />,
   },
 ]
 
@@ -61,6 +72,6 @@ export const router = createBrowserRouter([
   ...protectedRoutes,
   {
     path: PATHS.NOT_FOUND,
-    element: <div>404 - ページが見つかりません（仮）</div>,
+    element: <NotFoundPage />,
   },
 ])
