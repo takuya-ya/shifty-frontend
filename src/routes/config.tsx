@@ -41,7 +41,6 @@ const links = [
 ]
 
 /** 認証不要のルート */
-// 13.7 認証状態管理・PrivateRoute 実装後に、ProtectedRoute でラップするためのルート定義。
 const publicRoutes = [
   {
     index: true,
@@ -77,7 +76,7 @@ const publicRoutes = [
  * 認証必須のルート（将来的にProtectedRouteでラップ予定）
  *
  * 現状はまだProtectedRouteでラップされていません。
- * 認証状態管理・PrivateRoute実装後に、ここをProtectedRouteでラップする予定です。
+ * // 13.7 認証状態管理・PrivateRoute 実装後に、ProtectedRoute でラップするためのルート定義。
  */
 const protectedRoutes = [
   {
