@@ -28,15 +28,17 @@ export function Sidebar({ items }: SidebarProps) {
           <li key={item.to}>
             <NavLink
               to={item.to}
-              style={{
+              style={({ isActive }) => ({
                 display: 'block',
                 textDecoration: 'none',
-                color: '#111827',
-                border: '1px solid #d1d5db',
                 borderRadius: '8px',
                 padding: '8px 10px',
                 fontSize: '0.95rem',
-              }}
+                fontWeight: isActive ? 700 : 400,
+                color: isActive ? '#ffffff' : '#111827',
+                backgroundColor: isActive ? '#111827' : 'transparent',
+                border: isActive ? '1px solid #111827' : '1px solid #d1d5db',
+              })}
             >
               {item.label}
             </NavLink>
