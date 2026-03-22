@@ -73,7 +73,12 @@ const publicRoutes = [
   },
 ]
 
-/** 認証必須のルート（ProtectedRoute でラップ） */
+/**
+ * 認証必須のルート（将来的にProtectedRouteでラップ予定）
+ *
+ * 現状はまだProtectedRouteでラップされていません。
+ * 認証状態管理・PrivateRoute実装後に、ここをProtectedRouteでラップする予定です。
+ */
 const protectedRoutes = [
   {
     path: PATHS.ADMIN_SHIFTS,

@@ -39,6 +39,10 @@ export function AppLayout({ appName, navigation }: AppLayoutProps) {
     <main style={{ padding: '24px', maxWidth: '1080px', margin: '0 auto' }}>
       <Header appName={appName} title={title} description={description} />
 
+      {/*
+        ProtectedRoute（認証必須ルートのラップ）は、13.7工程「認証状態管理・PrivateRoute実装」完了後に対応予定。
+        現状はまだ全ルートがAppLayout配下で直接Outletされている。
+      */}
       <div style={{ display: 'grid', gridTemplateColumns: '240px minmax(0, 1fr)', gap: '16px', alignItems: 'start' }}>
         <Sidebar items={navigation} />
         <MainContent>
