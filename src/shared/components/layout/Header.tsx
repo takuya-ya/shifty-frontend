@@ -22,8 +22,8 @@ export function Header({ appName, title, description, primaryAction }: HeaderPro
         <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.04em', color: '#4b5563' }}>
           {appName}
         </p>
-        <h1 style={{ margin: '4px 0 0', fontSize: '2rem' }}>{title}</h1>
-        <p style={{ marginTop: '8px', color: '#4b5563' }}>{description}</p>
+        <h1 style={{ margin: '4px 0 0', fontSize: '1.875rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.025em' }}>{title}</h1>
+        <p style={{ marginTop: '8px', fontSize: '1rem', color: '#4b5563', lineHeight: 1.5 }}>{description}</p>
       </div>
       <div>{primaryAction}</div>
     </header>
