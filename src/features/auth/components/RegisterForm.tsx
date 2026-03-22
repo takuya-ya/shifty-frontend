@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import { apiClient } from '../../../shared/api/client';
 import { getCsrfCookie } from '../api/auth';
 import { EmailVerificationPending } from './EmailVerificationPending';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
@@ -62,74 +73,72 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
   };
 
   return (
-    <div className="max-w-[400px] w-full p-8 border border-gray-300 rounded-lg bg-white">
-      <h2 className="text-xl font-bold mb-8 text-center">新規登録</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block mb-2 text-sm font-medium">名前</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-2 text-sm font-medium">メールアドレス</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-2 text-sm font-medium">パスワード</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-2 text-sm font-medium">パスワード(確認)</label>
-          <input
-            type="password"
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-            className="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
-          />
-        </div>
+    <Card className="w-full max-w-100">
+      <CardHeader>
+        <CardTitle>新規登録</CardTitle>
+        <CardDescription>アカウント情報を入力して登録します。</CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium">名前</label>
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium">メールアドレス</label>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium">パスワード</label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium">パスワード(確認)</label>
+            <Input
+              type="password"
+              value={passwordConfirmation}
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
+              required
+            />
+          </div>
 
-        {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+          {error && <p className="text-sm text-destructive">{error}</p>}
 
-        <div className="pt-2">
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-md text-white border-none font-bold ${
-              loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 cursor-pointer'
-            }`}
+            className="w-full"
           >
             {loading ? '送信中...' : '登録する'}
-          </button>
-        </div>
-
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={onSwitchToLogin}
-            className="text-sm text-blue-500 hover:underline bg-transparent border-none cursor-pointer"
-          >
-            ログインはこちら
-          </button>
-        </div>
-      </form>
-    </div>
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="justify-center">
+        <Button
+          type="button"
+          variant="link"
+          onClick={onSwitchToLogin}
+          className="px-0"
+        >
+          ログインはこちら
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
