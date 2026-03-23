@@ -1,3 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+import { RegisterForm } from '../features/auth/components/RegisterForm';
+import { PATHS } from '../routes/paths';
+
 export function AdminRegisterPage() {
-  return <p>ここに管理者登録フォームを配置します。</p>
+  const navigate = useNavigate();
+  return <RegisterForm onSwitchToLogin={() => navigate(PATHS.LOGIN)} />;
 }
