@@ -5,6 +5,8 @@ import { RegisterForm } from './features/auth/components/RegisterForm'
 import { VerifyEmailPage } from './features/auth/components/VerifyEmailPage'
 import type { User } from './features/auth/types'
 import { apiClient } from './shared/api/client'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 
 interface VerifyParams {
   verifyUrl: string;
@@ -78,31 +80,33 @@ function App() {
   }
 
   return (
-    <div className="p-5">
-      <h1>Shifty 認証テスト</h1>
+    <div className="p-5 space-y-4">
+      <h1 className="text-2xl font-semibold">Shifty 認証テスト</h1>
+      <Separator />
 
       {user ? (
-        <div>
+        <div className="space-y-3">
           <p>ログイン中: {user.name} ({user.email})</p>
-          <button
+          <Button
             onClick={handleLogout}
-            className="px-4 py-2 cursor-pointer"
+            variant="outline"
           >
             ログアウト
-          </button>
+          </Button>
         </div>
       ) : (
-        <div>
+        <div className="space-y-4">
           <p>ログインしていません。</p>
           {view === 'login' ? (
-            <div>
+            <div className="space-y-4">
               <LoginForm onLoginSuccess={(u) => setUser(u)} />
-              <button
+              <Button
                 onClick={() => setView('register')}
-                className="mt-2.5 bg-transparent text-blue-500 border-none cursor-pointer underline"
+                variant="link"
+                className="p-0"
               >
                 新規登録はこちら
-              </button>
+              </Button>
             </div>
           ) : (
             <RegisterForm
