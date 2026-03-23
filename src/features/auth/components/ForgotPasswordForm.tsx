@@ -1,0 +1,94 @@
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { sendPasswordResetLink } from '../api/auth';
+
+interface ForgotPasswordFormProps {
+  onSwitchToLogin: () => void;
+}
+
+export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps) {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setError(null);
+    try {
+      await sendPasswordResetLink(email);
+      setStatus('sent');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'エラーが発生しました');
+      setStatus('error');
+    }
+  };
+
+  if (status === 'sent') {
+    return (
+      <Card className="w-full max-w-100">
+        <CardHeader>
+          <CardTitle>メールを送信しました</CardTitle>
+          <CardDescription>
+            パスワード再設定のリンクを <strong>{email}</strong> に送信しました。メールをご確認ください。
+          </CardDescription>
+        </CardHeader>
+        <CardFooter className="justify-center">
+          <Button variant="link" className="px-0" onClick={onSwitchToLogin}>
+            ログインに戻る
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-100">
+      <CardHeader>
+        <CardTitle>パスワード再設定</CardTitle>
+        <CardDescription>
+          登録済みのメールアドレスを入力してください。再設定リンクをお送りします。
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label htmlFor="email" className="block text-sm font-medium">
+              メールアドレス
+            </label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+            />
+          </div>
+          {status === 'error' && (
+            <p className="text-sm text-destructive">{error}</p>
+          )}
+          <Button type="submit" className="w-full" disabled={status === 'loading'}>
+            {status === 'loading' ? '送信中...' : '再設定リンクを送信'}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="justify-center">
+        <Button type="button" variant="link" className="px-0" onClick={onSwitchToLogin}>
+          ログインに戻る
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
