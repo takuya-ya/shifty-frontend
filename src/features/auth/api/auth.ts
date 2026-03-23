@@ -44,3 +44,42 @@ export const resendVerificationEmail = async (): Promise<'sent' | 'already-verif
   }
   return 'sent';
 };
+
+/**
+ * パスワード再設定リンクをメールで送信する
+ */
+export const sendPasswordResetLink = async (email: string): Promise<void> => {
+  await getCsrfCookie();
+  const response = await apiClient('/api/v1/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error((data as { message?: string }).message ?? 'パスワード再設定メールの送信に失敗しました');
+  }
+};
+
+interface ResetPasswordPayload {
+  token: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+/**
+ * パスワードをリセットする
+ */
+export const resetPassword = async (payload: ResetPasswordPayload): Promise<void> => {
+  await getCsrfCookie();
+  const response = await apiClient('/api/v1/reset-password', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error((data as { message?: string }).message ?? 'パスワードのリセットに失敗しました');
+  }
+};
