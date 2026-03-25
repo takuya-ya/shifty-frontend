@@ -59,7 +59,15 @@ const publicRoutes = [
     element: <ResetPasswordPage />,
     handle: {
       title: 'パスワード再設定',
-      description: '認証前ユーザー向けのパスワード再設定画面です。',
+      description: 'ログイン前に、再設定リンク送信用のメールアドレスを入力する画面です。',
+    },
+  },
+  {
+    path: PATHS.PASSWORD_RESET_WITH_TOKEN,
+    element: <ResetPasswordPage />,
+    handle: {
+      title: 'パスワード再設定',
+      description: 'ログインできない人向けの復旧用パスワード再設定画面です。',
     },
   },
   {

@@ -1,12 +1,13 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ForgotPasswordForm } from '../features/auth/components/ForgotPasswordForm';
 import { ResetPasswordForm } from '../features/auth/components/ResetPasswordForm';
 import { PATHS } from '../routes/paths';
 
 export function ResetPasswordPage() {
   const navigate = useNavigate();
+  const { token: tokenFromPath } = useParams<{ token?: string }>();
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
+  const token = tokenFromPath;
   const email = searchParams.get('email') ?? '';
 
   if (token) {
