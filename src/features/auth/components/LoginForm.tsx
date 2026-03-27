@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { apiClient } from '../../../shared/api/client';
 import { getCsrfCookie } from '../api/auth';
 import { Button } from '@/components/ui/button';
@@ -16,13 +16,13 @@ interface LoginFormProps {
   onLoginSuccess: () => void;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
+export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const [email, setEmail] = useState('test@example.com');
   const [password, setPassword] = useState('password');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);

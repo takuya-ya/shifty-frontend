@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { apiClient } from '../../../shared/api/client';
 import { getCsrfCookie } from '../api/auth';
 import { EmailVerificationPending } from './EmailVerificationPending';
@@ -18,7 +18,7 @@ interface RegisterFormProps {
   onSwitchToLogin: () => void;
 }
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
+export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +33,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
     return <EmailVerificationPending email={registeredEmail} />;
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
