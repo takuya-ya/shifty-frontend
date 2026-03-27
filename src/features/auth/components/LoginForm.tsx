@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { apiClient } from '../../../shared/api/client';
 import { getCsrfCookie } from '../api/auth';
 import type { User } from '../types';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 
 interface LoginFormProps {
   onLoginSuccess: (user: User) => void;
@@ -61,40 +71,44 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="max-w-[400px] p-5 border border-gray-300 rounded-lg">
-      <h2 className="text-xl font-bold mb-4">ログイン</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-2.5">
-          <label className="block mb-1">メールアドレス:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-2.5">
-          <label className="block mb-1">パスワード:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-2.5 rounded-md text-white border-none mt-4 ${
-            loading ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'
-          }`}
-        >
-          {loading ? '送信中...' : 'ログイン'}
-        </button>
-      </form>
-    </div>
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>ログイン</CardTitle>
+        <CardDescription>登録済みメールアドレスでログインしてください。</CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label htmlFor="login-email" className="block text-sm font-medium">メールアドレス</label>
+            <Input
+              id="login-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="login-password" className="block text-sm font-medium">パスワード</label>
+            <Input
+              id="login-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className="text-sm text-destructive">{error}</p>}
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? '送信中...' : 'ログイン'}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };

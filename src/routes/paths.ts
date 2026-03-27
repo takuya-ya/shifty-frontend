@@ -8,6 +8,7 @@ export const PATHS = {
   // ── 認証不要（公開） ──────────────────────────
   LOGIN: '/login',
   RESET_PASSWORD: '/reset-password',
+  PASSWORD_RESET_WITH_TOKEN: '/password-reset/:token',
   ADMIN_REGISTER: '/admin/register',
 
   // ── 認証必須（保護） ──────────────────────────
