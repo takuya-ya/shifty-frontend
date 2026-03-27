@@ -35,7 +35,7 @@ export const EmailVerificationPending: React.FC<EmailVerificationPendingProps> =
   };
 
   return (
-    <Card className="w-full max-w-100">
+    <Card className="w-full max-w-md">
       <CardHeader className="text-center">
         <div className="mx-auto mb-2 flex size-14 items-center justify-center rounded-full bg-muted">
           <Mail className="size-7 text-primary" />

@@ -36,7 +36,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
 
   if (status === 'sent') {
     return (
-      <Card className="w-full max-w-100">
+      <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>メールを送信しました</CardTitle>
           <CardDescription>
@@ -53,7 +53,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
   }
 
   return (
-    <Card className="w-full max-w-100">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>パスワード再設定</CardTitle>
         <CardDescription>

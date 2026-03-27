@@ -73,7 +73,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
   };
 
   return (
-    <Card className="w-full max-w-100">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>新規登録</CardTitle>
         <CardDescription>アカウント情報を入力して登録します。</CardDescription>
@@ -82,8 +82,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium">名前</label>
+            <label htmlFor="register-name" className="block text-sm font-medium">名前</label>
             <Input
+              id="register-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -91,8 +92,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium">メールアドレス</label>
+            <label htmlFor="register-email" className="block text-sm font-medium">メールアドレス</label>
             <Input
+              id="register-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -100,8 +102,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium">パスワード</label>
+            <label htmlFor="register-password" className="block text-sm font-medium">パスワード</label>
             <Input
+              id="register-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -109,8 +112,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium">パスワード(確認)</label>
+            <label htmlFor="register-password-confirmation" className="block text-sm font-medium">パスワード(確認)</label>
             <Input
+              id="register-password-confirmation"
               type="password"
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}

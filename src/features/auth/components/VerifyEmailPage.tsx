@@ -38,7 +38,7 @@ export const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({
   }, []); // 認証は1回だけ実行
 
   return (
-    <Card className="w-full max-w-100 text-center">
+    <Card className="w-full max-w-md text-center">
       <CardHeader>
         <CardTitle>メール認証</CardTitle>
       </CardHeader>

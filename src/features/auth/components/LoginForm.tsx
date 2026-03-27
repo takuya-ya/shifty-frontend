@@ -71,7 +71,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <Card className="w-full max-w-100">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>ログイン</CardTitle>
         <CardDescription>登録済みメールアドレスでログインしてください。</CardDescription>
@@ -80,8 +80,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium">メールアドレス</label>
+            <label htmlFor="login-email" className="block text-sm font-medium">メールアドレス</label>
             <Input
+              id="login-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -89,8 +90,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium">パスワード</label>
+            <label htmlFor="login-password" className="block text-sm font-medium">パスワード</label>
             <Input
+              id="login-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

@@ -37,7 +37,7 @@ export function ResetPasswordForm({ token, email, onSuccess }: ResetPasswordForm
   };
 
   return (
-    <Card className="w-full max-w-100">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>新しいパスワードを設定</CardTitle>
         <CardDescription>
