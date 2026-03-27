@@ -10,15 +10,15 @@ export function ResetPasswordPage() {
   const token = tokenFromPath;
   const emailFromQuery = searchParams.get('email');
 
-if (token && emailFromQuery) {
-  return (
-    <ResetPasswordForm
-      token={token}
-      email={emailFromQuery}
-      onSuccess={() => navigate(PATHS.LOGIN)}
-    />
-  );
-}
+  if (token && emailFromQuery) {
+    return (
+      <ResetPasswordForm
+        token={token}
+        email={emailFromQuery}
+        onSuccess={() => navigate(PATHS.LOGIN)}
+      />
+    );
+  }
 
-return <ForgotPasswordForm onSwitchToLogin={() => navigate(PATHS.LOGIN)} />;
+  return <ForgotPasswordForm onSwitchToLogin={() => navigate(PATHS.LOGIN)} />;
 }

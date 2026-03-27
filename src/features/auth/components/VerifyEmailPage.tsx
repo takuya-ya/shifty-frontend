@@ -44,35 +44,35 @@ export const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({
       </CardHeader>
       <Separator />
       <CardContent className="space-y-3">
-      {status === 'loading' && (
-        <>
-          <div className="flex justify-center">
-            <Loader2 className="size-10 animate-spin text-primary" />
-          </div>
-          <CardDescription>メールアドレスを認証しています...</CardDescription>
-        </>
-      )}
+        {status === 'loading' && (
+          <>
+            <div className="flex justify-center">
+              <Loader2 className="size-10 animate-spin text-primary" />
+            </div>
+            <CardDescription>メールアドレスを認証しています...</CardDescription>
+          </>
+        )}
 
-      {status === 'success' && (
-        <>
-          <div className="flex justify-center">
-            <CheckCircle2 className="size-14 text-primary" />
-          </div>
-          <p className="text-lg font-semibold">認証が完了しました</p>
-          <CardDescription>ダッシュボードへ移動します...</CardDescription>
-        </>
-      )}
+        {status === 'success' && (
+          <>
+            <div className="flex justify-center">
+              <CheckCircle2 className="size-14 text-primary" />
+            </div>
+            <p className="text-lg font-semibold">認証が完了しました</p>
+            <CardDescription>ダッシュボードへ移動します...</CardDescription>
+          </>
+        )}
 
-      {status === 'error' && (
-        <>
-          <div className="flex justify-center">
-            <XCircle className="size-14 text-destructive" />
-          </div>
-          <p className="text-lg font-semibold">認証に失敗しました</p>
-          <p className="text-sm text-destructive">{errorMessage}</p>
-          <CardDescription>リンクの有効期限が切れているか、無効なリンクです。</CardDescription>
-        </>
-      )}
+        {status === 'error' && (
+          <>
+            <div className="flex justify-center">
+              <XCircle className="size-14 text-destructive" />
+            </div>
+            <p className="text-lg font-semibold">認証に失敗しました</p>
+            <p className="text-sm text-destructive">{errorMessage}</p>
+            <CardDescription>リンクの有効期限が切れているか、無効なリンクです。</CardDescription>
+          </>
+        )}
       </CardContent>
     </Card>
   );
