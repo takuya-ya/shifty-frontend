@@ -8,17 +8,17 @@ export function ResetPasswordPage() {
   const { token: tokenFromPath } = useParams<{ token?: string }>();
   const [searchParams] = useSearchParams();
   const token = tokenFromPath;
-  const email = searchParams.get('email') ?? '';
+  const emailFromQuery = searchParams.get('email');
 
-  if (token) {
-    return (
-      <ResetPasswordForm
-        token={token}
-        email={email}
-        onSuccess={() => navigate(PATHS.LOGIN)}
-      />
-    );
-  }
+if (token && emailFromQuery) {
+  return (
+    <ResetPasswordForm
+      token={token}
+      email={emailFromQuery}
+      onSuccess={() => navigate(PATHS.LOGIN)}
+    />
+  );
+}
 
-  return <ForgotPasswordForm onSwitchToLogin={() => navigate(PATHS.LOGIN)} />;
+return <ForgotPasswordForm onSwitchToLogin={() => navigate(PATHS.LOGIN)} />;
 }
