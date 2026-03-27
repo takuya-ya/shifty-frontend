@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { apiClient } from '../../../shared/api/client';
 import { getCsrfCookie } from '../api/auth';
-import type { User } from '../types';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -14,16 +13,16 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
 interface LoginFormProps {
-  onLoginSuccess: (user: User) => void;
+  onLoginSuccess: () => void;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
+export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const [email, setEmail] = useState('test@example.com');
   const [password, setPassword] = useState('password');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -45,22 +44,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         return; // 早期リターンで後続処理を止める
       }
 
-      // 3. ユーザー情報を取得
-      const userRes = await apiClient('/api/v1/user');
-
-      if (!userRes.ok) {
-        setError('ユーザー情報の取得に失敗しました。');
-        return;
-      }
-
-      // パース失敗をキャッチ → 外側の catch に委譲しない
-      const userData = await userRes.json().catch(() => null);
-      if (!userData) {
-        setError('ユーザー情報の解析に失敗しました。');
-        return;
-      }
-
-      onLoginSuccess(userData);
+      onLoginSuccess();
     } catch (err) {
       // 通信エラー（fetch自体の失敗）のみここに到達させる
       setError('通信エラーが発生しました。');

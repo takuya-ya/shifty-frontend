@@ -99,7 +99,7 @@ function App() {
           <p>ログインしていません。</p>
           {view === 'login' ? (
             <div className="space-y-4">
-              <LoginForm onLoginSuccess={(u) => setUser(u)} />
+              <LoginForm onLoginSuccess={fetchCurrentUser} />
               <Button
                 onClick={() => setView('register')}
                 variant="link"

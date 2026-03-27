@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CheckCircle2, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,11 +12,8 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { resendVerificationEmail } from '../api/auth';
 
-interface EmailVerificationPendingProps {
-  email: string;
-}
 
-export const EmailVerificationPending: React.FC<EmailVerificationPendingProps> = ({ email }) => {
+export const EmailVerificationPending = ({ email }: { email: string }) => {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   const handleResend = async () => {
