@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import {
   Card,
@@ -10,14 +10,12 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { verifyEmail } from '../api/auth';
 
-interface VerifyEmailPageProps {
-  verifyUrl: string;
-  onVerified: () => void;
-}
-
-export const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({
+export const VerifyEmailPage = ({
   verifyUrl,
   onVerified,
+}: {
+  verifyUrl: string;
+  onVerified: () => void;
 }) => {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState('');
