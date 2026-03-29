@@ -16,6 +16,8 @@
   --color-primary: #2563eb;
   --color-primary-foreground: #eff6ff;
   --color-ring: var(--color-primary);
+  --color-secondary: var(--color-muted);
+  --color-secondary-foreground: var(--color-muted-foreground);
   --color-accent: #0f766e;
   --color-accent-foreground: #ecfeff;
   --color-danger: #dc2626;
