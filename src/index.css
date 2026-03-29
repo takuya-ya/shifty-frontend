@@ -2,19 +2,26 @@
 
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-sans);
   --color-background: #f5f7fb;
   --color-foreground: #162033;
   --color-surface: #ffffff;
   --color-surface-foreground: #162033;
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-surface-foreground);
   --color-muted: #e7edf5;
   --color-muted-foreground: #5b6780;
   --color-border: #d6deea;
+  --color-input: var(--color-border);
   --color-primary: #2563eb;
   --color-primary-foreground: #eff6ff;
+  --color-ring: var(--color-primary);
   --color-accent: #0f766e;
   --color-accent-foreground: #ecfeff;
   --color-danger: #dc2626;
   --color-danger-foreground: #fef2f2;
+  --color-destructive: var(--color-danger);
+  --color-destructive-foreground: var(--color-danger-foreground);
   --radius-sm: 0.5rem;
   --radius-md: 0.875rem;
   --radius-lg: 1.25rem;
