@@ -29,6 +29,7 @@ dist-ssr
 # Environment files (local overrides)
 .env
 .env.*
+!.env.example
 
 # Mac/OS temp (ensure present)
 .DS_Store
