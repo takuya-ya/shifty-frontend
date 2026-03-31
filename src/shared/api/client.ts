@@ -1,5 +1,7 @@
 import { getCookie } from '../utils/cookie';
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
+
 /**
  * APIリクエストのベースとなるクライアント
  */
@@ -16,7 +18,11 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
     defaultHeaders['X-XSRF-TOKEN'] = xsrfToken;
   }
 
-  const response = await fetch(endpoint, {
+  const requestUrl = BASE_URL
+    ? new URL(endpoint, BASE_URL).toString()
+    : endpoint;
+
+  const response = await fetch(requestUrl, {
     ...options,
     headers: {
       ...defaultHeaders,
