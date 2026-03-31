@@ -18,7 +18,9 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
     defaultHeaders['X-XSRF-TOKEN'] = xsrfToken;
   }
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const requestUrl = new URL(endpoint, BASE_URL).toString();
+
+  const response = await fetch(requestUrl, {
     ...options,
     headers: {
       ...defaultHeaders,
