@@ -1,6 +1,11 @@
 import { apiClient } from "../../../shared/api/client";
 import type { User } from "../types";
 
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
 /**
  * CSRFクッキーを取得する
  */
@@ -8,6 +13,24 @@ export const getCsrfCookie = async (): Promise<void> => {
   await apiClient("/sanctum/csrf-cookie", {
     method: "GET",
   });
+};
+
+/**
+ * ログインする（CSRF取得 → POST /api/v1/login）
+ */
+export const login = async (payload: LoginPayload): Promise<void> => {
+  await getCsrfCookie();
+  const response = await apiClient("/api/v1/login", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(
+      (data as { message?: string }).message ?? "ログインに失敗しました",
+    );
+  }
 };
 
 /**
