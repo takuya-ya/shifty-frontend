@@ -6,6 +6,7 @@ export interface LoginPayload {
   password: string;
 }
 
+
 /**
  * CSRFクッキーを取得する
  */
@@ -29,6 +30,47 @@ export const login = async (payload: LoginPayload): Promise<void> => {
     const data = await response.json().catch(() => ({}));
     throw new Error(
       (data as { message?: string }).message ?? "ログインに失敗しました",
+    );
+  }
+};
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+/**
+ * 管理者登録する（CSRF取得 → POST /api/v1/register）
+ */
+export const register = async (payload: RegisterPayload): Promise<void> => {
+  await getCsrfCookie();
+  const response = await apiClient("/api/v1/register", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(
+      (data as { message?: string }).message ?? "登録に失敗しました",
+    );
+  }
+};
+
+/**
+ * ログアウトする（POST /api/v1/logout）
+ */
+export const logout = async (): Promise<void> => {
+  const response = await apiClient("/api/v1/logout", {
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(
+      (data as { message?: string }).message ?? "ログアウトに失敗しました",
     );
   }
 };

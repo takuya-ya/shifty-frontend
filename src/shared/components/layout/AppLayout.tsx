@@ -1,4 +1,7 @@
-import { Outlet, useMatches } from 'react-router-dom'
+import { Outlet, useMatches, useNavigate } from 'react-router-dom'
+import { useLogout } from '../../../features/auth/hooks/useLogout'
+import { Button } from '../../../components/ui/button'
+import { PATHS } from '../../../routes/paths'
 import { Header } from './Header'
 import { MainContent } from './MainContent'
 import { Sidebar } from './Sidebar'
@@ -31,13 +34,21 @@ function isLayoutHandle(value: unknown): value is LayoutHandle {
 export function AppLayout({ appName, navigation }: AppLayoutProps) {
   const matches = useMatches()
   const activeHandle = [...matches].reverse().map((match) => match.handle).find(isLayoutHandle)
+  const navigate = useNavigate()
+  const { mutate: logout } = useLogout()
 
   const title = activeHandle?.title ?? 'Shifty'
   const description = activeHandle?.description ?? 'シフト管理を効率化する管理画面です。'
 
+  const logoutButton = (
+    <Button variant="outline" size="sm" onClick={() => logout(undefined, { onSuccess: () => navigate(PATHS.LOGIN) })}>
+      ログアウト
+    </Button>
+  )
+
   return (
     <main style={{ padding: '24px', maxWidth: '1080px', margin: '0 auto' }}>
-      <Header appName={appName} title={title} description={description} />
+      <Header appName={appName} title={title} description={description} primaryAction={logoutButton} />
 
       {/*
         ProtectedRoute（認証必須ルートのラップ）は、13.7工程「認証状態管理・PrivateRoute実装」完了後に対応予定。
