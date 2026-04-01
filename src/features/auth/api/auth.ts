@@ -6,7 +6,6 @@ export interface LoginPayload {
   password: string;
 }
 
-
 /**
  * CSRFクッキーを取得する
  */
