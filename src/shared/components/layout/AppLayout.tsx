@@ -1,4 +1,5 @@
 import { Outlet, useMatches, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../../features/auth/hooks/useAuth'
 import { useLogout } from '../../../features/auth/hooks/useLogout'
 import { Button } from '../../../components/ui/button'
 import { PATHS } from '../../../routes/paths'
@@ -35,15 +36,19 @@ export function AppLayout({ appName, navigation }: AppLayoutProps) {
   const matches = useMatches()
   const activeHandle = [...matches].reverse().map((match) => match.handle).find(isLayoutHandle)
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { mutate: logout } = useLogout()
 
   const title = activeHandle?.title ?? 'Shifty'
   const description = activeHandle?.description ?? 'シフト管理を効率化する管理画面です。'
 
   const logoutButton = (
-    <Button variant="outline" size="sm" onClick={() => logout(undefined, { onSuccess: () => navigate(PATHS.LOGIN) })}>
-      ログアウト
-    </Button>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {user && <span style={{ fontSize: '0.875rem', color: '#4b5563' }}>{user.name}でログイン中</span>}
+      <Button variant="outline" size="sm" onClick={() => logout(undefined, { onSuccess: () => navigate(PATHS.LOGIN) })}>
+        ログアウト
+      </Button>
+    </div>
   )
 
   return (
