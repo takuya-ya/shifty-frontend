@@ -9,8 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { resetPassword } from '../api/auth';
-import { parseErrorMessage } from '@/shared/utils/parseErrorMessage';
+import { useResetPassword } from '../hooks/useResetPassword';
 
 interface ResetPasswordFormProps {
   token: string;
@@ -21,20 +20,14 @@ interface ResetPasswordFormProps {
 export function ResetPasswordForm({ token, email, onSuccess }: ResetPasswordFormProps) {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
-  const [error, setError] = useState<string | null>(null);
+  const { mutate: resetPassword, isPending, error } = useResetPassword();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
-    setError(null);
-    try {
-      await resetPassword({ token, email, password, password_confirmation: passwordConfirmation });
-      onSuccess();
-    } catch (err) {
-      setError(parseErrorMessage(err));
-      setStatus('error');
-    }
+    resetPassword(
+      { token, email, password, password_confirmation: passwordConfirmation },
+      { onSuccess },
+    );
   };
 
   return (
@@ -74,11 +67,11 @@ export function ResetPasswordForm({ token, email, onSuccess }: ResetPasswordForm
               autoComplete="new-password"
             />
           </div>
-          {status === 'error' && (
-            <p className="text-sm text-destructive">{error}</p>
+          {error && (
+            <p className="text-sm text-destructive">{error.message}</p>
           )}
-          <Button type="submit" className="w-full" disabled={status === 'loading'}>
-            {status === 'loading' ? '更新中...' : 'パスワードを更新'}
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? '更新中...' : 'パスワードを更新'}
           </Button>
         </form>
       </CardContent>

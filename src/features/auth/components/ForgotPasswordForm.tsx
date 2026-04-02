@@ -10,8 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { sendPasswordResetLink } from '../api/auth';
-import { parseErrorMessage } from '@/shared/utils/parseErrorMessage';
+import { useForgotPassword } from '../hooks/useForgotPassword';
 
 interface ForgotPasswordFormProps {
   onSwitchToLogin: () => void;
@@ -19,23 +18,14 @@ interface ForgotPasswordFormProps {
 
 export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps) {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
-  const [error, setError] = useState<string | null>(null);
+  const { mutate: sendResetLink, isPending, isSuccess, error } = useForgotPassword();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
-    setError(null);
-    try {
-      await sendPasswordResetLink(email);
-      setStatus('sent');
-    } catch (err) {
-      setError(parseErrorMessage(err));
-      setStatus('error');
-    }
+    sendResetLink(email);
   };
 
-  if (status === 'sent') {
+  if (isSuccess) {
     return (
       <Card className="w-full max-w-md">
         <CardHeader>
@@ -77,11 +67,11 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
               autoComplete="email"
             />
           </div>
-          {status === 'error' && (
-            <p className="text-sm text-destructive">{error}</p>
+          {error && (
+            <p className="text-sm text-destructive">{error.message}</p>
           )}
-          <Button type="submit" className="w-full" disabled={status === 'loading'}>
-            {status === 'loading' ? '送信中...' : '再設定リンクを送信'}
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? '送信中...' : '再設定リンクを送信'}
           </Button>
         </form>
       </CardContent>
