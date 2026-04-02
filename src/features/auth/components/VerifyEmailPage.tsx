@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
+import { parseErrorMessage } from '@/shared/utils/parseErrorMessage';
 import {
   Card,
   CardContent,
@@ -27,8 +28,8 @@ export const VerifyEmailPage = ({
         window.history.replaceState({}, '', '/');
         setStatus('success');
         setTimeout(() => onVerified(), 2000);
-      } catch (err: any) {
-        setErrorMessage(err.message);
+      } catch (err) {
+        setErrorMessage(parseErrorMessage(err));
         setStatus('error');
       }
     };
