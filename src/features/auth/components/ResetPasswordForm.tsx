@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { resetPassword } from '../api/auth';
+import { parseErrorMessage } from '@/shared/utils/parseErrorMessage';
 
 interface ResetPasswordFormProps {
   token: string;
@@ -31,7 +32,7 @@ export function ResetPasswordForm({ token, email, onSuccess }: ResetPasswordForm
       await resetPassword({ token, email, password, password_confirmation: passwordConfirmation });
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'エラーが発生しました');
+      setError(parseErrorMessage(err));
       setStatus('error');
     }
   };

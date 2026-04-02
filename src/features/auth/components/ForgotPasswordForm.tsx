@@ -11,6 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { sendPasswordResetLink } from '../api/auth';
+import { parseErrorMessage } from '@/shared/utils/parseErrorMessage';
 
 interface ForgotPasswordFormProps {
   onSwitchToLogin: () => void;
@@ -29,7 +30,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
       await sendPasswordResetLink(email);
       setStatus('sent');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'エラーが発生しました');
+      setError(parseErrorMessage(err));
       setStatus('error');
     }
   };
