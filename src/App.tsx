@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { LoginForm } from './features/auth/components/LoginForm'
 import { RegisterForm } from './features/auth/components/RegisterForm'
-import { VerifyEmailPage } from './features/auth/components/VerifyEmailPage'
+import { EmailVerificationPage } from './features/auth/components/EmailVerificationPage'
 import type { User } from './features/auth/types'
 import { apiClient } from './shared/api/client'
 import { Button } from '@/components/ui/button'
@@ -67,7 +67,7 @@ function App() {
   if (view === 'verify' && verifyParams) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <VerifyEmailPage
+        <EmailVerificationPage
           {...verifyParams}
           onVerified={() => {
             setView('login')

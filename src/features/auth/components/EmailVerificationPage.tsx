@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-export const VerifyEmailPage = ({
+export const EmailVerificationPage = ({
   verifyUrl,
   onVerified,
 }: {
