@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
-import { parseErrorMessage } from '@/shared/utils/parseErrorMessage';
+import { useVerifyEmail } from '../hooks/useVerifyEmail';
 import {
   Card,
   CardContent,
@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { verifyEmail } from '../api/auth';
 
 export const VerifyEmailPage = ({
   verifyUrl,
@@ -18,23 +17,20 @@ export const VerifyEmailPage = ({
   verifyUrl: string;
   onVerified: () => void;
 }) => {
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [errorMessage, setErrorMessage] = useState('');
+  const { mutate: verify, status, error } = useVerifyEmail();
 
   useEffect(() => {
-    const verify = async () => {
-      try {
-        await verifyEmail(verifyUrl);
-        window.history.replaceState({}, '', '/');
-        setStatus('success');
-        setTimeout(() => onVerified(), 2000);
-      } catch (err) {
-        setErrorMessage(parseErrorMessage(err));
-        setStatus('error');
-      }
-    };
-    verify();
+    verify(verifyUrl);
   }, []); // 認証は1回だけ実行
+
+  useEffect(() => {
+    if (status !== 'success') return;
+    window.history.replaceState({}, '', '/');
+    const timer = setTimeout(() => onVerified(), 2000);
+    return () => clearTimeout(timer);
+  }, [status]);
+
+  const isLoading = status === 'idle' || status === 'pending';
 
   return (
     <Card className="w-full max-w-md text-center">
@@ -43,7 +39,7 @@ export const VerifyEmailPage = ({
       </CardHeader>
       <Separator />
       <CardContent className="space-y-3">
-        {status === 'loading' && (
+        {isLoading && (
           <>
             <div className="flex justify-center">
               <Loader2 className="size-10 animate-spin text-primary" />
@@ -68,7 +64,7 @@ export const VerifyEmailPage = ({
               <XCircle className="size-14 text-destructive" />
             </div>
             <p className="text-lg font-semibold">認証に失敗しました</p>
-            <p className="text-sm text-destructive">{errorMessage}</p>
+            <p className="text-sm text-destructive">{error?.message}</p>
             <CardDescription>リンクの有効期限が切れているか、無効なリンクです。</CardDescription>
           </>
         )}

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { CheckCircle2, Mail } from 'lucide-react';
+import { useResendVerification } from '../hooks/useResendVerification';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,26 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { resendVerificationEmail } from '../api/auth';
-
 
 export const EmailVerificationPending = ({ email }: { email: string }) => {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-
-  const handleResend = async () => {
-    setStatus('sending');
-    try {
-      const result = await resendVerificationEmail();
-      if (result === 'already-verified' || result === 'sent') {
-        setStatus('sent');
-      } else {
-        setStatus('error');
-      }
-    } catch (err) {
-      console.error('再送エラー:', err);
-      setStatus('error');
-    }
-  };
+  const { mutate: resend, isPending, isSuccess, isError } = useResendVerification();
 
   return (
     <Card className="w-full max-w-md">
@@ -52,25 +35,25 @@ export const EmailVerificationPending = ({ email }: { email: string }) => {
           </ol>
         </div>
 
-        {status === 'sent' && (
+        {isSuccess && (
           <p className="inline-flex items-center gap-1.5 text-sm text-primary">
             <CheckCircle2 className="size-4" />
             確認メールを再送しました。
           </p>
         )}
-        {status === 'error' && (
+        {isError && (
           <p className="text-sm text-destructive">再送に失敗しました。しばらくしてから再試行してください。</p>
         )}
       </CardContent>
       <CardFooter>
         <Button
           type="button"
-          onClick={handleResend}
-          disabled={status === 'sending'}
+          onClick={() => resend()}
+          disabled={isPending}
           variant="outline"
           className="w-full"
         >
-          {status === 'sending' ? '送信中...' : 'メールを再送する'}
+          {isPending ? '送信中...' : 'メールを再送する'}
         </Button>
       </CardFooter>
     </Card>
