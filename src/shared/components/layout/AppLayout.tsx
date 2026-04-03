@@ -43,8 +43,8 @@ export function AppLayout({ appName, navigation }: AppLayoutProps) {
   const description = activeHandle?.description ?? 'シフト管理を効率化する管理画面です。'
 
   const logoutButton = (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-      {user && <span style={{ fontSize: '0.875rem', color: '#4b5563' }}>{user.name}でログイン中</span>}
+    <div className="flex items-center gap-3">
+      {user && <span className="text-sm text-gray-600">{user.name}でログイン中</span>}
       <Button variant="outline" size="sm" onClick={() => logout(undefined, { onSuccess: () => navigate(PATHS.LOGIN) })}>
         ログアウト
       </Button>
