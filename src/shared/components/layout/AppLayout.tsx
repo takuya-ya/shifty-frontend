@@ -42,14 +42,14 @@ export function AppLayout({ appName, navigation }: AppLayoutProps) {
   const title = activeHandle?.title ?? 'Shifty'
   const description = activeHandle?.description ?? 'シフト管理を効率化する管理画面です。'
 
-  const logoutButton = (
+  const logoutButton = user ? (
     <div className="flex items-center gap-3">
-      {user && <span className="text-sm text-gray-600">{user.name}でログイン中</span>}
+      <span className="text-sm text-gray-600">{user.name}でログイン中</span>
       <Button variant="outline" size="sm" onClick={() => logout(undefined, { onSuccess: () => navigate(PATHS.LOGIN) })}>
         ログアウト
       </Button>
     </div>
-  )
+  ) : null
 
   return (
     <main style={{ padding: '24px', maxWidth: '1080px', margin: '0 auto' }}>
