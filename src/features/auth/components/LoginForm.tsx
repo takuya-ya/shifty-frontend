@@ -16,8 +16,8 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
-  const [email, setEmail] = useState('test@example.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { mutate: login, isPending, error } = useLogin();
 
   const handleSubmit = (e: FormEvent) => {
