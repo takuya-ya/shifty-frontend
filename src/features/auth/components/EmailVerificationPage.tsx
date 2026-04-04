@@ -21,13 +21,19 @@ export const EmailVerificationPage = ({
 
   useEffect(() => {
     verify(verifyUrl);
-  }, []); // 認証は1回だけ実行
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // マウント時に1回だけ実行する意図のため依存配列を空にしている。
+    // verify は useMutation から返る参照安定な関数であり、verifyUrl はマウント後に変化しない。
+  }, []);
 
   useEffect(() => {
     if (status !== 'success') return;
     window.history.replaceState({}, '', '/');
     const timer = setTimeout(() => onVerified(), 2000);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // status の変化のみを監視する意図のため onVerified を依存配列から除外している。
+    // onVerified は親コンポーネントで定義されたコールバックであり、再実行を引き起こすべきでない。
   }, [status]);
 
   const isLoading = status === 'idle' || status === 'pending';
