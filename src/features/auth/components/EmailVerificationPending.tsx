@@ -12,7 +12,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 
 export const EmailVerificationPending = ({ email }: { email: string }) => {
-  const { mutate: resend, isPending, isSuccess, isError } = useResendVerification();
+  const { mutate: resend, isPending, isSuccess, isError, data } = useResendVerification();
 
   return (
     <Card className="w-full max-w-md">
@@ -38,7 +38,9 @@ export const EmailVerificationPending = ({ email }: { email: string }) => {
         {isSuccess && (
           <p className="inline-flex items-center gap-1.5 text-sm text-primary">
             <CheckCircle2 className="size-4" />
-            確認メールを再送しました。
+            {data === 'already-verified'
+              ? 'すでにメール認証が完了しています。'
+              : '確認メールを再送しました。'}
           </p>
         )}
         {isError && (

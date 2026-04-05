@@ -50,6 +50,7 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              disabled={isPending}
               required
             />
           </div>
@@ -60,6 +61,7 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isPending}
               required
             />
           </div>
@@ -70,6 +72,7 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isPending}
               required
             />
           </div>
@@ -80,6 +83,7 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
               type="password"
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
+              disabled={isPending}
               required
             />
           </div>
