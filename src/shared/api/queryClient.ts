@@ -13,9 +13,12 @@ export const queryClient = new QueryClient({
   },
 });
 
-// 認証状態はフォーカス復帰ごとに再取得せず、明示的な無効化や再訪時に更新する。
+// 認証状態は invalidateQueries / setQueryData で明示的に管理するため、
+// 自動再取得をすべて無効にし staleTime を Infinity にする。
 queryClient.setQueryDefaults(["auth"], {
   retry: false,
+  staleTime: Infinity,
   refetchOnWindowFocus: false,
   refetchOnMount: false,
+  refetchOnReconnect: false,
 });

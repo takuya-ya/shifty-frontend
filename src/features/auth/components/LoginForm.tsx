@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { apiClient } from '../../../shared/api/client';
-import { getCsrfCookie } from '../api/auth';
+import { useLogin } from '../hooks/useLogin';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -17,41 +16,13 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
-  const [email, setEmail] = useState('test@example.com');
-  const [password, setPassword] = useState('password');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { mutate: login, isPending, error } = useLogin();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      // 1. CSRF Cookieの取得
-      await getCsrfCookie();
-
-      // 2. ログイン実行（204 No Content が返るためボディなし）
-      const response = await apiClient('/api/v1/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        // レスポンスのパース失敗も考慮
-        const data = await response.json().catch(() => ({}));
-        setError(data.message || 'ログインに失敗しました。');
-        return; // 早期リターンで後続処理を止める
-      }
-
-      onLoginSuccess();
-    } catch (err) {
-      // 通信エラー（fetch自体の失敗）のみここに到達させる
-      setError('通信エラーが発生しました。');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    login({ email, password }, { onSuccess: onLoginSuccess });
   };
 
   return (
@@ -83,13 +54,13 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
               required
             />
           </div>
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p className="text-sm text-destructive">{error.message}</p>}
           <Button
             type="submit"
-            disabled={loading}
+            disabled={isPending}
             className="w-full"
           >
-            {loading ? '送信中...' : 'ログイン'}
+            {isPending ? '送信中...' : 'ログイン'}
           </Button>
         </form>
       </CardContent>
