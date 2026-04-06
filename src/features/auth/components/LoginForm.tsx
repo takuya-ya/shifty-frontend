@@ -1,5 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useLogin } from '../hooks/useLogin';
+import { loginSchema, type LoginFormValues } from '../schemas/loginSchema';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -16,13 +19,20 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { mutate: login, isPending, error } = useLogin();
+  const [serverError, setServerError] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
+  const { mutate: login, isPending } = useLogin();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    login({ email, password }, { onSuccess: onLoginSuccess });
+  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
+    setServerError(null);
+    login(data, {
+      onSuccess: onLoginSuccess,
+      onError: (error) => setServerError(error.message),
+    });
   };
 
   return (
@@ -33,28 +43,32 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
       </CardHeader>
       <Separator />
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="login-email" className="block text-sm font-medium">メールアドレス</label>
             <Input
               id="login-email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              disabled={isPending}
+              {...register('email')}
             />
+            {errors.email && (
+              <p className="text-sm text-destructive">{errors.email.message}</p>
+            )}
           </div>
           <div className="space-y-1.5">
             <label htmlFor="login-password" className="block text-sm font-medium">パスワード</label>
             <Input
               id="login-password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              disabled={isPending}
+              {...register('password')}
             />
+            {errors.password && (
+              <p className="text-sm text-destructive">{errors.password.message}</p>
+            )}
           </div>
-          {error && <p className="text-sm text-destructive">{error.message}</p>}
+          {serverError && <p className="text-sm text-destructive">{serverError}</p>}
           <Button
             type="submit"
             disabled={isPending}
