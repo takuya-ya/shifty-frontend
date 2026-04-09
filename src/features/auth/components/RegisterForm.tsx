@@ -1,7 +1,13 @@
-import { useState, type FormEvent } from 'react';
-import { useRegister } from '../hooks/useRegister';
-import { EmailVerificationPending } from './EmailVerificationPending';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRegister } from "../hooks/useRegister";
+import {
+  registerSchema,
+  type RegisterFormValues,
+} from "../schemas/registerSchema";
+import { EmailVerificationPending } from "./EmailVerificationPending";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,30 +15,41 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
 }
 
 export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const { mutate: register, isPending, error, isSuccess } = useRegister();
+  // 登録成功後の認証待ち表示に使用するメールアドレスを保持する
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({ resolver: zodResolver(registerSchema) });
+
+  const { mutate: registerUser, isPending } = useRegister();
+
+  const onInvalid = () => setServerError(null);
+
+  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
+    setServerError(null);
+    registerUser(data, {
+      onSuccess: () => setRegisteredEmail(data.email),
+      onError: (error) => setServerError(error.message),
+    });
+  };
 
   // 登録成功後に認証待ち画面を表示
-  if (isSuccess) {
-    return <EmailVerificationPending email={email} />;
+  if (registeredEmail !== null) {
+    return <EmailVerificationPending email={registeredEmail} />;
   }
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    register({ name, email, password, password_confirmation: passwordConfirmation });
-  };
 
   return (
     <Card className="w-full max-w-md">
@@ -42,60 +59,87 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
       </CardHeader>
       <Separator />
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit, onInvalid)}
+          className="space-y-4"
+        >
           <div className="space-y-1.5">
-            <label htmlFor="register-name" className="block text-sm font-medium">名前</label>
+            <label
+              htmlFor="register-name"
+              className="block text-sm font-medium"
+            >
+              名前
+            </label>
             <Input
               id="register-name"
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
               disabled={isPending}
-              required
+              {...register("name")}
             />
+            {errors.name && (
+              <p className="text-sm text-destructive">{errors.name.message}</p>
+            )}
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="register-email" className="block text-sm font-medium">メールアドレス</label>
+            <label
+              htmlFor="register-email"
+              className="block text-sm font-medium"
+            >
+              メールアドレス
+            </label>
             <Input
               id="register-email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               disabled={isPending}
-              required
+              {...register("email")}
             />
+            {errors.email && (
+              <p className="text-sm text-destructive">{errors.email.message}</p>
+            )}
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="register-password" className="block text-sm font-medium">パスワード</label>
+            <label
+              htmlFor="register-password"
+              className="block text-sm font-medium"
+            >
+              パスワード
+            </label>
             <Input
               id="register-password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               disabled={isPending}
-              required
+              {...register("password")}
             />
+            {errors.password && (
+              <p className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
+            )}
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="register-password-confirmation" className="block text-sm font-medium">パスワード(確認)</label>
+            <label
+              htmlFor="register-password-confirmation"
+              className="block text-sm font-medium"
+            >
+              パスワード(確認)
+            </label>
             <Input
               id="register-password-confirmation"
               type="password"
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
               disabled={isPending}
-              required
+              {...register("password_confirmation")}
             />
+            {errors.password_confirmation && (
+              <p className="text-sm text-destructive">
+                {errors.password_confirmation.message}
+              </p>
+            )}
           </div>
-
-          {error && <p className="text-sm text-destructive">{error.message}</p>}
-
-          <Button
-            type="submit"
-            disabled={isPending}
-            className="w-full"
-          >
-            {isPending ? '送信中...' : '登録する'}
+          {serverError && (
+            <p className="text-sm text-destructive">{serverError}</p>
+          )}
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? "送信中..." : "登録する"}
           </Button>
         </form>
       </CardContent>
