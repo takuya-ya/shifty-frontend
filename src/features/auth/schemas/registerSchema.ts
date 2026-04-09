@@ -10,7 +10,6 @@ export const registerSchema = z
       .pipe(z.email('メールアドレスの形式が正しくありません')),
     password: z
       .string()
-      .min(1, 'パスワードを入力してください')
       .min(8, 'パスワードは8文字以上で入力してください'),
     password_confirmation: z.string().min(1, 'パスワード(確認)を入力してください'),
   })
