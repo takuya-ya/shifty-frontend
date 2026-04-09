@@ -38,6 +38,8 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
     return <EmailVerificationPending email={registeredEmail} />;
   }
 
+  const onInvalid = () => setServerError(null);
+
   const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
     setServerError(null);
     registerUser(
@@ -62,7 +64,7 @@ export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
       </CardHeader>
       <Separator />
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="register-name" className="block text-sm font-medium">名前</label>
             <Input
