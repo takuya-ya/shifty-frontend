@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,6 +11,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useResetPassword } from '../hooks/useResetPassword';
+import {
+  resetPasswordSchema,
+  type ResetPasswordFormValues,
+} from '../schemas/resetPasswordSchema';
 
 interface ResetPasswordFormProps {
   token: string;
@@ -18,14 +23,16 @@ interface ResetPasswordFormProps {
 }
 
 export function ResetPasswordForm({ token, email, onSuccess }: ResetPasswordFormProps) {
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordFormValues>({ resolver: zodResolver(resetPasswordSchema) });
   const { mutate: resetPassword, isPending, error } = useResetPassword();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<ResetPasswordFormValues> = (data) => {
     resetPassword(
-      { token, email, password, password_confirmation: passwordConfirmation },
+      { token, email, password: data.password, password_confirmation: data.password_confirmation },
       { onSuccess },
     );
   };
@@ -40,32 +47,36 @@ export function ResetPasswordForm({ token, email, onSuccess }: ResetPasswordForm
       </CardHeader>
       <Separator />
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="password" className="block text-sm font-medium">
+            <label htmlFor="reset-password" className="block text-sm font-medium">
               新しいパスワード
             </label>
             <Input
-              id="password"
+              id="reset-password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              disabled={isPending}
               autoComplete="new-password"
+              {...register('password')}
             />
+            {errors.password && (
+              <p className="text-sm text-destructive">{errors.password.message}</p>
+            )}
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="password_confirmation" className="block text-sm font-medium">
+            <label htmlFor="reset-password-confirmation" className="block text-sm font-medium">
               パスワード（確認）
             </label>
             <Input
-              id="password_confirmation"
+              id="reset-password-confirmation"
               type="password"
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
-              required
+              disabled={isPending}
               autoComplete="new-password"
+              {...register('password_confirmation')}
             />
+            {errors.password_confirmation && (
+              <p className="text-sm text-destructive">{errors.password_confirmation.message}</p>
+            )}
           </div>
           {error && (
             <p className="text-sm text-destructive">{error.message}</p>
