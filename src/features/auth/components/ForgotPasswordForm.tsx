@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -25,12 +26,13 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<ForgotPasswordFormValues>({ resolver: zodResolver(forgotPasswordSchema) });
   const { mutate: sendResetLink, isPending, isSuccess, error } = useForgotPassword();
+  const submittedEmail = useRef<string>('');
 
   const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
+    submittedEmail.current = data.email;
     sendResetLink(data.email);
   };
 
@@ -40,7 +42,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
         <CardHeader>
           <CardTitle>メールを送信しました</CardTitle>
           <CardDescription>
-            パスワード再設定のリンクを <strong>{getValues('email')}</strong> に送信しました。メールをご確認ください。
+            パスワード再設定のリンクを <strong>{submittedEmail.current}</strong> に送信しました。メールをご確認ください。
           </CardDescription>
         </CardHeader>
         <CardFooter className="justify-center">
