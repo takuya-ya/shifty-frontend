@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,18 +12,26 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useForgotPassword } from '../hooks/useForgotPassword';
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormValues,
+} from '../schemas/forgotPasswordSchema';
 
 interface ForgotPasswordFormProps {
   onSwitchToLogin: () => void;
 }
 
 export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps) {
-  const [email, setEmail] = useState('');
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<ForgotPasswordFormValues>({ resolver: zodResolver(forgotPasswordSchema) });
   const { mutate: sendResetLink, isPending, isSuccess, error } = useForgotPassword();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    sendResetLink(email);
+  const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
+    sendResetLink(data.email);
   };
 
   if (isSuccess) {
@@ -31,7 +40,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
         <CardHeader>
           <CardTitle>メールを送信しました</CardTitle>
           <CardDescription>
-            パスワード再設定のリンクを <strong>{email}</strong> に送信しました。メールをご確認ください。
+            パスワード再設定のリンクを <strong>{getValues('email')}</strong> に送信しました。メールをご確認ください。
           </CardDescription>
         </CardHeader>
         <CardFooter className="justify-center">
@@ -53,19 +62,21 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
       </CardHeader>
       <Separator />
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="email" className="block text-sm font-medium">
+            <label htmlFor="forgot-password-email" className="block text-sm font-medium">
               メールアドレス
             </label>
             <Input
-              id="email"
+              id="forgot-password-email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              disabled={isPending}
               autoComplete="email"
+              {...register('email')}
             />
+            {errors.email && (
+              <p className="text-sm text-destructive">{errors.email.message}</p>
+            )}
           </div>
           {error && (
             <p className="text-sm text-destructive">{error.message}</p>
