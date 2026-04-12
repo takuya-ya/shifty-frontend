@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AdminRegisterPage } from '../pages/AdminRegisterPage'
 import { AdminShiftsPage } from '../pages/AdminShiftsPage'
@@ -8,24 +7,8 @@ import { NotFoundPage } from '../pages/NotFoundPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { SettingsPage } from '../pages/SettingsPage'
 import { AppLayout } from '../shared/components/layout/AppLayout'
+import { ProtectedRoute } from './ProtectedRoute'
 import { PATHS } from './paths'
-
-// ──────────────────────────────────────────────────────────────
-// ProtectedRoute: 認証済みユーザーのみアクセス可
-// 未認証の場合は /login にリダイレクトする。
-// 認証状態の判定は 12.2.3 以降で useAuth を使って差し替える。
-// ──────────────────────────────────────────────────────────────
-interface ProtectedRouteProps {
-  children: ReactNode
-  isAuthenticated: boolean
-}
-
-export function ProtectedRoute({ children, isAuthenticated }: ProtectedRouteProps) {
-  if (!isAuthenticated) {
-    return <Navigate to={PATHS.LOGIN} replace />
-  }
-  return <>{children}</>
-}
 
 // ──────────────────────────────────────────────────────────────
 // ルート定義
@@ -80,13 +63,8 @@ const publicRoutes = [
   },
 ]
 
-/**
- * 認証必須のルート（将来的にProtectedRouteでラップ予定）
- *
- * 現状はまだProtectedRouteでラップされていません。
- * // 13.7 認証状態管理・PrivateRoute 実装後に、ProtectedRoute でラップするためのルート定義。
- */
-const protectedRoutes = [
+/** 認証必須のルート */
+const privateRoutes = [
   {
     path: PATHS.ADMIN_SHIFTS,
     element: <AdminShiftsPage />,
@@ -117,7 +95,15 @@ export const router = createBrowserRouter([
   {
     path: PATHS.ROOT,
     element: <AppLayout appName="Shifty" navigation={links} />,
-    children: [...publicRoutes, ...protectedRoutes],
+    children: [
+      ...publicRoutes,
+      // ProtectedRoute をネスト layout として認証必須ルートを一括保護する。
+      // 未認証アクセスはすべて /login へリダイレクトされる。
+      {
+        element: <ProtectedRoute />,
+        children: privateRoutes,
+      },
+    ],
   },
   {
     path: PATHS.NOT_FOUND,
