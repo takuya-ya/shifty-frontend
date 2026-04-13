@@ -24,15 +24,7 @@ export function RouteGuard({ requireAuth }: Props) {
     )
   }
 
-  if (isError) {
-    return (
-      <div className="flex items-center justify-center py-16 text-sm text-red-500">
-        認証情報の取得に失敗しました。ネットワーク接続を確認してください。
-      </div>
-    )
-  }
-
-  if (requireAuth && !isAuthenticated) {
+  if (requireAuth && !isAuthenticated && !isError) {
     return <Navigate to={PATHS.LOGIN} state={{ from: location }} replace />
   }
 
@@ -42,5 +34,14 @@ export function RouteGuard({ requireAuth }: Props) {
     return <Navigate to={redirectTo} replace />
   }
 
-  return <Outlet />
+  return (
+    <>
+      <Outlet />
+      {isError && (
+        <div className="flex items-center justify-center py-4 text-sm text-red-500">
+          認証情報の取得に失敗しました。ネットワーク接続を確認してください。
+        </div>
+      )}
+    </>
+  )
 }
