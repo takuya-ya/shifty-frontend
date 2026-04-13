@@ -6,11 +6,12 @@ import { useCurrentUser } from "./useCurrentUser";
  * useCurrentUser の詳細を知らずに認証状態を参照できるようにする。
  */
 export const useAuth = () => {
-  const { data: user, isLoading } = useCurrentUser();
+  const { data: user, isLoading, isError } = useCurrentUser();
 
   return {
     user: user ?? null,
     isAuthenticated: !!user,
     isLoading,
+    isError,
   };
 };
