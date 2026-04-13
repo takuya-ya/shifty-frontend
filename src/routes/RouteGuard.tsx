@@ -37,7 +37,9 @@ export function RouteGuard({ requireAuth }: Props) {
   }
 
   if (!requireAuth && isAuthenticated) {
-    return <Navigate to={PATHS.ADMIN_SHIFTS} replace />
+    const from = (location.state as { from?: { pathname: string; search: string } } | null)?.from
+    const redirectTo = from ? `${from.pathname}${from.search}` : PATHS.ADMIN_SHIFTS
+    return <Navigate to={redirectTo} replace />
   }
 
   return <Outlet />
