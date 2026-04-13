@@ -13,12 +13,20 @@ type Props = {
 // - isLoading 中は誤リダイレクトを防ぐためローディングUIを返す
 // ──────────────────────────────────────────────────────────────
 export function RouteGuard({ requireAuth }: Props) {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading, isError } = useAuth()
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16 text-sm text-gray-500">
         認証情報を確認中...
+      </div>
+    )
+  }
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center py-16 text-sm text-red-500">
+        認証情報の取得に失敗しました。ネットワーク接続を確認してください。
       </div>
     )
   }
