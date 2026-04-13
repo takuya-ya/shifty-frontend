@@ -56,7 +56,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // パスワード再設定はトークン付きアクセスのため認証状態によらずアクセス可
+      // パスワード再設定関連のルートは認証状態によらずアクセス可
       {
         path: PATHS.RESET_PASSWORD,
         element: <ResetPasswordPage />,

@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../features/auth/hooks/useAuth'
 import { PATHS } from './paths'
 
@@ -14,6 +14,7 @@ type Props = {
 // ──────────────────────────────────────────────────────────────
 export function RouteGuard({ requireAuth }: Props) {
   const { isAuthenticated, isLoading, isError } = useAuth()
+  const location = useLocation()
 
   if (isLoading) {
     return (
@@ -32,7 +33,7 @@ export function RouteGuard({ requireAuth }: Props) {
   }
 
   if (requireAuth && !isAuthenticated) {
-    return <Navigate to={PATHS.LOGIN} replace />
+    return <Navigate to={PATHS.LOGIN} state={{ from: location }} replace />
   }
 
   if (!requireAuth && isAuthenticated) {
