@@ -2,13 +2,17 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '../features/auth/hooks/useAuth'
 import { PATHS } from './paths'
 
+type Props = {
+  requireAuth: boolean
+}
+
 // ──────────────────────────────────────────────────────────────
-// ProtectedRoute: 認証済みユーザーのみアクセス可
-// - useAuth で認証状態を判定する（固定値 prop 不要）
+// RouteGuard: 認証状態に応じてルートへのアクセスを制御する
+// - requireAuth=true : 未認証ユーザーを /login にリダイレクト
+// - requireAuth=false: 認証済みユーザーを /admin/shifts にリダイレクト
 // - isLoading 中は誤リダイレクトを防ぐためローディングUIを返す
-// - 未認証の場合は /login にリダイレクトする
 // ──────────────────────────────────────────────────────────────
-export function ProtectedRoute() {
+export function RouteGuard({ requireAuth }: Props) {
   const { isAuthenticated, isLoading } = useAuth()
 
   if (isLoading) {
@@ -19,8 +23,12 @@ export function ProtectedRoute() {
     )
   }
 
-  if (!isAuthenticated) {
+  if (requireAuth && !isAuthenticated) {
     return <Navigate to={PATHS.LOGIN} replace />
+  }
+
+  if (!requireAuth && isAuthenticated) {
+    return <Navigate to={PATHS.ADMIN_SHIFTS} replace />
   }
 
   return <Outlet />
