@@ -1,4 +1,5 @@
 import { apiClient } from "../../../shared/api/client";
+import { throwIfNotOk } from "../../../shared/api/error";
 import type { User } from "../types";
 
 export interface LoginPayload {
@@ -19,13 +20,6 @@ export interface ResetPasswordPayload {
   password: string;
   password_confirmation: string;
 }
-
-/** レスポンスが失敗の場合にサーバーメッセージ付きでエラーをスローする */
-const throwIfNotOk = async (response: Response, fallback: string): Promise<void> => {
-  if (response.ok) return;
-  const data = await response.json().catch(() => ({}));
-  throw new Error((data as { message?: string }).message ?? fallback);
-};
 
 export const getCsrfCookie = async (): Promise<void> => {
   await apiClient("/sanctum/csrf-cookie", { method: "GET" });
