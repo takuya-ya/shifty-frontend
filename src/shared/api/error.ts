@@ -1,8 +1,9 @@
-export type ApiErrorType = 'unauthorized' | 'validation' | 'server' | 'unknown';
+export type ApiErrorType = 'unauthorized' | 'forbidden' | 'validation' | 'server' | 'unknown';
 
 /** HTTP ステータスコードからエラー種別を分類する */
 const classifyStatus = (status: number): ApiErrorType => {
   if (status === 401) return 'unauthorized';
+  if (status === 403) return 'forbidden';
   if (status === 422) return 'validation';
   if (status >= 500) return 'server';
   return 'unknown';
@@ -42,4 +43,13 @@ export const throwIfNotOk = async (response: Response, fallback: string): Promis
   if (response.ok) return;
   const data: ErrorResponseBody = await response.json().catch(() => ({}));
   throw new ApiError(response.status, data.message ?? fallback, data.errors);
+};
+
+/** レスポンスボディを一度だけ読み取り、失敗なら ApiError をスローして成功なら T を返す */
+export const fetchJson = async <T>(response: Response, fallback: string): Promise<T> => {
+  const data: ErrorResponseBody = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new ApiError(response.status, data.message ?? fallback, data.errors);
+  }
+  return data as T;
 };
