@@ -34,3 +34,15 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
 
   return response;
 };
+
+export const get = (endpoint: string, options: Omit<RequestInit, 'method'> = {}) =>
+  apiClient(endpoint, { ...options, method: 'GET' });
+
+export const post = (endpoint: string, body?: unknown, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
+  apiClient(endpoint, { ...options, method: 'POST', body: body !== undefined ? JSON.stringify(body) : undefined });
+
+export const patch = (endpoint: string, body?: unknown, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
+  apiClient(endpoint, { ...options, method: 'PATCH', body: body !== undefined ? JSON.stringify(body) : undefined });
+
+export const del = (endpoint: string, options: Omit<RequestInit, 'method'> = {}) =>
+  apiClient(endpoint, { ...options, method: 'DELETE' });
