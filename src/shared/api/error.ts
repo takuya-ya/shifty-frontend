@@ -37,9 +37,9 @@ export class ApiError extends Error {
 export const isApiError = (error: unknown): error is ApiError =>
   error instanceof ApiError;
 
-/** レスポンスが失敗の場合にサーバーメッセージ付きでエラーをスローする */
+/** レスポンスが失敗の場合に ApiError をスローする */
 export const throwIfNotOk = async (response: Response, fallback: string): Promise<void> => {
   if (response.ok) return;
   const data: ErrorResponseBody = await response.json().catch(() => ({}));
-  throw new Error(data.message ?? fallback);
+  throw new ApiError(response.status, data.message ?? fallback, data.errors);
 };
