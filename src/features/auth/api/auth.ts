@@ -22,7 +22,8 @@ export interface ResetPasswordPayload {
 }
 
 export const getCsrfCookie = async (): Promise<void> => {
-  await get("/sanctum/csrf-cookie");
+  const response = await get("/sanctum/csrf-cookie");
+  await throwIfNotOk(response, "CSRFトークンの取得に失敗しました");
 };
 
 export const login = async (payload: LoginPayload): Promise<void> => {
