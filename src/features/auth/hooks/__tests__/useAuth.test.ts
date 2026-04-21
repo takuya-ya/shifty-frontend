@@ -55,7 +55,7 @@ describe("useAuth", () => {
   });
 
   it("フェッチ中は isLoading が true になる", () => {
-    mockGetCurrentUser.mockReturnValue(new Promise(() => {}));
+    mockGetCurrentUser.mockReturnValue(new Promise<User | null>(() => {}));
 
     const { result } = renderHook(() => useAuth(), {
       wrapper: createWrapper(queryClient),
