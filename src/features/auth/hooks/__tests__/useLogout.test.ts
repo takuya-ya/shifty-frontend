@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createElement } from "react";
+import { QueryClient } from "@tanstack/react-query";
 import { useLogout } from "../useLogout";
 import { authQueryKeys } from "../useCurrentUser";
 import type { User } from "../../types";
+import { createWrapper } from "@/test/utils";
 
 vi.mock("../../api/auth", () => ({
   logout: vi.fn(),
@@ -14,11 +14,6 @@ vi.mock("../../api/auth", () => ({
 import { logout } from "../../api/auth";
 
 const mockLogout = vi.mocked(logout);
-
-const createWrapper = (queryClient: QueryClient) => {
-  return ({ children }: { children: React.ReactNode }) =>
-    createElement(QueryClientProvider, { client: queryClient }, children);
-};
 
 describe("useLogout", () => {
   let queryClient: QueryClient;

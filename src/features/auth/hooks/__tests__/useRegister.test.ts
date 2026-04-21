@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createElement } from "react";
+import { QueryClient } from "@tanstack/react-query";
 import { useRegister } from "../useRegister";
 import { ApiError } from "@/shared/api/error";
+import { createWrapper } from "@/test/utils";
 
 vi.mock("../../api/auth", () => ({
   register: vi.fn(),
@@ -13,11 +13,6 @@ vi.mock("../../api/auth", () => ({
 import { register } from "../../api/auth";
 
 const mockRegister = vi.mocked(register);
-
-const createWrapper = (queryClient: QueryClient) => {
-  return ({ children }: { children: React.ReactNode }) =>
-    createElement(QueryClientProvider, { client: queryClient }, children);
-};
 
 const validPayload = {
   name: "テストユーザー",

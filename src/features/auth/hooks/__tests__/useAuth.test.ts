@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createElement } from "react";
+import { QueryClient } from "@tanstack/react-query";
 import { useAuth } from "../useAuth";
 import type { User } from "../../types";
+import { createWrapper } from "@/test/utils";
 
 vi.mock("../../api/auth", () => ({
   getCurrentUser: vi.fn(),
@@ -12,11 +12,6 @@ vi.mock("../../api/auth", () => ({
 import { getCurrentUser } from "../../api/auth";
 
 const mockGetCurrentUser = vi.mocked(getCurrentUser);
-
-const createWrapper = (queryClient: QueryClient) => {
-  return ({ children }: { children: React.ReactNode }) =>
-    createElement(QueryClientProvider, { client: queryClient }, children);
-};
 
 describe("useAuth", () => {
   let queryClient: QueryClient;
