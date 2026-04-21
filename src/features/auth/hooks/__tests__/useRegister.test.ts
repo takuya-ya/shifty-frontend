@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient } from "@tanstack/react-query";
 import { useRegister } from "../useRegister";
-import { ApiError, isApiError } from "@/shared/api/error";
+import { ApiError } from "@/shared/api/error";
 import { createWrapper } from "@/test/utils";
 
 vi.mock("../../api/auth", () => ({
@@ -75,7 +75,8 @@ describe("useRegister", () => {
 
     await waitFor(() => expect(result.current.isError).toBe(true));
 
-    expect(isApiError(result.current.error) && result.current.error.status).toBe(422);
+    expect(result.current.error).toBeInstanceOf(ApiError);
+    expect((result.current.error as ApiError).status).toBe(422);
   });
 
   it("登録成功後に currentUser キャッシュは更新されない", async () => {
