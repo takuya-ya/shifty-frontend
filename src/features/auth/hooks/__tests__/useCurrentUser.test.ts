@@ -52,9 +52,31 @@ describe("useCurrentUser", () => {
     vi.clearAllMocks();
   });
 
-  it("staleTime が Infinity に設定されている", () => {
-    const defaults = queryClient.getQueryDefaults(authQueryKeys.currentUser);
-    expect(defaults.staleTime).toBe(Infinity);
+  it("再マウントしてもキャッシュされたユーザー情報を再フェッチしない", async () => {
+    const mockUser: User = {
+      id: 1,
+      name: "テストユーザー",
+      email: "test@example.com",
+    };
+    mockGetCurrentUser.mockResolvedValue(mockUser);
+
+    const firstRender = renderHook(() => useCurrentUser(), {
+      wrapper: createWrapper(queryClient),
+    });
+
+    await waitFor(() => expect(firstRender.result.current.isSuccess).toBe(true));
+    expect(firstRender.result.current.data).toEqual(mockUser);
+    expect(mockGetCurrentUser).toHaveBeenCalledTimes(1);
+
+    firstRender.unmount();
+
+    const secondRender = renderHook(() => useCurrentUser(), {
+      wrapper: createWrapper(queryClient),
+    });
+
+    await waitFor(() => expect(secondRender.result.current.isSuccess).toBe(true));
+    expect(secondRender.result.current.data).toEqual(mockUser);
+    expect(mockGetCurrentUser).toHaveBeenCalledTimes(1);
   });
 
   it("ユーザー情報を取得して返す", async () => {
