@@ -13,6 +13,7 @@ export const PATHS = {
 
   // ── 認証必須（保護） ──────────────────────────
   VERIFY_EMAIL: '/verify-email',
+  VERIFY_PENDING: '/verify-pending',
   ADMIN_SHIFTS: '/admin/shifts',
   ADMIN_STAFFS: '/admin/staffs',
   SETTINGS: '/settings',

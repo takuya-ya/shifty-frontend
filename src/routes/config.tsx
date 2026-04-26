@@ -3,6 +3,7 @@ import { AdminRegisterPage } from '../pages/AdminRegisterPage'
 import { AdminShiftsPage } from '../pages/AdminShiftsPage'
 import { AdminStaffsPage } from '../pages/AdminStaffsPage'
 import { EmailVerificationCallbackPage } from '../pages/EmailVerificationCallbackPage'
+import { EmailVerificationPendingPage } from '../pages/EmailVerificationPendingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
@@ -75,6 +76,7 @@ export const router = createBrowserRouter([
         },
       },
       // requireAuth=true: 未認証ユーザーを /login にリダイレクト
+      // メール認証関連はメール未認証でもアクセス可（requireVerified なし）
       {
         element: <RouteGuard requireAuth={true} />,
         children: [
@@ -86,6 +88,20 @@ export const router = createBrowserRouter([
               description: 'メールアドレスの認証を完了させる画面です。',
             },
           },
+          {
+            path: PATHS.VERIFY_PENDING,
+            element: <EmailVerificationPendingPage />,
+            handle: {
+              title: 'メール認証待ち',
+              description: 'メール認証が完了していないユーザー向けの案内画面です。',
+            },
+          },
+        ],
+      },
+      // requireAuth=true, requireVerified=true: 未メール認証ユーザーを /verify-pending にリダイレクト
+      {
+        element: <RouteGuard requireAuth={true} requireVerified={true} />,
+        children: [
           {
             path: PATHS.ADMIN_SHIFTS,
             element: <AdminShiftsPage />,

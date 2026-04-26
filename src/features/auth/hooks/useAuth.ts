@@ -11,6 +11,7 @@ export const useAuth = () => {
   return {
     user: user ?? null,
     isAuthenticated: !!user,
+    isEmailVerified: !!user?.email_verified_at,
     isLoading,
     isError,
   };
