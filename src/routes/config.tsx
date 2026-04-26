@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AdminRegisterPage } from '../pages/AdminRegisterPage'
 import { AdminShiftsPage } from '../pages/AdminShiftsPage'
 import { AdminStaffsPage } from '../pages/AdminStaffsPage'
-import { EmailVerificationCallbackPage } from '../pages/EmailVerificationCallbackPage'
+import { VerifyEmailPage } from '../pages/VerifyEmailPage'
 import { EmailVerificationPendingPage } from '../pages/EmailVerificationPendingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
@@ -82,7 +82,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: PATHS.VERIFY_EMAIL,
-            element: <EmailVerificationCallbackPage />,
+            element: <VerifyEmailPage />,
             handle: {
               title: 'メール認証',
               description: 'メールアドレスの認証を完了させる画面です。',

@@ -2,12 +2,15 @@ import { useSearchParams, useNavigate, Navigate } from 'react-router-dom';
 import { EmailVerificationPage } from '../features/auth/components/EmailVerificationPage';
 import { PATHS } from '../routes/paths';
 
-export function EmailVerificationCallbackPage() {
+const isValidVerifyPath = (path: string) =>
+  /^\/api\/v1\/verify-email\//.test(path);
+
+export function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const verifyPath = searchParams.get('verify_path');
 
-  if (!verifyPath) {
+  if (!verifyPath || !isValidVerifyPath(verifyPath)) {
     return <Navigate to={PATHS.LOGIN} replace />;
   }
 
