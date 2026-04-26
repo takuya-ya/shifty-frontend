@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AdminRegisterPage } from '../pages/AdminRegisterPage'
 import { AdminShiftsPage } from '../pages/AdminShiftsPage'
 import { AdminStaffsPage } from '../pages/AdminStaffsPage'
+import { EmailVerificationCallbackPage } from '../pages/EmailVerificationCallbackPage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
@@ -77,6 +78,14 @@ export const router = createBrowserRouter([
       {
         element: <RouteGuard requireAuth={true} />,
         children: [
+          {
+            path: PATHS.VERIFY_EMAIL,
+            element: <EmailVerificationCallbackPage />,
+            handle: {
+              title: 'メール認証',
+              description: 'メールアドレスの認証を完了させる画面です。',
+            },
+          },
           {
             path: PATHS.ADMIN_SHIFTS,
             element: <AdminShiftsPage />,

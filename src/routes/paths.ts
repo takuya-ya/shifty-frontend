@@ -12,6 +12,7 @@ export const PATHS = {
   ADMIN_REGISTER: '/admin/register',
 
   // ── 認証必須（保護） ──────────────────────────
+  VERIFY_EMAIL: '/verify-email',
   ADMIN_SHIFTS: '/admin/shifts',
   ADMIN_STAFFS: '/admin/staffs',
   SETTINGS: '/settings',
