@@ -1,12 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { verifyEmail } from "../api/auth";
+import { authQueryKeys } from "./useCurrentUser";
 
-/**
- * メールアドレス認証ミューテーションフック。
- * マウント時に1回だけ呼び出され、URLパラメータの認証トークンを検証する。
- */
 export const useVerifyEmail = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: verifyEmail,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: authQueryKeys.currentUser });
+    },
   });
 };

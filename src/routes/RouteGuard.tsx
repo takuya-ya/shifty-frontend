@@ -4,16 +4,18 @@ import { PATHS } from './paths'
 
 type Props = {
   requireAuth: boolean
+  requireVerified?: boolean
 }
 
 // ──────────────────────────────────────────────────────────────
 // RouteGuard: 認証状態に応じてルートへのアクセスを制御する
-// - requireAuth=true : 未認証ユーザーを /login にリダイレクト
-// - requireAuth=false: 認証済みユーザーを /admin/shifts にリダイレクト
+// - requireAuth=true              : 未認証ユーザーを /login にリダイレクト
+// - requireAuth=true, requireVerified=true: 未メール認証ユーザーを /verify-pending にリダイレクト
+// - requireAuth=false             : 認証済みユーザーを /admin/shifts にリダイレクト
 // - isLoading 中は誤リダイレクトを防ぐためローディングUIを返す
 // ──────────────────────────────────────────────────────────────
-export function RouteGuard({ requireAuth }: Props) {
-  const { isAuthenticated, isLoading, isError } = useAuth()
+export function RouteGuard({ requireAuth, requireVerified = false }: Props) {
+  const { isAuthenticated, isEmailVerified, isLoading, isError } = useAuth()
   const location = useLocation()
 
   if (isLoading) {
@@ -26,6 +28,10 @@ export function RouteGuard({ requireAuth }: Props) {
 
   if (requireAuth && !isAuthenticated && !isError) {
     return <Navigate to={PATHS.LOGIN} state={{ from: location }} replace />
+  }
+
+  if (requireAuth && requireVerified && isAuthenticated && !isEmailVerified) {
+    return <Navigate to={PATHS.VERIFY_PENDING} replace />
   }
 
   if (!requireAuth && isAuthenticated) {
