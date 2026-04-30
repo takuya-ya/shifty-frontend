@@ -13,7 +13,7 @@ export function ShiftGrid({ dates, staffRows }: ShiftGridProps) {
 
   return (
     <div className="overflow-x-auto bg-gray-50">
-      <div className="min-w-[1200px]" style={{ gridTemplateColumns }}>
+      <div className="min-w-[1200px]">
         {/* ヘッダー行 */}
         <div
           className="grid sticky top-0 z-10 bg-white border-b-2 border-gray-300"
