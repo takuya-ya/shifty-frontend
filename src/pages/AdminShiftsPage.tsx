@@ -1,8 +1,11 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button } from '../components/ui/button'
 import { ShiftGrid } from '../features/shift/components/ShiftGrid'
+import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
 import type { ShiftPeriod, StaffRow } from '../features/shift/types'
 
-const DUMMY_PERIOD: ShiftPeriod = {
+const INITIAL_PERIOD: ShiftPeriod = {
   from: new Date(2026, 3, 1),
   to: new Date(2026, 3, 15),
 }
@@ -16,9 +19,20 @@ const DUMMY_STAFF: StaffRow[] = [
 ]
 
 export function AdminShiftsPage() {
-  const dates = generateDateRange(DUMMY_PERIOD)
+  const { period, goToPrev, goToNext } = usePeriodNavigation(INITIAL_PERIOD)
+  const dates = generateDateRange(period)
 
   return (
-    <ShiftGrid dates={dates} staffRows={DUMMY_STAFF} />
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-center gap-3">
+        <Button variant="outline" size="icon" onClick={goToPrev} aria-label="前の半月">
+          <ChevronLeft className="w-4 h-4" />
+        </Button>
+        <Button variant="outline" size="icon" onClick={goToNext} aria-label="次の半月">
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+      </div>
+      <ShiftGrid dates={dates} staffRows={DUMMY_STAFF} />
+    </div>
   )
 }
