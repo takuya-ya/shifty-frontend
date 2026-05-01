@@ -3,12 +3,7 @@ import { Button } from '../components/ui/button'
 import { ShiftGrid } from '../features/shift/components/ShiftGrid'
 import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
-import type { ShiftPeriod, StaffRow } from '../features/shift/types'
-
-const INITIAL_PERIOD: ShiftPeriod = {
-  from: new Date(2026, 3, 1),
-  to: new Date(2026, 3, 15),
-}
+import type { StaffRow } from '../features/shift/types'
 
 const DUMMY_STAFF: StaffRow[] = [
   { id: 1, name: '田中 太郎' },
@@ -19,7 +14,7 @@ const DUMMY_STAFF: StaffRow[] = [
 ]
 
 export function AdminShiftsPage() {
-  const { period, goToPrev, goToNext } = usePeriodNavigation(INITIAL_PERIOD)
+  const { period, goToPrev, goToNext } = usePeriodNavigation()
   const dates = generateDateRange(period)
 
   return (

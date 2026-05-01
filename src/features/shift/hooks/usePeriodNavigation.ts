@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { endOfMonth } from 'date-fns'
 import type { ShiftPeriod } from '../types'
+import { getCurrentPeriod } from '../utils/getCurrentPeriod'
 
 function isFirstHalf(period: ShiftPeriod): boolean {
   return period.from.getDate() <= 15
@@ -46,7 +47,7 @@ function getNextPeriod(current: ShiftPeriod): ShiftPeriod {
   }
 }
 
-export function usePeriodNavigation(initialPeriod: ShiftPeriod) {
+export function usePeriodNavigation(initialPeriod: ShiftPeriod = getCurrentPeriod()) {
   const [period, setPeriod] = useState<ShiftPeriod>(initialPeriod)
 
   const goToPrev = () => setPeriod((p) => getPrevPeriod(p))
