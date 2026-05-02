@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '../components/ui/button'
+import { PeriodLabel } from '../features/shift/components/PeriodLabel'
 import { ShiftGrid } from '../features/shift/components/ShiftGrid'
 import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
@@ -23,6 +24,7 @@ export function AdminShiftsPage() {
         <Button variant="outline" size="icon" onClick={goToPrev} aria-label="前の半月">
           <ChevronLeft className="w-4 h-4" />
         </Button>
+        <PeriodLabel period={period} />
         <Button variant="outline" size="icon" onClick={goToNext} aria-label="次の半月">
           <ChevronRight className="w-4 h-4" />
         </Button>
