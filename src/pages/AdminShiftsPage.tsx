@@ -4,9 +4,9 @@ import { PeriodLabel } from '../features/shift/components/PeriodLabel'
 import { ShiftGrid } from '../features/shift/components/ShiftGrid'
 import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
-import type { StaffRow } from '../features/shift/types'
+import type { Staff } from '../features/shift/types'
 
-const DUMMY_STAFF: StaffRow[] = [
+const DUMMY_STAFF: Staff[] = [
   { id: 1, name: '田中 太郎' },
   { id: 2, name: '佐藤 花子' },
   { id: 3, name: '鈴木 一郎' },
