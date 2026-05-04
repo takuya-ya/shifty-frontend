@@ -1,4 +1,5 @@
 import { format, isToday } from 'date-fns'
+import { cn } from '@/lib/utils'
 import type { DateCell } from '../types'
 
 const DAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'] as const
@@ -31,7 +32,7 @@ export function DateHeaderRow({ dates, gridTemplateColumns }: DateHeaderRowProps
         return (
           <div
             key={cell.date.toISOString()}
-            className={`px-1 py-2 border-r border-gray-200 text-center${today ? ' bg-blue-50' : ''}`}
+            className={cn('px-1 py-2 border-r border-gray-200 text-center', today && 'bg-blue-50')}
           >
             <div className={`text-xs font-medium ${dateTextColor}`}>
               {format(cell.date, 'M/d')}
