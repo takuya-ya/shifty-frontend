@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import type { DateCell, Staff } from '../types'
 import { ShiftCell } from './ShiftCell'
 
@@ -5,12 +6,13 @@ interface StaffRowProps {
   member: Staff
   dates: DateCell[]
   gridTemplateColumns: string
+  isEven: boolean
 }
 
-export function StaffRow({ member, dates, gridTemplateColumns }: StaffRowProps) {
+export function StaffRow({ member, dates, gridTemplateColumns, isEven }: StaffRowProps) {
   return (
     <div
-      className="grid border-b border-gray-200 bg-white"
+      className={cn('grid border-b border-gray-200', isEven ? 'bg-white' : 'bg-gray-50')}
       style={{ gridTemplateColumns }}
     >
       <div className="h-16 px-3 border-r border-gray-300 flex flex-col justify-center gap-0.5 min-w-0">

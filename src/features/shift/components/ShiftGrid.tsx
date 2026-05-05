@@ -17,12 +17,13 @@ export function ShiftGrid({ dates, members }: ShiftGridProps) {
     <div className="overflow-x-auto bg-gray-50">
       <div className="w-max min-w-full">
         <DateHeaderRow dates={dates} gridTemplateColumns={gridTemplateColumns} />
-        {members.map((member) => (
+        {members.map((member, index) => (
           <StaffRow
             key={member.id}
             member={member}
             dates={dates}
             gridTemplateColumns={gridTemplateColumns}
+            isEven={index % 2 === 0}
           />
         ))}
       </div>
