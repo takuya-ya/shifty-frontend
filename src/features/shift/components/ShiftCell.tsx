@@ -8,6 +8,6 @@ interface ShiftCellProps {
 
 export function ShiftCell({ staffId: _staffId, date: _date, shift: _shift }: ShiftCellProps) {
   return (
-    <div className="h-16 border-r border-gray-200" />
+    <div className="h-16 border-r border-gray-200 hover:bg-gray-100 cursor-pointer" />
   )
 }
