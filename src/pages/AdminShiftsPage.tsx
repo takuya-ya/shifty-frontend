@@ -29,7 +29,7 @@ export function AdminShiftsPage() {
           <ChevronRight className="w-4 h-4" />
         </Button>
       </div>
-      <ShiftGrid dates={dates} staffRows={DUMMY_STAFF} />
+      <ShiftGrid dates={dates} members={DUMMY_STAFF} />
     </div>
   )
 }

@@ -7,20 +7,20 @@ const DATE_COL_MIN_WIDTH = '80px'
 
 interface ShiftGridProps {
   dates: DateCell[]
-  staffRows: Staff[]
+  members: Staff[]
 }
 
-export function ShiftGrid({ dates, staffRows }: ShiftGridProps) {
+export function ShiftGrid({ dates, members }: ShiftGridProps) {
   const gridTemplateColumns = `${STAFF_COL_WIDTH} repeat(${dates.length}, minmax(${DATE_COL_MIN_WIDTH}, 1fr))`
 
   return (
     <div className="overflow-x-auto bg-gray-50">
       <div className="w-max min-w-full">
         <DateHeaderRow dates={dates} gridTemplateColumns={gridTemplateColumns} />
-        {staffRows.map((staff) => (
+        {members.map((member) => (
           <StaffRow
-            key={staff.id}
-            staff={staff}
+            key={member.id}
+            member={member}
             dates={dates}
             gridTemplateColumns={gridTemplateColumns}
           />
