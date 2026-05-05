@@ -7,11 +7,11 @@ import { generateDateRange } from '../features/shift/utils/generateDateRange'
 import type { Staff } from '../features/shift/types'
 
 const DUMMY_STAFF: Staff[] = [
-  { id: 1, name: '田中 太郎' },
-  { id: 2, name: '佐藤 花子' },
-  { id: 3, name: '鈴木 一郎' },
-  { id: 4, name: '高橋 美咲' },
-  { id: 5, name: '渡辺 健太' },
+  { id: 1, name: '田中 太郎', position: '店長' },
+  { id: 2, name: '佐藤 花子', position: 'ホール' },
+  { id: 3, name: '鈴木 一郎', position: 'キッチン' },
+  { id: 4, name: '高橋 美咲', position: 'ホール' },
+  { id: 5, name: '渡辺 健太', position: 'キッチン' },
 ]
 
 export function AdminShiftsPage() {

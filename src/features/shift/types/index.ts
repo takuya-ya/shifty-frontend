@@ -11,6 +11,7 @@ export interface DateCell {
 export interface Staff {
   id: number;
   name: string;
+  position?: string;
 }
 
 export interface ShiftData {
