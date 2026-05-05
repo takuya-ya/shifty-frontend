@@ -1,5 +1,6 @@
 import type { DateCell, Staff } from '../types'
 import { DateHeaderRow } from './DateHeaderRow'
+import { StaffRow } from './StaffRow'
 
 const STAFF_COL_WIDTH = '120px'
 const DATE_COL_MIN_WIDTH = '80px'
@@ -16,24 +17,13 @@ export function ShiftGrid({ dates, staffRows }: ShiftGridProps) {
     <div className="overflow-x-auto bg-gray-50">
       <div className="w-max min-w-full">
         <DateHeaderRow dates={dates} gridTemplateColumns={gridTemplateColumns} />
-
-        {/* スタッフ行 */}
         {staffRows.map((staff) => (
-          <div
+          <StaffRow
             key={staff.id}
-            className="grid border-b border-gray-200 bg-white"
-            style={{ gridTemplateColumns }}
-          >
-            <div className="px-3 py-4 border-r border-gray-300 flex items-center">
-              <span className="text-xs text-gray-900 truncate">{staff.name}</span>
-            </div>
-            {dates.map((cell) => (
-              <div
-                key={cell.date.toISOString()}
-                className="h-16 border-r border-gray-200"
-              />
-            ))}
-          </div>
+            staff={staff}
+            dates={dates}
+            gridTemplateColumns={gridTemplateColumns}
+          />
         ))}
       </div>
     </div>
