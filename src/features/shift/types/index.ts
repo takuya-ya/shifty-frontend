@@ -8,7 +8,15 @@ export interface DateCell {
   dayOfWeek: number;
 }
 
-export interface StaffRow {
+export interface Staff {
   id: number;
   name: string;
+}
+
+export interface ShiftData {
+  id: number;
+  staffId: number;
+  date: Date;
+  startTime: string;
+  endTime: string;
 }

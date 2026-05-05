@@ -1,7 +1,8 @@
-import type { DateCell, StaffRow as StaffRowData } from '../types'
+import type { DateCell, Staff } from '../types'
+import { ShiftCell } from './ShiftCell'
 
 interface StaffRowProps {
-  staff: StaffRowData
+  staff: Staff
   dates: DateCell[]
   gridTemplateColumns: string
 }
@@ -16,9 +17,10 @@ export function StaffRow({ staff, dates, gridTemplateColumns }: StaffRowProps) {
         <span className="text-xs text-gray-900 truncate">{staff.name}</span>
       </div>
       {dates.map((cell) => (
-        <div
+        <ShiftCell
           key={cell.date.toISOString()}
-          className="h-16 border-r border-gray-200"
+          staffId={staff.id}
+          date={cell.date}
         />
       ))}
     </div>
