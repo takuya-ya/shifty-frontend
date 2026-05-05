@@ -9,8 +9,13 @@ interface ShiftCellProps {
   shift?: ShiftData
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ShiftCell({ staffId: _staffId, date: _date, shift: _shift }: ShiftCellProps) {
   return (
-    <div className="h-16 border-r border-gray-200 hover:bg-gray-100 cursor-pointer" />
+    // TODO: タスク 18.1.1 で onClick にシフト登録モーダルを開くハンドラを渡す
+    <button
+      type="button"
+      className="h-16 w-full border-r border-gray-200 hover:bg-gray-100 cursor-pointer"
+    />
   )
 }
