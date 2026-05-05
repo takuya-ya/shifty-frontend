@@ -17,7 +17,7 @@ export interface Staff {
 export interface ShiftData {
   id: number;
   staffId: number;
-  date: Date;
+  date: string;
   startTime: string;
   endTime: string;
 }

@@ -1,8 +1,11 @@
 import type { ShiftData } from '../types'
 
 interface ShiftCellProps {
+  // TODO: API接続タスク（Phase1）でシフト登録モーダルを開く際に使用
   staffId: number
+  // TODO: API接続タスク（Phase1）でシフト登録モーダルを開く際に使用
   date: Date
+  // TODO: シフトデータ表示タスク（Phase1）でセル内に開始・終了時刻を描画する際に使用
   shift?: ShiftData
 }
 
