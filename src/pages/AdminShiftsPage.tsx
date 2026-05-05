@@ -4,14 +4,14 @@ import { PeriodLabel } from '../features/shift/components/PeriodLabel'
 import { ShiftGrid } from '../features/shift/components/ShiftGrid'
 import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
-import type { StaffRow } from '../features/shift/types'
+import type { Staff } from '../features/shift/types'
 
-const DUMMY_STAFF: StaffRow[] = [
-  { id: 1, name: '田中 太郎' },
-  { id: 2, name: '佐藤 花子' },
-  { id: 3, name: '鈴木 一郎' },
-  { id: 4, name: '高橋 美咲' },
-  { id: 5, name: '渡辺 健太' },
+const DUMMY_STAFF: Staff[] = [
+  { id: 1, name: '田中 太郎', position: '店長' },
+  { id: 2, name: '佐藤 花子', position: 'ホール' },
+  { id: 3, name: '鈴木 一郎', position: 'キッチン' },
+  { id: 4, name: '高橋 美咲', position: 'ホール' },
+  { id: 5, name: '渡辺 健太', position: 'キッチン' },
 ]
 
 export function AdminShiftsPage() {
@@ -29,7 +29,7 @@ export function AdminShiftsPage() {
           <ChevronRight className="w-4 h-4" />
         </Button>
       </div>
-      <ShiftGrid dates={dates} staffRows={DUMMY_STAFF} />
+      <ShiftGrid dates={dates} members={DUMMY_STAFF} />
     </div>
   )
 }
