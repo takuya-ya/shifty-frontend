@@ -15,7 +15,7 @@ export function ShiftGrid({ dates, members }: ShiftGridProps) {
 
   return (
     <div className="overflow-x-auto bg-gray-50">
-      <div className="w-max min-w-full">
+      <div className="w-max min-w-full border-t border-l border-gray-200">
         <DateHeaderRow dates={dates} gridTemplateColumns={gridTemplateColumns} />
         {members.map((member, index) => (
           <StaffRow
