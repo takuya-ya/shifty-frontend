@@ -14,6 +14,9 @@ const DUMMY_STAFF: Staff[] = [
   { id: 5, name: '渡辺 健太', position: 'キッチン' },
 ]
 
+// Phase1ダミー: 日曜（0）を定休日として設定（タスク17でAPIデータに差し替え）
+const CLOSED_DAYS: number[] = [0]
+
 export function AdminShiftsPage() {
   const { period, goToPrev, goToNext } = usePeriodNavigation()
   const dates = generateDateRange(period)
@@ -29,7 +32,7 @@ export function AdminShiftsPage() {
           <ChevronRight className="w-4 h-4" />
         </Button>
       </div>
-      <ShiftGrid dates={dates} members={DUMMY_STAFF} />
+      <ShiftGrid dates={dates} members={DUMMY_STAFF} closedDays={CLOSED_DAYS} />
     </div>
   )
 }

@@ -7,9 +7,10 @@ interface StaffRowProps {
   dates: DateCell[]
   gridTemplateColumns: string
   isEven: boolean
+  closedDays?: number[]
 }
 
-export function StaffRow({ member, dates, gridTemplateColumns, isEven }: StaffRowProps) {
+export function StaffRow({ member, dates, gridTemplateColumns, isEven, closedDays = [] }: StaffRowProps) {
   return (
     <div
       className={cn('grid border-b border-gray-200', isEven ? 'bg-white' : 'bg-gray-50')}
@@ -26,6 +27,7 @@ export function StaffRow({ member, dates, gridTemplateColumns, isEven }: StaffRo
           key={cell.date.toISOString()}
           staffId={member.id}
           date={cell.date}
+          isClosed={closedDays.includes(cell.dayOfWeek)}
         />
       ))}
     </div>

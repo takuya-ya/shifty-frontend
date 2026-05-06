@@ -8,9 +8,10 @@ const DAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'] as const
 interface DateHeaderRowProps {
   dates: DateCell[]
   gridTemplateColumns: string
+  closedDays?: number[]
 }
 
-export function DateHeaderRow({ dates, gridTemplateColumns }: DateHeaderRowProps) {
+export function DateHeaderRow({ dates, gridTemplateColumns, closedDays = [] }: DateHeaderRowProps) {
   const currentDate = useCurrentDate()
 
   return (
@@ -25,6 +26,7 @@ export function DateHeaderRow({ dates, gridTemplateColumns }: DateHeaderRowProps
         const isCurrentDay = isSameDay(cell.date, currentDate)
         const isSunday = cell.dayOfWeek === 0
         const isSaturday = cell.dayOfWeek === 6
+        const isClosed = closedDays.includes(cell.dayOfWeek)
 
         const dateTextColor = isSunday
           ? 'text-red-500'
@@ -35,7 +37,10 @@ export function DateHeaderRow({ dates, gridTemplateColumns }: DateHeaderRowProps
         return (
           <div
             key={cell.date.toISOString()}
-            className={cn('px-1 py-2 border-r border-gray-200 text-center', isCurrentDay && 'bg-blue-50')}
+            className={cn(
+              'px-1 py-2 border-r border-gray-200 text-center',
+              isClosed ? 'bg-gray-100' : isCurrentDay ? 'bg-blue-50' : '',
+            )}
           >
             <div className={`text-xs font-medium ${dateTextColor}`}>
               {format(cell.date, 'M/d')}
