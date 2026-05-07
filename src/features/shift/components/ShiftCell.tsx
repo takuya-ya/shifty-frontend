@@ -17,9 +17,10 @@ export function ShiftCell({ staffId: _staffId, date: _date, shift: _shift, isClo
     // TODO: タスク 18.1.1 で onClick にシフト登録モーダルを開くハンドラを渡す
     <button
       type="button"
+      disabled={isClosed}
       className={cn(
-        'h-16 w-full border-r border-gray-200 cursor-pointer',
-        isClosed ? 'bg-gray-100 hover:bg-gray-200' : 'hover:bg-gray-100',
+        'h-16 w-full border-r border-gray-200',
+        isClosed ? 'bg-gray-100 cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer',
       )}
     />
   )
