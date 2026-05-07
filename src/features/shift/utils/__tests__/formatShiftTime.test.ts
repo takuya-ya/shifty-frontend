@@ -33,4 +33,12 @@ describe("formatShiftTime", () => {
   it("endTime が空文字のとき null を返す", () => {
     expect(formatShiftTime("09:00", "")).toBeNull();
   });
+
+  it("両方が null のとき null を返す", () => {
+    expect(formatShiftTime(null, null)).toBeNull();
+  });
+
+  it("両方が undefined のとき null を返す", () => {
+    expect(formatShiftTime(undefined, undefined)).toBeNull();
+  });
 });
