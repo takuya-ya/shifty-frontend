@@ -1,3 +1,5 @@
+export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
 export interface ShiftPeriod {
   from: Date;
   to: Date;
@@ -5,7 +7,7 @@ export interface ShiftPeriod {
 
 export interface DateCell {
   date: Date;
-  dayOfWeek: number;
+  dayOfWeek: DayOfWeek;
 }
 
 export interface Staff {

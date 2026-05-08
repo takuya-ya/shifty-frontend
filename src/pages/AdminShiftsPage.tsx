@@ -4,7 +4,7 @@ import { PeriodLabel } from '../features/shift/components/PeriodLabel'
 import { ShiftGrid } from '../features/shift/components/ShiftGrid'
 import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
-import type { Staff } from '../features/shift/types'
+import type { DayOfWeek, Staff } from '../features/shift/types'
 
 const DUMMY_STAFF: Staff[] = [
   { id: 1, name: '田中 太郎', position: '店長' },
@@ -15,7 +15,7 @@ const DUMMY_STAFF: Staff[] = [
 ]
 
 // Phase1ダミー: 日曜（0）を定休日として設定（タスク17でAPIデータに差し替え）
-const CLOSED_DAYS: number[] = [0]
+const CLOSED_DAYS: DayOfWeek[] = [0]
 
 export function AdminShiftsPage() {
   const { period, goToPrev, goToNext } = usePeriodNavigation()

@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import type { DateCell, Staff } from '../types'
+import type { DateCell, DayOfWeek, Staff } from '../types'
 import { ShiftCell } from './ShiftCell'
 
 interface StaffRowProps {
@@ -7,7 +7,7 @@ interface StaffRowProps {
   dates: DateCell[]
   gridTemplateColumns: string
   isEven: boolean
-  closedDays?: number[]
+  closedDays?: DayOfWeek[]
 }
 
 export function StaffRow({ member, dates, gridTemplateColumns, isEven, closedDays = [] }: StaffRowProps) {

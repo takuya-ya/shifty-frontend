@@ -1,4 +1,4 @@
-import type { DateCell, Staff } from '../types'
+import type { DateCell, DayOfWeek, Staff } from '../types'
 import { DateHeaderRow } from './DateHeaderRow'
 import { StaffRow } from './StaffRow'
 
@@ -8,7 +8,7 @@ const DATE_COL_MIN_WIDTH = '80px'
 interface ShiftGridProps {
   dates: DateCell[]
   members: Staff[]
-  closedDays?: number[]
+  closedDays?: DayOfWeek[]
 }
 
 export function ShiftGrid({ dates, members, closedDays = [] }: ShiftGridProps) {

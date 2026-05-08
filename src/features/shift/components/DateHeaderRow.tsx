@@ -1,14 +1,14 @@
 import { format, isSameDay } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { useCurrentDate } from '@/shared/hooks/useCurrentDate'
-import type { DateCell } from '../types'
+import type { DateCell, DayOfWeek } from '../types'
 
 const DAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'] as const
 
 interface DateHeaderRowProps {
   dates: DateCell[]
   gridTemplateColumns: string
-  closedDays?: number[]
+  closedDays?: DayOfWeek[]
 }
 
 export function DateHeaderRow({ dates, gridTemplateColumns, closedDays = [] }: DateHeaderRowProps) {
