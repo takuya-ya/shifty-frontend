@@ -39,7 +39,9 @@ export function DateHeaderRow({ dates, gridTemplateColumns, closedDays = [] }: D
             key={cell.date.toISOString()}
             className={cn(
               'px-1 py-2 border-r border-gray-200 text-center',
-              isClosed ? 'bg-gray-100' : isCurrentDay ? 'bg-blue-50' : '',
+              isCurrentDay && 'bg-blue-50',
+              // 店休日は今日ハイライトより優先して上書きする（Phase1仕様：店休日にはシフト不可）
+              isClosed && 'bg-gray-100',
             )}
           >
             <div className={`text-xs font-medium ${dateTextColor}`}>
