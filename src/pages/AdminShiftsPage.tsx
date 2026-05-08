@@ -4,7 +4,7 @@ import { PeriodLabel } from '../features/shift/components/PeriodLabel'
 import { ShiftGrid } from '../features/shift/components/ShiftGrid'
 import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
-import type { Staff } from '../features/shift/types'
+import type { DayOfWeek, Staff } from '../features/shift/types'
 
 const DUMMY_STAFF: Staff[] = [
   { id: 1, name: '田中 太郎', position: '店長' },
@@ -13,6 +13,9 @@ const DUMMY_STAFF: Staff[] = [
   { id: 4, name: '高橋 美咲', position: 'ホール' },
   { id: 5, name: '渡辺 健太', position: 'キッチン' },
 ]
+
+// Phase1ダミー: 日曜（0）を定休日として設定（タスク17でAPIデータに差し替え）
+const CLOSED_DAYS: DayOfWeek[] = [0]
 
 export function AdminShiftsPage() {
   const { period, goToPrev, goToNext } = usePeriodNavigation()
@@ -29,7 +32,7 @@ export function AdminShiftsPage() {
           <ChevronRight className="w-4 h-4" />
         </Button>
       </div>
-      <ShiftGrid dates={dates} members={DUMMY_STAFF} />
+      <ShiftGrid dates={dates} members={DUMMY_STAFF} closedDays={CLOSED_DAYS} />
     </div>
   )
 }

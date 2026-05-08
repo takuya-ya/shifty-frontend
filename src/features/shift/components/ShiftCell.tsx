@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import type { ShiftData } from '../types'
 
 interface ShiftCellProps {
@@ -7,15 +8,20 @@ interface ShiftCellProps {
   date: Date
   // TODO: シフトデータ表示タスク（Phase1）でセル内に開始・終了時刻を描画する際に使用
   shift?: ShiftData
+  isClosed?: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function ShiftCell({ staffId: _staffId, date: _date, shift: _shift }: ShiftCellProps) {
+export function ShiftCell({ staffId: _staffId, date: _date, shift: _shift, isClosed = false }: ShiftCellProps) {
   return (
     // TODO: タスク 18.1.1 で onClick にシフト登録モーダルを開くハンドラを渡す
     <button
       type="button"
-      className="h-16 w-full border-r border-gray-200 hover:bg-gray-100 cursor-pointer"
+      disabled={isClosed}
+      className={cn(
+        'h-16 w-full border-r border-gray-200',
+        isClosed ? 'bg-gray-100 cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer',
+      )}
     />
   )
 }

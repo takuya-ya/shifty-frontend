@@ -1,16 +1,17 @@
 import { format, isSameDay } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { useCurrentDate } from '@/shared/hooks/useCurrentDate'
-import type { DateCell } from '../types'
+import type { DateCell, DayOfWeek } from '../types'
 
 const DAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'] as const
 
 interface DateHeaderRowProps {
   dates: DateCell[]
   gridTemplateColumns: string
+  closedDays?: DayOfWeek[]
 }
 
-export function DateHeaderRow({ dates, gridTemplateColumns }: DateHeaderRowProps) {
+export function DateHeaderRow({ dates, gridTemplateColumns, closedDays = [] }: DateHeaderRowProps) {
   const currentDate = useCurrentDate()
 
   return (
@@ -18,13 +19,14 @@ export function DateHeaderRow({ dates, gridTemplateColumns }: DateHeaderRowProps
       className="grid sticky top-0 z-10 bg-white border-b-2 border-gray-300"
       style={{ gridTemplateColumns }}
     >
-      <div className="px-3 py-2 border-r border-gray-300 flex items-center">
+      <div className="px-3 py-2 border-r-2 border-gray-300 flex items-center">
         <span className="text-xs text-gray-900">スタッフ名</span>
       </div>
       {dates.map((cell) => {
         const isCurrentDay = isSameDay(cell.date, currentDate)
         const isSunday = cell.dayOfWeek === 0
         const isSaturday = cell.dayOfWeek === 6
+        const isClosed = closedDays.includes(cell.dayOfWeek)
 
         const dateTextColor = isSunday
           ? 'text-red-500'
@@ -35,7 +37,12 @@ export function DateHeaderRow({ dates, gridTemplateColumns }: DateHeaderRowProps
         return (
           <div
             key={cell.date.toISOString()}
-            className={cn('px-1 py-2 border-r border-gray-200 text-center', isCurrentDay && 'bg-blue-50')}
+            className={cn(
+              'px-1 py-2 border-r border-gray-200 text-center',
+              isCurrentDay && 'bg-blue-50',
+              // 店休日は今日ハイライトより優先して上書きする（Phase1仕様：店休日にはシフト不可）
+              isClosed && 'bg-gray-100',
+            )}
           >
             <div className={`text-xs font-medium ${dateTextColor}`}>
               {format(cell.date, 'M/d')}
