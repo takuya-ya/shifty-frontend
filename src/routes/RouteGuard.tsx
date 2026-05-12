@@ -3,18 +3,17 @@ import { useAuth } from '../features/auth/hooks/useAuth'
 import { PATHS } from './paths'
 
 type Props = {
-  requireAuth: boolean
-  requireVerified?: boolean
+  access: 'guest' | 'protected' | 'protected-verified'
 }
 
 // ──────────────────────────────────────────────────────────────
 // RouteGuard: 認証状態に応じてルートへのアクセスを制御する
-// - requireAuth=true              : 未認証ユーザーを /login にリダイレクト
-// - requireAuth=true, requireVerified=true: 未メール認証ユーザーを /verify-pending にリダイレクト
-// - requireAuth=false             : 認証済みユーザーを /admin/shifts にリダイレクト
+// - access="guest"               : 認証済みユーザーを /admin/shifts にリダイレクト
+// - access="protected"           : 未認証ユーザーを /login にリダイレクト
+// - access="protected-verified"  : 未認証 → /login、未メール認証 → /verify-pending にリダイレクト
 // - isLoading 中は誤リダイレクトを防ぐためローディングUIを返す
 // ──────────────────────────────────────────────────────────────
-export function RouteGuard({ requireAuth, requireVerified = false }: Props) {
+export function RouteGuard({ access }: Props) {
   const { isAuthenticated, isEmailVerified, isLoading, isError } = useAuth()
   const location = useLocation()
 
@@ -26,15 +25,15 @@ export function RouteGuard({ requireAuth, requireVerified = false }: Props) {
     )
   }
 
-  if (requireAuth && !isAuthenticated && !isError) {
+  if ((access === 'protected' || access === 'protected-verified') && !isAuthenticated && !isError) {
     return <Navigate to={PATHS.LOGIN} state={{ from: location }} replace />
   }
 
-  if (requireAuth && requireVerified && isAuthenticated && !isEmailVerified) {
+  if (access === 'protected-verified' && isAuthenticated && !isEmailVerified) {
     return <Navigate to={PATHS.VERIFY_PENDING} replace />
   }
 
-  if (!requireAuth && isAuthenticated) {
+  if (access === 'guest' && isAuthenticated) {
     const from = (location.state as { from?: { pathname: string; search: string } } | null)?.from
     const redirectTo = from ? `${from.pathname}${from.search}` : PATHS.ADMIN_SHIFTS
     return <Navigate to={redirectTo} replace />
