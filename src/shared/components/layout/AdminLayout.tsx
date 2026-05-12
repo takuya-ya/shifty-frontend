@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom'
+import { Calendar, Users, Settings } from 'lucide-react'
 import { Sidebar } from './Sidebar'
 import { PATHS } from '../../../routes/paths'
 
-// 共通.3 でSidebarをFigmaコンパクトアイコン式に差し替え予定
 const adminNavItems = [
-  { to: PATHS.ADMIN_SHIFTS, label: 'シフト管理' },
-  { to: PATHS.ADMIN_STAFFS, label: 'スタッフ管理' },
-  { to: PATHS.SETTINGS, label: '設定' },
+  { to: PATHS.ADMIN_SHIFTS, label: 'シフト管理', icon: Calendar },
+  { to: PATHS.ADMIN_STAFFS, label: 'スタッフ管理', icon: Users },
+  { to: PATHS.SETTINGS, label: '設定', icon: Settings },
 ]
 
 export function AdminLayout() {
