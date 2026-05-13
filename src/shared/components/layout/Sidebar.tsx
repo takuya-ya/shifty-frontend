@@ -1,8 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { LogOut, type LucideIcon } from 'lucide-react'
-import { useState } from 'react'
 import { cn } from '../../../lib/utils'
-import { LogoutModal } from '../../../features/auth/components/LogoutModal'
 
 interface SidebarItem {
   to: string
@@ -12,11 +10,10 @@ interface SidebarItem {
 
 interface SidebarProps {
   items: SidebarItem[]
+  onLogoutClick: () => void
 }
 
-export function Sidebar({ items }: SidebarProps) {
-  const [logoutOpen, setLogoutOpen] = useState(false)
-
+export function Sidebar({ items, onLogoutClick }: SidebarProps) {
   return (
     <aside className="w-16 h-full bg-white border-r border-gray-200 flex flex-col">
       <nav className="flex-1 p-2 space-y-1" aria-label="主要機能ナビゲーション">
@@ -39,15 +36,13 @@ export function Sidebar({ items }: SidebarProps) {
 
       <div className="p-2 border-t border-gray-200">
         <button
-          onClick={() => setLogoutOpen(true)}
+          onClick={onLogoutClick}
           title="ログアウト"
           className="w-full flex items-center justify-center px-2 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
         >
           <LogOut className="w-5 h-5" />
         </button>
       </div>
-
-      <LogoutModal open={logoutOpen} onClose={() => setLogoutOpen(false)} />
     </aside>
   )
 }
