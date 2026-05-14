@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../features/auth/hooks/useAuth'
 import { PATHS } from './paths'
 
@@ -25,6 +25,19 @@ export function RouteGuard({ access }: Props) {
     )
   }
 
+  if ((access === 'protected' || access === 'protected-verified') && isError) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
+        <p className="text-sm text-red-500">
+          ネットワークエラーが発生しました。接続を確認してください。
+        </p>
+        <Link to={PATHS.LOGIN} className="text-sm text-blue-600 underline">
+          ログインページへ
+        </Link>
+      </div>
+    )
+  }
+
   if ((access === 'protected' || access === 'protected-verified') && !isAuthenticated && !isError) {
     return <Navigate to={PATHS.LOGIN} state={{ from: location }} replace />
   }
@@ -39,14 +52,5 @@ export function RouteGuard({ access }: Props) {
     return <Navigate to={redirectTo} replace />
   }
 
-  return (
-    <>
-      <Outlet />
-      {isError && (
-        <div className="flex items-center justify-center py-4 text-sm text-red-500">
-          認証情報の取得に失敗しました。ネットワーク接続を確認してください。
-        </div>
-      )}
-    </>
-  )
+  return <Outlet />
 }
