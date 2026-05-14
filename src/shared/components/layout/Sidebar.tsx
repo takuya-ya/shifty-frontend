@@ -21,7 +21,7 @@ export function Sidebar({ items, onLogoutClick }: SidebarProps) {
           <NavLink
             key={to}
             to={to}
-            title={label}
+            aria-label={label}
             className={({ isActive }) =>
               cn(
                 'w-full flex items-center justify-center px-2 py-3 rounded-lg transition-colors',
@@ -29,7 +29,7 @@ export function Sidebar({ items, onLogoutClick }: SidebarProps) {
               )
             }
           >
-            <Icon className="w-5 h-5" />
+            <Icon className="w-5 h-5" aria-hidden="true" />
           </NavLink>
         ))}
       </nav>
@@ -37,10 +37,10 @@ export function Sidebar({ items, onLogoutClick }: SidebarProps) {
       <div className="p-2 border-t border-gray-200">
         <button
           onClick={onLogoutClick}
-          title="ログアウト"
+          aria-label="ログアウト"
           className="w-full flex items-center justify-center px-2 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
     </aside>
