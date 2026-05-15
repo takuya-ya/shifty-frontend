@@ -31,7 +31,10 @@ export function LogoutModal({ open, onClose }: LogoutModalProps) {
     <AlertDialog.Root
       open={open}
       onOpenChange={(isOpen) => {
-        if (!isOpen && !isPending) onClose()
+        if (!isOpen && !isPending) {
+          setErrorMessage(null)
+          onClose()
+        }
       }}
     >
       <AlertDialog.Portal>
