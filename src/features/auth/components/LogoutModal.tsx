@@ -16,6 +16,11 @@ export function LogoutModal({ open, onClose }: LogoutModalProps) {
   const { mutate: logout, isPending } = useLogout()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  const handleClose = () => {
+    setErrorMessage(null)
+    onClose()
+  }
+
   const handleLogout = () => {
     setErrorMessage(null)
     logout(undefined, {
@@ -31,7 +36,7 @@ export function LogoutModal({ open, onClose }: LogoutModalProps) {
     <AlertDialog.Root
       open={open}
       onOpenChange={(isOpen) => {
-        if (!isOpen && !isPending) onClose()
+        if (!isOpen && !isPending) handleClose()
       }}
     >
       <AlertDialog.Portal>
@@ -54,7 +59,7 @@ export function LogoutModal({ open, onClose }: LogoutModalProps) {
             <p className="text-sm text-red-600 mb-4">{errorMessage}</p>
           )}
           <div className="flex gap-3 justify-end">
-            <Button variant="outline" onClick={onClose} disabled={isPending}>
+            <Button variant="outline" onClick={handleClose} disabled={isPending}>
               キャンセル
             </Button>
             <Button
