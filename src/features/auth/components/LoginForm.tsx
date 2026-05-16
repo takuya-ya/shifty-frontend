@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLogin } from '../hooks/useLogin';
@@ -13,6 +14,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { PATHS } from '@/routes/paths';
 
 interface LoginFormProps {
   onLoginSuccess: () => void;
@@ -36,13 +38,13 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>ログイン</CardTitle>
         <CardDescription>登録済みメールアドレスでログインしてください。</CardDescription>
       </CardHeader>
       <Separator />
-      <CardContent>
+      <CardContent className="pt-6 pb-8 px-8">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="login-email" className="block text-sm font-medium">メールアドレス</label>
@@ -76,6 +78,11 @@ export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           >
             {isPending ? '送信中...' : 'ログイン'}
           </Button>
+          <div className="text-center">
+            <Link to={PATHS.RESET_PASSWORD} className="text-sm text-primary hover:underline">
+              パスワードをお忘れですか？
+            </Link>
+          </div>
         </form>
       </CardContent>
     </Card>
