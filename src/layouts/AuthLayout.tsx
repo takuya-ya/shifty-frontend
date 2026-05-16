@@ -7,7 +7,7 @@ export function AuthLayout() {
         <Outlet />
       </main>
       <footer className="bg-gray-100 border-t border-gray-200 py-6 px-6">
-        <div className="flex items-center justify-between px-[25%]">
+        <div className="flex items-center justify-between max-w-3xl mx-auto w-full px-4">
           <p className="text-sm text-gray-500">© {new Date().getFullYear()} Shifty</p>
           <div className="flex gap-4">
             <a href="#" className="text-sm text-gray-500 hover:text-gray-700">利用規約</a>
