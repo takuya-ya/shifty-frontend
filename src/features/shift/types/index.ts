@@ -1,4 +1,4 @@
-export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6
+export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface ShiftPeriod {
   from: Date;
@@ -16,10 +16,14 @@ export interface Staff {
   position?: string;
 }
 
-export interface ShiftData {
+export type ShiftState = "draft" | "confirmed";
+
+export interface Shift {
   id: number;
   staffId: number;
   date: string;
   startTime: string;
   endTime: string;
+  state: ShiftState;
+  positionId?: number;
 }
