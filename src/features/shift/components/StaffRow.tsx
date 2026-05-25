@@ -1,6 +1,16 @@
 import { cn } from '@/lib/utils'
-import type { DateCell, DayOfWeek, Staff } from '../types'
+import type { DateCell, DayOfWeek, Shift, Staff } from '../types'
 import { ShiftCell } from './ShiftCell'
+
+// TODO: 17.3 完了後に削除する
+const DUMMY_SHIFT: Shift = {
+  id: 1,
+  staffId: 1,
+  date: '2026-05-01',
+  startTime: '09:00',
+  endTime: '18:00',
+  state: 'draft',
+}
 
 interface StaffRowProps {
   member: Staff
@@ -22,11 +32,13 @@ export function StaffRow({ member, dates, gridTemplateColumns, isEven, closedDay
           <span className="text-[10px] text-gray-500 truncate">{member.position}</span>
         )}
       </div>
-      {dates.map((cell) => (
+      {dates.map((cell, index) => (
         <ShiftCell
           key={cell.date.toISOString()}
           staffId={member.id}
           date={cell.date}
+          // TODO: 17.3 完了後に実データへ切り替える
+          shift={index === 0 && member.id === 1 ? DUMMY_SHIFT : undefined}
           isClosed={closedDays.includes(cell.dayOfWeek)}
         />
       ))}
