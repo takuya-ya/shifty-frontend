@@ -11,7 +11,6 @@ interface ShiftCellProps {
   isClosed?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ShiftCell({
   staffId: _staffId,
   date: _date,
