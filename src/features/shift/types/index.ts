@@ -25,5 +25,6 @@ export interface Shift {
   startTime: string;
   endTime: string;
   state: ShiftState;
+  // 17.6.4 でポジション別カラー体系（hall/kitchen/register/other）を実装する際に参照する
   positionId?: number;
 }

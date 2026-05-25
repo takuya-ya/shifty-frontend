@@ -9,7 +9,7 @@ export function ShiftBlock({ shift }: ShiftBlockProps) {
   const timeLabel = formatShiftTime(shift.startTime, shift.endTime)
 
   return (
-    <div className="w-full h-12 rounded-md bg-gray-200 flex items-center justify-center px-1.5 py-1">
+    <div className="w-full h-full rounded-md bg-gray-200 flex items-center justify-center px-1.5">
       <span className="text-xs whitespace-nowrap">{timeLabel}</span>
     </div>
   )
