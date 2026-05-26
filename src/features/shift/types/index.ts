@@ -21,10 +21,10 @@ export type ShiftState = "draft" | "confirmed";
 export interface Shift {
   id: number;
   staffId: number;
-  date: string;
-  startTime: string;
-  endTime: string;
+  startAt: string;
+  endAt: string;
   state: ShiftState;
   // 17.6.4 でポジション別カラー体系（hall/kitchen/register/other）を実装する際に参照する
   positionId?: number;
+  memo?: string;
 }

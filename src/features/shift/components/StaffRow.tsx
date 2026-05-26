@@ -6,9 +6,8 @@ import { ShiftCell } from "./ShiftCell";
 const DUMMY_SHIFT: Shift = {
   id: 1,
   staffId: 1,
-  date: "2026-05-01",
-  startTime: "09:00",
-  endTime: "18:00",
+  startAt: "2026-05-01T09:00:00+09:00",
+  endAt: "2026-05-01T18:00:00+09:00",
   state: "draft",
 };
 
