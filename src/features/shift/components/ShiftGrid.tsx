@@ -1,4 +1,5 @@
 import type { DateCell, DayOfWeek, Shift, Staff } from '../types'
+import { groupShiftsByStaffAndDate } from '../utils/groupShiftsByStaffAndDate'
 import { DateHeaderRow } from './DateHeaderRow'
 import { StaffRow } from './StaffRow'
 
@@ -12,8 +13,9 @@ interface ShiftGridProps {
   closedDays?: DayOfWeek[]
 }
 
-export function ShiftGrid({ dates, members, shifts: _shifts, closedDays = [] }: ShiftGridProps) {
+export function ShiftGrid({ dates, members, shifts, closedDays = [] }: ShiftGridProps) {
   const gridTemplateColumns = `${STAFF_COL_WIDTH} repeat(${dates.length}, minmax(${DATE_COL_MIN_WIDTH}, 1fr))`
+  const shiftMap = groupShiftsByStaffAndDate(shifts)
 
   return (
     <div className="overflow-x-auto bg-gray-50">
@@ -24,6 +26,7 @@ export function ShiftGrid({ dates, members, shifts: _shifts, closedDays = [] }: 
             key={member.id}
             member={member}
             dates={dates}
+            staffShifts={shiftMap[member.id] ?? {}}
             gridTemplateColumns={gridTemplateColumns}
             isEven={index % 2 === 0}
             closedDays={closedDays}
