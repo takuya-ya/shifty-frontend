@@ -1,6 +1,6 @@
-import { format } from 'date-fns'
 import { cn } from "@/lib/utils";
 import type { DateCell, DayOfWeek, Shift, Staff } from "../types";
+import { toDateKey } from "../utils/groupShiftsByStaffAndDate";
 import { ShiftCell } from "./ShiftCell";
 
 interface StaffRowProps {
@@ -39,7 +39,7 @@ export function StaffRow({
         )}
       </div>
       {dates.map((cell) => {
-        const dateKey = format(cell.date, 'yyyy-MM-dd')
+        const dateKey = toDateKey(cell.date)
         const shift = staffShifts[dateKey]?.[0]
         return (
           <ShiftCell
