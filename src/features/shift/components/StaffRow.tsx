@@ -40,6 +40,7 @@ export function StaffRow({
       </div>
       {dates.map((cell) => {
         const dateKey = toDateKey(cell.date)
+        // Phase1 は 1スタッフ1日1シフト前提のため先頭要素のみ使用。複数シフト表示は将来タスクで対応
         const shift = staffShifts[dateKey]?.[0]
         return (
           <ShiftCell
