@@ -1,20 +1,12 @@
 import { cn } from "@/lib/utils";
 import type { DateCell, DayOfWeek, Shift, Staff } from "../types";
+import { toDateKey } from "../utils/groupShiftsByStaffAndDate";
 import { ShiftCell } from "./ShiftCell";
-
-// TODO: 17.3 完了後に削除する
-const DUMMY_SHIFT: Shift = {
-  id: 1,
-  staffId: 1,
-  date: "2026-05-01",
-  startTime: "09:00",
-  endTime: "18:00",
-  state: "draft",
-};
 
 interface StaffRowProps {
   member: Staff;
   dates: DateCell[];
+  staffShifts: { [dateKey: string]: Shift[] };
   gridTemplateColumns: string;
   isEven: boolean;
   closedDays?: DayOfWeek[];
@@ -23,6 +15,7 @@ interface StaffRowProps {
 export function StaffRow({
   member,
   dates,
+  staffShifts,
   gridTemplateColumns,
   isEven,
   closedDays = [],
@@ -45,16 +38,20 @@ export function StaffRow({
           </span>
         )}
       </div>
-      {dates.map((cell, index) => (
-        <ShiftCell
-          key={cell.date.toISOString()}
-          staffId={member.id}
-          date={cell.date}
-          // TODO: 17.3 完了後に実データへ切り替える
-          shift={index === 0 && member.id === 1 ? DUMMY_SHIFT : undefined}
-          isClosed={closedDays.includes(cell.dayOfWeek)}
-        />
-      ))}
+      {dates.map((cell) => {
+        const dateKey = toDateKey(cell.date)
+        // Phase1 は 1スタッフ1日1シフト前提のため先頭要素のみ使用。複数シフト表示は将来タスクで対応
+        const shift = staffShifts[dateKey]?.[0]
+        return (
+          <ShiftCell
+            key={cell.date.toISOString()}
+            staffId={member.id}
+            date={cell.date}
+            shift={shift}
+            isClosed={closedDays.includes(cell.dayOfWeek)}
+          />
+        )
+      })}
     </div>
   );
 }

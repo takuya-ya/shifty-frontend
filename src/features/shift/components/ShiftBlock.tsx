@@ -1,12 +1,12 @@
+import { format, parseISO } from 'date-fns'
 import type { Shift } from '../types'
-import { formatShiftTime } from '../utils/formatShiftTime'
 
 interface ShiftBlockProps {
   shift: Shift
 }
 
 export function ShiftBlock({ shift }: ShiftBlockProps) {
-  const timeLabel = formatShiftTime(shift.startTime, shift.endTime)
+  const timeLabel = `${format(parseISO(shift.startAt), 'HH:mm')}〜${format(parseISO(shift.endAt), 'HH:mm')}`
 
   return (
     <div className="w-full h-full rounded-md bg-gray-200 flex items-center justify-center px-1.5">
