@@ -18,6 +18,17 @@ export interface Staff {
 
 export type ShiftState = "draft" | "confirmed";
 
+export interface ApiShiftResponse {
+  id: number;
+  staff_id: number;
+  start_at: string;
+  end_at: string;
+  shift_state: ShiftState;
+  position_id: number | null;
+  memo: string | null;
+  staff_profile?: { name: string };
+}
+
 export interface Shift {
   id: number;
   staffId: number;
