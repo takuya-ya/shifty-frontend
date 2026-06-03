@@ -26,6 +26,7 @@ export interface ApiShiftResponse {
   shift_state: ShiftState;
   position_id: number | null;
   memo: string | null;
+  // DUMMY_STAFF を API に差し替えるタスクで staffName のマッピングに使用する
   staff_profile?: { name: string };
 }
 
