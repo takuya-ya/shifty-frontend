@@ -17,8 +17,7 @@ export const shiftsQueryOptions = (from: string, to: string) =>
     gcTime: 5 * ONE_MINUTE,
   });
 
-export const useShifts = (period: ShiftP- ShiftPeriod の Date を YYYY-MM-DD 文字列に変換して queryKey に含めることで同じ期間のキャッシュを正しく同一キーと判定できるようにした
-eriod) => {
+export const useShifts = (period: ShiftPeriod) => {
   const from = format(period.from, 'yyyy-MM-dd');
   const to = format(period.to, 'yyyy-MM-dd');
   return useQuery(shiftsQueryOptions(from, to));
