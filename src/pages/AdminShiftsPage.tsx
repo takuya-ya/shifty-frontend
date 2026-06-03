@@ -23,9 +23,6 @@ export function AdminShiftsPage() {
   const dates = generateDateRange(period)
   const { data: shifts, isPending, isError } = useShifts(period)
 
-  if (isPending) return <p className="text-center text-sm text-gray-500">読み込み中...</p>
-  if (isError) return <p className="text-center text-sm text-red-500">シフトの取得に失敗しました</p>
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-center gap-3">
@@ -37,7 +34,11 @@ export function AdminShiftsPage() {
           <ChevronRight className="w-4 h-4" />
         </Button>
       </div>
-      <ShiftGrid dates={dates} members={DUMMY_STAFF} shifts={shifts ?? []} closedDays={CLOSED_DAYS} />
+      {isPending && <p className="text-center text-sm text-gray-500">読み込み中...</p>}
+      {isError && <p className="text-center text-sm text-red-500">シフトの取得に失敗しました</p>}
+      {!isPending && !isError && (
+        <ShiftGrid dates={dates} members={DUMMY_STAFF} shifts={shifts ?? []} closedDays={CLOSED_DAYS} />
+      )}
     </div>
   )
 }
