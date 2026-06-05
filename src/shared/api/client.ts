@@ -22,6 +22,14 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
     ? new URL(endpoint, BASE_URL).toString()
     : endpoint;
 
+  let timerId: ReturnType<typeof setTimeout> | undefined;
+  let signal = options.signal;
+  if (!signal) {
+    const controller = new AbortController();
+    timerId = setTimeout(() => controller.abort(), 10_000);
+    signal = controller.signal;
+  }
+
   const response = await fetch(requestUrl, {
     ...options,
     headers: {
@@ -30,7 +38,10 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
     },
     // クッキー（Sanctum）を送信するために必要
     credentials: 'include',
+    signal,
   });
+
+  clearTimeout(timerId);
 
   return response;
 };
