@@ -22,30 +22,20 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
     ? new URL(endpoint, BASE_URL).toString()
     : endpoint;
 
-  let timerId: ReturnType<typeof setTimeout> | undefined;
-  let signal = options.signal;
-  if (!signal) {
-    // 呼び出し元（TanStack Query の signal 等）がキャンセル制御を持つ場合はそちらを優先する
-    const controller = new AbortController();
-    timerId = setTimeout(() => controller.abort(), 10_000);
-    signal = controller.signal;
-  }
+  // 呼び出し元（TanStack Query の signal 等）がキャンセル制御を持つ場合はそちらを優先する
+  const signal = options.signal ?? AbortSignal.timeout(10_000);
 
-  try {
-    const response = await fetch(requestUrl, {
-      ...options,
-      headers: {
-        ...defaultHeaders,
-        ...options.headers,
-      },
-      // クッキー（Sanctum）を送信するために必要
-      credentials: 'include',
-      signal,
-    });
-    return response;
-  } finally {
-    clearTimeout(timerId);
-  }
+  const response = await fetch(requestUrl, {
+    ...options,
+    headers: {
+      ...defaultHeaders,
+      ...options.headers,
+    },
+    // クッキー（Sanctum）を送信するために必要
+    credentials: 'include',
+    signal,
+  });
+  return response;
 };
 
 export const get = (endpoint: string, options: Omit<RequestInit, 'method'> = {}) =>

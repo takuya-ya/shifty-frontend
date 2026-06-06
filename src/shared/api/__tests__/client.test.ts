@@ -3,12 +3,11 @@ import { apiClient } from '../client';
 
 describe('apiClient', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
     vi.stubGlobal('fetch', vi.fn());
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
@@ -22,7 +21,10 @@ describe('apiClient', () => {
       expect(result).toBe(mockResponse);
     });
 
-    it('10秒が経過した場合、fetch が AbortError を throw する', async () => {
+    it('タイムアウトした場合、fetch が AbortError を throw する', async () => {
+      const controller = new AbortController();
+      vi.spyOn(AbortSignal, 'timeout').mockReturnValue(controller.signal);
+
       vi.mocked(fetch).mockImplementation(
         (_input, init) =>
           new Promise((_resolve, reject) => {
@@ -33,21 +35,19 @@ describe('apiClient', () => {
       );
 
       const promise = apiClient('/test');
-      vi.advanceTimersByTime(10_000);
+      controller.abort();
 
       await expect(promise).rejects.toMatchObject({ name: 'AbortError' });
     });
   });
 
   describe('options.signal が渡された場合', () => {
-    it('渡された signal を fetch に使い、10秒後もタイムアウトしない', async () => {
+    it('渡された signal を fetch に使う', async () => {
       const controller = new AbortController();
       const mockResponse = new Response('{}', { status: 200 });
       vi.mocked(fetch).mockResolvedValue(mockResponse);
 
       const result = await apiClient('/test', { signal: controller.signal });
-
-      vi.advanceTimersByTime(10_000);
 
       const passedSignal = vi.mocked(fetch).mock.calls[0][1]?.signal;
       expect(passedSignal).toBe(controller.signal);
