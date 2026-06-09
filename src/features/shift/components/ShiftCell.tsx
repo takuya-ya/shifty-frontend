@@ -26,7 +26,7 @@ export function ShiftCell({
         "h-16 w-full border-r border-gray-200 p-0.5",
         isClosed
           ? "bg-gray-100 cursor-not-allowed"
-          : "hover:bg-gray-100 cursor-pointer",
+          : "hover:bg-gray-100 cursor-pointer transition-colors",
       )}
     >
       {shift && <ShiftBlock shift={shift} />}
