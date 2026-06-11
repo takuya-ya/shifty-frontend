@@ -1,6 +1,6 @@
 import { format, parseISO } from "date-fns";
 import type { Shift } from "../types";
-import { getShiftBlockClasses } from "../utils/getShiftBlockClasses";
+import { getShiftColorClasses } from "../utils/getShiftColorClasses";
 
 interface ShiftBlockProps {
   shift: Shift;
@@ -8,7 +8,7 @@ interface ShiftBlockProps {
 
 export function ShiftBlock({ shift }: ShiftBlockProps) {
   const timeLabel = `${format(parseISO(shift.startAt), "HH:mm")}〜${format(parseISO(shift.endAt), "HH:mm")}`;
-  const colorClasses = getShiftBlockClasses(shift.state);
+  const colorClasses = getShiftColorClasses(shift.state, shift.positionName);
 
   return (
     <div

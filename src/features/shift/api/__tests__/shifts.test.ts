@@ -29,7 +29,7 @@ describe('fetchShifts', () => {
           start_at: '2026-06-01T09:00:00+09:00',
           end_at: '2026-06-01T18:00:00+09:00',
           shift_state: 'draft',
-          position_id: null,
+          position: null,
           memo: null,
         },
       ]),
@@ -44,13 +44,13 @@ describe('fetchShifts', () => {
         startAt: '2026-06-01T09:00:00+09:00',
         endAt: '2026-06-01T18:00:00+09:00',
         state: 'draft',
-        positionId: undefined,
+        positionName: undefined,
         memo: undefined,
       },
     ]);
   });
 
-  it('position_id に値があるとき positionId にその値が入る', async () => {
+  it('position.name があるとき positionName にその値が入る', async () => {
     mockGet.mockResolvedValue(
       makeSuccessResponse([
         {
@@ -59,7 +59,7 @@ describe('fetchShifts', () => {
           start_at: '2026-06-01T09:00:00+09:00',
           end_at: '2026-06-01T18:00:00+09:00',
           shift_state: 'confirmed',
-          position_id: 3,
+          position: { name: 'ホール' },
           memo: null,
         },
       ]),
@@ -67,6 +67,6 @@ describe('fetchShifts', () => {
 
     const result = await fetchShifts('2026-06-01', '2026-06-15');
 
-    expect(result[0].positionId).toBe(3);
+    expect(result[0].positionName).toBe('ホール');
   });
 });
