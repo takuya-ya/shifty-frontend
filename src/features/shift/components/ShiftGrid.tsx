@@ -26,7 +26,9 @@ export function ShiftGrid({ dates, members, shifts, closedDays = [] }: ShiftGrid
       <div className="w-max min-w-full border-t border-l border-gray-200">
         <DateHeaderRow dates={dates} gridTemplateColumns={gridTemplateColumns} closedDays={closedDays} />
         <div className="grid" style={{ gridTemplateColumns }}>
-          <div className="border-r-2 border-b border-gray-300" />
+          <div className="border-r-2 border-b border-gray-300 flex items-center px-3">
+            <span className="text-xs text-gray-500">必要人数</span>
+          </div>
           {dates.map((cell, index) => (
             <div key={cell.date.toISOString()} className="border-r border-b border-gray-200">
               <BalanceBar
