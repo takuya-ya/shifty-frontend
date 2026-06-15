@@ -18,6 +18,8 @@ export interface Staff {
 
 export type ShiftState = "draft" | "confirmed";
 
+export type BalanceStatus = "shortage" | "just" | "surplus";
+
 export interface ApiShiftResponse {
   id: number;
   staff_id: number;

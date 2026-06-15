@@ -1,4 +1,4 @@
-type BalanceStatus = 'shortage' | 'just' | 'surplus'
+import type { BalanceStatus } from '../types'
 
 interface BalanceBarProps {
   status: BalanceStatus
