@@ -7,14 +7,14 @@ interface ShiftBlockProps {
 }
 
 export function ShiftBlock({ shift }: ShiftBlockProps) {
-  const timeLabel = `${format(parseISO(shift.startAt), "HH:mm")}〜${format(parseISO(shift.endAt), "HH:mm")}`;
+  const timeLabel = `${format(parseISO(shift.startAt), "HH:mm")} - ${format(parseISO(shift.endAt), "HH:mm")}`;
   const colorClasses = getShiftColorClasses(shift.state, shift.positionName);
 
   return (
     <div
-      className={`w-full h-full rounded-md flex items-center justify-center px-1.5 ${colorClasses}`}
+      className={`w-full h-13 rounded-md shadow-sm flex items-center justify-center px-1.5 ${colorClasses}`}
     >
-      <span className="text-xs whitespace-nowrap">{timeLabel}</span>
+      <span className="text-[11px] whitespace-nowrap">{timeLabel}</span>
     </div>
   );
 }
