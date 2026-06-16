@@ -10,6 +10,10 @@ const DATE_COL_MIN_WIDTH = '80px'
 const DUMMY_BALANCE_STATUSES = ['shortage', 'just', 'surplus'] as const
 const DUMMY_BALANCE_DIFFS = [-2, 0, 1] as const
 
+function randomItem<T>(arr: readonly T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
 interface ShiftGridProps {
   dates: DateCell[]
   members: Staff[]
@@ -32,8 +36,8 @@ export function ShiftGrid({ dates, members, shifts, closedDays = [] }: ShiftGrid
           {dates.map((cell, index) => (
             <div key={cell.date.toISOString()} className="border-r border-b border-gray-200">
               <BalanceBar
-                status={DUMMY_BALANCE_STATUSES[index % DUMMY_BALANCE_STATUSES.length]}
-                diff={DUMMY_BALANCE_DIFFS[index % DUMMY_BALANCE_DIFFS.length]}
+                status={randomItem(DUMMY_BALANCE_STATUSES)}
+                diff={randomItem(DUMMY_BALANCE_DIFFS)}
               />
             </div>
           ))}
