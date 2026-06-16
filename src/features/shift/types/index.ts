@@ -18,13 +18,15 @@ export interface Staff {
 
 export type ShiftState = "draft" | "confirmed";
 
+export type BalanceStatus = "shortage" | "just" | "surplus";
+
 export interface ApiShiftResponse {
   id: number;
   staff_id: number;
   start_at: string;
   end_at: string;
   shift_state: ShiftState;
-  position_id: number | null;
+  position: { name: string } | null;
   memo: string | null;
   // DUMMY_STAFF を API に差し替えるタスクで staffName のマッピングに使用する
   staff_profile?: { name: string };
@@ -36,7 +38,6 @@ export interface Shift {
   startAt: string;
   endAt: string;
   state: ShiftState;
-  // 17.6.4 でポジション別カラー体系（hall/kitchen/register/other）を実装する際に参照する
-  positionId?: number;
+  positionName?: string;
   memo?: string;
 }
