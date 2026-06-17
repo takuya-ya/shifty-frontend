@@ -1,27 +1,32 @@
 import { cn } from "@/lib/utils";
-import type { Shift } from "../types";
+import type { SelectedCell, Shift } from "../types";
 import { ShiftBlock } from "./ShiftBlock";
 
 interface ShiftCellProps {
-  // TODO: API接続タスク（Phase1）でシフト登録モーダルを開く際に使用
   staffId: number;
-  // TODO: API接続タスク（Phase1）でシフト登録モーダルを開く際に使用
   date: Date;
   shift?: Shift;
   isClosed?: boolean;
+  onCellClick?: (cell: SelectedCell) => void;
 }
 
 export function ShiftCell({
-  staffId: _staffId,
-  date: _date,
+  staffId,
+  date,
   shift,
   isClosed = false,
+  onCellClick,
 }: ShiftCellProps) {
+  function handleClick() {
+    if (isClosed) return;
+    onCellClick?.({ staffId, date, shiftId: shift?.id });
+  }
+
   return (
-    // TODO: タスク 18.1.1 で onClick にシフト登録モーダルを開くハンドラを渡す
     <button
       type="button"
       disabled={isClosed}
+      onClick={handleClick}
       className={cn(
         "h-16 w-full border-r border-gray-200 p-0.5",
         isClosed

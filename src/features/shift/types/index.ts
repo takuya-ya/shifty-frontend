@@ -41,3 +41,9 @@ export interface Shift {
   positionName?: string;
   memo?: string;
 }
+
+export interface SelectedCell {
+  staffId: number;
+  date: Date;
+  shiftId?: number;
+}
