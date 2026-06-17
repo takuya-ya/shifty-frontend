@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { PeriodLabel } from '../features/shift/components/PeriodLabel'
@@ -5,7 +6,7 @@ import { ShiftGrid } from '../features/shift/components/ShiftGrid'
 import { useShifts } from '../features/shift/hooks/useShifts'
 import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
 import { generateDateRange } from '../features/shift/utils/generateDateRange'
-import type { DayOfWeek, Staff } from '../features/shift/types'
+import type { DayOfWeek, SelectedCell, Staff } from '../features/shift/types'
 
 const DUMMY_STAFF: Staff[] = [
   { id: 1, name: '田中 太郎', position: '店長' },
@@ -22,6 +23,13 @@ export function AdminShiftsPage() {
   const { period, goToPrev, goToNext } = usePeriodNavigation()
   const dates = generateDateRange(period)
   const { data: shifts, isPending, isError } = useShifts(period)
+  const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null)
+
+  function handleCellClick(cell: SelectedCell) {
+    setSelectedCell(cell)
+    // TODO: 18.2 でモーダルを開く処理に接続
+    console.log('[ShiftCell clicked]', { staffId: cell.staffId, date: cell.date, shiftId: cell.shiftId })
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -37,7 +45,7 @@ export function AdminShiftsPage() {
       {isPending && <p className="text-center text-sm text-gray-500">読み込み中...</p>}
       {isError && <p className="text-center text-sm text-red-500">シフトの取得に失敗しました</p>}
       {!isPending && !isError && (
-        <ShiftGrid dates={dates} members={DUMMY_STAFF} shifts={shifts ?? []} closedDays={CLOSED_DAYS} />
+        <ShiftGrid dates={dates} members={DUMMY_STAFF} shifts={shifts ?? []} closedDays={CLOSED_DAYS} onCellClick={handleCellClick} />
       )}
     </div>
   )
