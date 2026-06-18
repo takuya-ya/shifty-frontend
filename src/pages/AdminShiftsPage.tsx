@@ -23,12 +23,10 @@ export function AdminShiftsPage() {
   const { period, goToPrev, goToNext } = usePeriodNavigation()
   const dates = generateDateRange(period)
   const { data: shifts, isPending, isError } = useShifts(period)
-  const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null)
+  const [_selectedCell, setSelectedCell] = useState<SelectedCell | null>(null)
 
   function handleCellClick(cell: SelectedCell) {
     setSelectedCell(cell)
-    // TODO: 18.2 でモーダルを開く処理に接続
-    console.log('[ShiftCell clicked]', { staffId: cell.staffId, date: cell.date, shiftId: cell.shiftId })
   }
 
   return (

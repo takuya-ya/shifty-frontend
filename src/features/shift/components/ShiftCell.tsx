@@ -18,7 +18,6 @@ export function ShiftCell({
   onCellClick,
 }: ShiftCellProps) {
   function handleClick() {
-    if (isClosed) return;
     onCellClick?.({ staffId, date, shiftId: shift?.id });
   }
 
