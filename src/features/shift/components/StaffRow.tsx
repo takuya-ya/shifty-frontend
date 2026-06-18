@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { DateCell, DayOfWeek, Shift, Staff } from "../types";
+import type { DateCell, DayOfWeek, SelectedCell, Shift, Staff } from "../types";
 import { toDateKey } from "../utils/groupShiftsByStaffAndDate";
 import { ShiftCell } from "./ShiftCell";
 
@@ -10,6 +10,7 @@ interface StaffRowProps {
   gridTemplateColumns: string;
   isEven: boolean;
   closedDays?: DayOfWeek[];
+  onCellClick?: (cell: SelectedCell) => void;
 }
 
 export function StaffRow({
@@ -19,6 +20,7 @@ export function StaffRow({
   gridTemplateColumns,
   isEven,
   closedDays = [],
+  onCellClick,
 }: StaffRowProps) {
   return (
     <div
@@ -49,6 +51,7 @@ export function StaffRow({
             date={cell.date}
             shift={shift}
             isClosed={closedDays.includes(cell.dayOfWeek)}
+            onCellClick={onCellClick}
           />
         )
       })}
