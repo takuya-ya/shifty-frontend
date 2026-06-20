@@ -4,6 +4,7 @@ import { ShiftBlock } from "./ShiftBlock";
 
 interface ShiftCellProps {
   staffId: number;
+  staffName: string;
   date: Date;
   shift?: Shift;
   isClosed?: boolean;
@@ -12,13 +13,14 @@ interface ShiftCellProps {
 
 export function ShiftCell({
   staffId,
+  staffName,
   date,
   shift,
   isClosed = false,
   onCellClick,
 }: ShiftCellProps) {
   function handleClick() {
-    onCellClick?.({ staffId, date, shiftId: shift?.id });
+    onCellClick?.({ staffId, staffName, date, shift });
   }
 
   return (

@@ -48,6 +48,7 @@ export function StaffRow({
           <ShiftCell
             key={cell.date.toISOString()}
             staffId={member.id}
+            staffName={member.name}
             date={cell.date}
             shift={shift}
             isClosed={closedDays.includes(cell.dayOfWeek)}
