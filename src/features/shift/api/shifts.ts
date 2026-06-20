@@ -5,7 +5,6 @@ import type { ApiShiftResponse, Shift } from '../types';
 const toShift = (raw: ApiShiftResponse): Shift => ({
   id: raw.id,
   staffId: raw.staff_id,
-  staffName: raw.staff_profile?.name ?? '',
   startAt: raw.start_at,
   endAt: raw.end_at,
   state: raw.shift_state,

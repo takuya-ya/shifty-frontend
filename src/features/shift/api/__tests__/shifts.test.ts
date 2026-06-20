@@ -41,7 +41,6 @@ describe('fetchShifts', () => {
       {
         id: 1,
         staffId: 2,
-        staffName: '',
         startAt: '2026-06-01T09:00:00+09:00',
         endAt: '2026-06-01T18:00:00+09:00',
         state: 'draft',
