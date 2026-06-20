@@ -58,30 +58,15 @@ export function ShiftEditModal({
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {mode === 'edit' && shift ? (
-            <>
-              <div className="space-y-2">
-                <Label>メモ</Label>
-                <Textarea
-                  defaultValue={shift.memo ?? ''}
-                  placeholder="メモを入力（任意）"
-                  rows={4}
-                  className="resize-none"
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="space-y-2">
-                <Label>メモ</Label>
-                <Textarea
-                  placeholder="メモを入力（任意）"
-                  rows={4}
-                  className="resize-none"
-                />
-              </div>
-            </>
-          )}
+          <div className="space-y-2">
+            <Label>メモ</Label>
+            <Textarea
+              defaultValue={shift?.memo ?? ''}
+              placeholder="メモを入力（任意）"
+              rows={4}
+              className="resize-none"
+            />
+          </div>
         </div>
 
         <DialogFooter className="flex justify-between items-center">
