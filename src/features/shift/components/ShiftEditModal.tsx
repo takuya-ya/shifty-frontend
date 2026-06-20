@@ -46,7 +46,7 @@ export function ShiftEditModal({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(next) => { if (!isPending) onOpenChange(next) }}>
       <DialogContent className="max-w-130">
         <DialogHeader>
           <DialogTitle>
@@ -65,6 +65,7 @@ export function ShiftEditModal({
               defaultValue={shift?.memo ?? ''}
               placeholder="メモを入力（任意）"
               rows={4}
+              
               className="resize-none"
             />
           </div>
