@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import type { Shift } from '../types'
 
-export type ShiftEditMode = 'create' | 'edit'
+type ShiftEditMode = 'create' | 'edit'
 
 interface ShiftEditModalProps {
   open: boolean
@@ -59,8 +59,9 @@ export function ShiftEditModal({
 
         <div className="space-y-6 py-4">
           <div className="space-y-2">
-            <Label>メモ</Label>
+            <Label htmlFor="shift-memo">メモ</Label>
             <Textarea
+              id="shift-memo"
               defaultValue={shift?.memo ?? ''}
               placeholder="メモを入力（任意）"
               rows={4}
