@@ -35,6 +35,7 @@ export interface ApiShiftResponse {
 export interface Shift {
   id: number;
   staffId: number;
+  staffName: string;
   startAt: string;
   endAt: string;
   state: ShiftState;
@@ -44,6 +45,7 @@ export interface Shift {
 
 export interface SelectedCell {
   staffId: number;
+  staffName: string;
   date: Date;
-  shiftId?: number;
+  shift?: Shift;
 }
