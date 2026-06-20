@@ -71,7 +71,7 @@ export function ShiftEditModal({
           </div>
         </div>
 
-        <DialogFooter className="flex justify-between items-center">
+        <DialogFooter className="flex justify-between sm:justify-between items-center">
           <div>
             {mode === 'edit' && (
               <Button
