@@ -2,7 +2,15 @@ import { Combobox } from '@base-ui/react/combobox'
 import { CheckIcon } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import type { Shift } from '../types'
+import { usePositions } from '../hooks/usePositions'
 
 const TIME_OPTIONS = generateTimeOptions()
 
@@ -69,8 +77,26 @@ interface ShiftEditFormProps {
 }
 
 export function ShiftEditForm({ shift, isPending = false }: ShiftEditFormProps) {
+  const positions = usePositions()
+
   return (
     <div className="space-y-6 py-4">
+      <div className="space-y-2">
+        <Label>ポジション</Label>
+        <Select defaultValue={shift?.positionId?.toString()} disabled={isPending}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="選択してください" />
+          </SelectTrigger>
+          <SelectContent>
+            {positions.map((position) => (
+              <SelectItem key={position.id} value={position.id.toString()} label={position.name}>
+                {position.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>出勤時間</Label>
