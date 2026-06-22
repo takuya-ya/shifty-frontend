@@ -1,8 +1,6 @@
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import {
   Dialog,
   DialogContent,
@@ -12,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import type { Shift } from '../types'
+import { ShiftEditForm } from './ShiftEditForm'
 
 type ShiftEditMode = 'create' | 'edit'
 
@@ -57,19 +56,7 @@ export function ShiftEditModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="shift-memo">メモ</Label>
-            <Textarea
-              id="shift-memo"
-              defaultValue={shift?.memo ?? ''}
-              placeholder="メモを入力（任意）"
-              rows={4}
-              
-              className="resize-none"
-            />
-          </div>
-        </div>
+        <ShiftEditForm shift={shift} isPending={isPending} />
 
         <DialogFooter className="flex justify-between sm:justify-between items-center">
           <div>
