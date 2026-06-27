@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import type { Shift } from '../types'
 import { ShiftEditForm } from './ShiftEditForm'
+import type { ShiftEditFormValues } from '../schemas/shiftEditSchema'
 
 type ShiftEditMode = 'create' | 'edit'
 
@@ -35,7 +36,8 @@ export function ShiftEditModal({
   const dateLabel = format(date, 'yyyy年M月d日（E）', { locale: ja })
 
   // TODO: シフト保存API接続タスクで実装
-  function handleSave() {
+  function handleFormSubmit(values: ShiftEditFormValues) {
+    console.log('ShiftEditForm submit:', values)
     onOpenChange(false)
   }
 
@@ -56,7 +58,7 @@ export function ShiftEditModal({
           </DialogDescription>
         </DialogHeader>
 
-        <ShiftEditForm shift={shift} isPending={isPending} />
+        <ShiftEditForm shift={shift} isPending={isPending} onSubmit={handleFormSubmit} />
 
         <DialogFooter className="flex justify-between sm:justify-between items-center">
           <div>
@@ -80,8 +82,9 @@ export function ShiftEditModal({
               キャンセル
             </Button>
             <Button
+              type="submit"
+              form="shift-edit-form"
               className="bg-blue-600 hover:bg-blue-700"
-              onClick={handleSave}
               disabled={isPending}
             >
               保存
