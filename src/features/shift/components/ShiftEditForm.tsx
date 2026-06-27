@@ -113,7 +113,7 @@ export function ShiftEditForm({ shift, isPending = false, onSubmit }: ShiftEditF
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="選択してください" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent alignItemWithTrigger={false}>
                 {positions.map((position) => (
                   <SelectItem key={position.id} value={position.id.toString()}>
                     {position.name}
