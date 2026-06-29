@@ -1,0 +1,42 @@
+import { describe, it, expect } from 'vitest'
+import { toShiftPayload } from '../toShiftPayload'
+
+const validValues = {
+  positionId: '1',
+  startTime: '09:00',
+  endTime: '18:00',
+  breakStartTime: '12:00',
+  breakEndTime: '13:00',
+  memo: '早番',
+}
+
+describe('toShiftPayload', () => {
+  it('フォーム入力値と日付を結合して正しいペイロードに変換される', () => {
+    const date = new Date(2026, 3, 26)
+    const result = toShiftPayload(validValues, date)
+
+    expect(result).toEqual({
+      position_id: 1,
+      start_at: '2026-04-26T09:00:00',
+      end_at: '2026-04-26T18:00:00',
+      break_start_at: '2026-04-26T12:00:00',
+      break_end_at: '2026-04-26T13:00:00',
+      memo: '早番',
+    })
+  })
+
+  it('memo が空文字の場合 null に変換される', () => {
+    const date = new Date(2026, 3, 26)
+    const result = toShiftPayload({ ...validValues, memo: '' }, date)
+
+    expect(result.memo).toBeNull()
+  })
+
+  it('月末日で日付部分が正しく出力される', () => {
+    const date = new Date(2026, 0, 31)
+    const result = toShiftPayload(validValues, date)
+
+    expect(result.start_at).toBe('2026-01-31T09:00:00')
+    expect(result.end_at).toBe('2026-01-31T18:00:00')
+  })
+})
