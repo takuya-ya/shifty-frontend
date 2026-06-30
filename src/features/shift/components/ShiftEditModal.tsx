@@ -12,6 +12,7 @@ import {
 import type { Shift } from '../types'
 import { ShiftEditForm } from './ShiftEditForm'
 import type { ShiftEditFormValues } from '../schemas/shiftEditSchema'
+import { toShiftPayload } from '../utils/toShiftPayload'
 
 type ShiftEditMode = 'create' | 'edit'
 
@@ -37,7 +38,8 @@ export function ShiftEditModal({
 
   // TODO: シフト保存API接続タスクで実装
   function handleFormSubmit(values: ShiftEditFormValues) {
-    console.log('ShiftEditForm submit:', values)
+    const payload = toShiftPayload(values, date)
+    console.log('ShiftEditForm payload:', payload)
     onOpenChange(false)
   }
 
