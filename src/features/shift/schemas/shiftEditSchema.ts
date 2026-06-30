@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-const timePattern = /^\d{2}:\d{2}$/
+const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/
 
-const timeField = z.string().regex(timePattern, '時刻を選択してください')
+const timeField = z.string().regex(TIME_PATTERN, '有効な時刻を入力してください')
 
 export const shiftEditSchema = z
   .object({
