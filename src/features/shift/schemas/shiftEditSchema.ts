@@ -16,6 +16,7 @@ export const shiftEditSchema = z
   .refine((data) => data.endTime > data.startTime, {
     message: '退勤時間は出勤時間より後にしてください',
     path: ['endTime'],
+    abort: true,
   })
   .refine(
     (data) =>
