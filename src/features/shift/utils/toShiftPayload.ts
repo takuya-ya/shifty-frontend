@@ -5,8 +5,8 @@ export interface ShiftPayload {
   position_id: number
   start_at: string
   end_at: string
-  break_start_at: string
-  break_end_at: string
+  break_start_at: string | null
+  break_end_at: string | null
   memo: string | null
 }
 
@@ -19,8 +19,8 @@ export function toShiftPayload(values: ShiftEditFormValues, date: Date): ShiftPa
     position_id: Number(values.positionId),
     start_at: toDateTime(date, values.startTime),
     end_at: toDateTime(date, values.endTime),
-    break_start_at: toDateTime(date, values.breakStartTime),
-    break_end_at: toDateTime(date, values.breakEndTime),
+    break_start_at: values.breakStartTime ? toDateTime(date, values.breakStartTime) : null,
+    break_end_at: values.breakEndTime ? toDateTime(date, values.breakEndTime) : null,
     memo: values.memo ? values.memo : null,
   }
 }

@@ -32,6 +32,14 @@ describe('toShiftPayload', () => {
     expect(result.memo).toBeNull()
   })
 
+  it('休憩なし（undefined）の場合 break_start_at / break_end_at が null になる', () => {
+    const date = new Date(2026, 3, 26)
+    const result = toShiftPayload({ ...validValues, breakStartTime: undefined, breakEndTime: undefined }, date)
+
+    expect(result.break_start_at).toBeNull()
+    expect(result.break_end_at).toBeNull()
+  })
+
   it('月末日で日付部分が正しく出力される', () => {
     const date = new Date(2026, 0, 31)
     const result = toShiftPayload(validValues, date)

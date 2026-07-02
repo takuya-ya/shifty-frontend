@@ -22,6 +22,32 @@ describe('shiftEditSchema', () => {
     expect(result.success).toBe(true)
   })
 
+  describe('休憩なし', () => {
+    it('休憩開始・休憩終了が両方空文字の場合バリデーション通過する', () => {
+      const result = shiftEditSchema.safeParse({ ...validInput, breakStartTime: '', breakEndTime: '' })
+      expect(result.success).toBe(true)
+    })
+
+    it('休憩なしの場合 breakStartTime / breakEndTime が undefined に変換される', () => {
+      const result = shiftEditSchema.safeParse({ ...validInput, breakStartTime: '', breakEndTime: '' })
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.breakStartTime).toBeUndefined()
+        expect(result.data.breakEndTime).toBeUndefined()
+      }
+    })
+
+    it('休憩開始のみ入力した場合エラーになる', () => {
+      const error = getFieldError({ ...validInput, breakStartTime: '12:00', breakEndTime: '' }, 'breakStartTime')
+      expect(error).toBe('休憩開始と休憩終了は両方入力してください')
+    })
+
+    it('休憩終了のみ入力した場合エラーになる', () => {
+      const error = getFieldError({ ...validInput, breakStartTime: '', breakEndTime: '13:00' }, 'breakStartTime')
+      expect(error).toBe('休憩開始と休憩終了は両方入力してください')
+    })
+  })
+
   describe('退勤 vs 出勤', () => {
     it('退勤時間が出勤時間より前の場合エラーになる', () => {
       const error = getFieldError({ ...validInput, startTime: '18:00', endTime: '09:00' }, 'endTime')

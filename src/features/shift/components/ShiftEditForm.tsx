@@ -13,7 +13,11 @@ import {
 } from '@/components/ui/select'
 import type { Shift } from '../types'
 import { usePositions } from '../hooks/usePositions'
-import { shiftEditSchema, type ShiftEditFormValues } from '../schemas/shiftEditSchema'
+import {
+  shiftEditSchema,
+  type ShiftEditFormInput,
+  type ShiftEditFormValues,
+} from '../schemas/shiftEditSchema'
 
 const TIME_OPTIONS = generateTimeOptions()
 
@@ -89,14 +93,14 @@ export function ShiftEditForm({ shift, isPending = false, onSubmit }: ShiftEditF
   const positions = usePositions()
   const positionItems = positions.map((p) => ({ value: p.id.toString(), label: p.name }))
 
-  const { control, register, handleSubmit, formState: { errors } } = useForm<ShiftEditFormValues>({
+  const { control, register, handleSubmit, formState: { errors } } = useForm<ShiftEditFormInput, unknown, ShiftEditFormValues>({
     resolver: zodResolver(shiftEditSchema),
     defaultValues: {
       positionId: shift?.positionId?.toString() ?? '',
       startTime: shift?.startAt?.slice(11, 16) ?? '09:00',
       endTime: shift?.endAt?.slice(11, 16) ?? '18:00',
-      breakStartTime: shift?.breakStartAt?.slice(11, 16) ?? '12:00',
-      breakEndTime: shift?.breakEndAt?.slice(11, 16) ?? '13:00',
+      breakStartTime: shift?.breakStartAt?.slice(11, 16) ?? '',
+      breakEndTime: shift?.breakEndAt?.slice(11, 16) ?? '',
       memo: shift?.memo ?? '',
     },
   })
