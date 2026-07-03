@@ -13,8 +13,8 @@ const makeShift = (id: number, staffId: number, startAt: string): Shift => ({
 describe('groupShiftsByStaffAndDate', () => {
   it('異なるスタッフのシフトが互いに干渉しない', () => {
     const shifts: Shift[] = [
-      makeShift(1, 1, '2026-05-01T00:00:00Z'),
-      makeShift(2, 2, '2026-05-01T00:00:00Z'),
+      makeShift(1, 1, '2026-05-01T09:00:00+09:00'),
+      makeShift(2, 2, '2026-05-01T09:00:00+09:00'),
     ]
 
     const result = groupShiftsByStaffAndDate(shifts)
@@ -27,8 +27,8 @@ describe('groupShiftsByStaffAndDate', () => {
 
   it('同一スタッフの異なる日付のシフトが別々のキーで管理される', () => {
     const shifts: Shift[] = [
-      makeShift(1, 1, '2026-05-01T00:00:00Z'),
-      makeShift(2, 1, '2026-05-02T00:00:00Z'),
+      makeShift(1, 1, '2026-05-01T09:00:00+09:00'),
+      makeShift(2, 1, '2026-05-02T09:00:00+09:00'),
     ]
 
     const result = groupShiftsByStaffAndDate(shifts)
@@ -42,8 +42,8 @@ describe('groupShiftsByStaffAndDate', () => {
   // 上書きが許されないパターン：1件でも欠落するとシフト確認業務に支障が出る
   it('同一スタッフ・同一日に複数シフトがある場合、すべて保持される', () => {
     const shifts: Shift[] = [
-      makeShift(1, 1, '2026-05-01T00:00:00Z'),
-      makeShift(2, 1, '2026-05-01T05:00:00Z'),
+      makeShift(1, 1, '2026-05-01T09:00:00+09:00'),
+      makeShift(2, 1, '2026-05-01T14:00:00+09:00'),
     ]
 
     const result = groupShiftsByStaffAndDate(shifts)
@@ -54,11 +54,10 @@ describe('groupShiftsByStaffAndDate', () => {
   })
 
   // タイムゾーンズレは全セルのシフト表示が消える致命的デグレになる
-  // "2026-04-30T15:00:00Z" は JST では 2026-05-01T00:00:00+09:00（日付をまたぐケース）
-  // TZ=Asia/Tokyo でテストを実行することを前提とする
-  it('UTC の startAt が JST のローカル日付キーに正しく変換される', () => {
+  // API は JST（+09:00）で返すため、日付キーは JST 基準で生成される
+  it('JST オフセット付きの startAt が正しい日付キーに変換される', () => {
     const shifts: Shift[] = [
-      makeShift(1, 1, '2026-04-30T15:00:00Z'),
+      makeShift(1, 1, '2026-05-01T00:00:00+09:00'),
     ]
 
     const result = groupShiftsByStaffAndDate(shifts)

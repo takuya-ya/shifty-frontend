@@ -7,7 +7,10 @@ const toShift = (raw: ApiShiftResponse): Shift => ({
   staffId: raw.staff_id,
   startAt: raw.start_at,
   endAt: raw.end_at,
+  breakStartAt: raw.break_start_at ?? undefined,
+  breakEndAt: raw.break_end_at ?? undefined,
   state: raw.shift_state,
+  positionId: raw.position?.id ?? undefined,
   positionName: raw.position?.name ?? undefined,
   memo: raw.memo ?? undefined,
 });

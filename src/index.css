@@ -22,6 +22,8 @@
   --color-accent-foreground: #ecfeff;
   --color-danger: #dc2626;
   --color-danger-foreground: #fef2f2;
+  --color-popover: #ffffff;
+  --color-popover-foreground: var(--color-foreground);
   --color-destructive: var(--color-danger);
   --color-destructive-foreground: var(--color-danger-foreground);
   --radius-sm: 0.25rem;

@@ -1,8 +1,6 @@
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import {
   Dialog,
   DialogContent,
@@ -12,6 +10,9 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import type { Shift } from '../types'
+import { ShiftEditForm } from './ShiftEditForm'
+import type { ShiftEditFormValues } from '../schemas/shiftEditSchema'
+import { toShiftPayload } from '../utils/toShiftPayload'
 
 type ShiftEditMode = 'create' | 'edit'
 
@@ -36,7 +37,9 @@ export function ShiftEditModal({
   const dateLabel = format(date, 'yyyy年M月d日（E）', { locale: ja })
 
   // TODO: シフト保存API接続タスクで実装
-  function handleSave() {
+  function handleFormSubmit(values: ShiftEditFormValues) {
+    const payload = toShiftPayload(values, date)
+    console.log('ShiftEditForm payload:', payload)
     onOpenChange(false)
   }
 
@@ -57,19 +60,7 @@ export function ShiftEditModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="shift-memo">メモ</Label>
-            <Textarea
-              id="shift-memo"
-              defaultValue={shift?.memo ?? ''}
-              placeholder="メモを入力（任意）"
-              rows={4}
-              
-              className="resize-none"
-            />
-          </div>
-        </div>
+        <ShiftEditForm shift={shift} isPending={isPending} onSubmit={handleFormSubmit} />
 
         <DialogFooter className="flex justify-between sm:justify-between items-center">
           <div>
@@ -93,8 +84,9 @@ export function ShiftEditModal({
               キャンセル
             </Button>
             <Button
+              type="submit"
+              form="shift-edit-form"
               className="bg-blue-600 hover:bg-blue-700"
-              onClick={handleSave}
               disabled={isPending}
             >
               保存
