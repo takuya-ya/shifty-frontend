@@ -123,9 +123,9 @@ export function ShiftEditForm({ shift, isPending = false, onSubmit }: ShiftEditF
                 <SelectValue placeholder="選択してください" />
               </SelectTrigger>
               <SelectContent alignItemWithTrigger={false}>
-                {positions.map((position) => (
-                  <SelectItem key={position.id} value={position.id.toString()}>
-                    {position.name}
+                {positionItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
                   </SelectItem>
                 ))}
               </SelectContent>
