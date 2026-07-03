@@ -19,12 +19,17 @@ import {
   type ShiftEditFormValues,
 } from '../schemas/shiftEditSchema'
 
+const START_HOUR = 9
+const END_HOUR = 22
+const MINUTE_INTERVAL = 15
+const MINUTES_PER_HOUR = 60
+
 const TIME_OPTIONS = generateTimeOptions()
 
 function generateTimeOptions(): string[] {
   const times: string[] = []
-  for (let hour = 9; hour <= 22; hour++) {
-    for (let minute = 0; minute < 60; minute += 15) {
+  for (let hour = START_HOUR; hour <= END_HOUR; hour++) {
+    for (let minute = 0; minute < MINUTES_PER_HOUR; minute += MINUTE_INTERVAL) {
       times.push(
         `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
       )
