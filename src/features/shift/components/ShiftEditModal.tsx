@@ -55,7 +55,7 @@ export function ShiftEditModal({
           <DialogTitle>
             {mode === 'create' ? 'シフトを登録' : 'シフトを編集'}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-gray-600">
             {staffName} - {dateLabel}
           </DialogDescription>
         </DialogHeader>
