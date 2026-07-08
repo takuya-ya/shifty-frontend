@@ -43,7 +43,7 @@ export function TopBar({
           <Checkbox
             id="balance-bar"
             checked={showBalanceBar}
-            onCheckedChange={(checked) => onBalanceBarToggle(checked === true)}
+            onCheckedChange={onBalanceBarToggle}
           />
           <label htmlFor="balance-bar" className="text-sm text-gray-700 cursor-pointer">
             人員バランスバー
