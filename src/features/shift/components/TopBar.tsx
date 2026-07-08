@@ -23,10 +23,10 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <div className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between gap-4">
-        <div />
+      <div className="flex items-center gap-4">
+        <div className="flex-1" />
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <Button variant="outline" size="icon" onClick={onPrev} aria-label="前の半月">
             <ChevronLeft className="w-4 h-4" />
           </Button>
@@ -39,7 +39,7 @@ export function TopBar({
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-1 items-center justify-end gap-2">
           <Checkbox
             id="balance-bar"
             checked={showBalanceBar}

@@ -44,11 +44,18 @@ export function AdminShiftsPage() {
         onBalanceBarToggle={setShowBalanceBar}
       />
 
-      <div className="flex-1 overflow-auto">
+      <div className="min-h-0 flex-1 overflow-auto">
         {isPending && <p className="text-center text-sm text-gray-500 py-8">読み込み中...</p>}
         {isError && <p className="text-center text-sm text-red-500 py-8">シフトの取得に失敗しました</p>}
         {!isPending && !isError && (
-          <ShiftGrid dates={dates} members={DUMMY_STAFF} shifts={shifts ?? []} closedDays={CLOSED_DAYS} showBalanceBar={showBalanceBar} onCellClick={handleCellClick} />
+          <ShiftGrid
+            dates={dates}
+            members={DUMMY_STAFF}
+            shifts={shifts ?? []}
+            closedDays={CLOSED_DAYS}
+            showBalanceBar={showBalanceBar}
+            onCellClick={handleCellClick}
+          />
         )}
       </div>
 
