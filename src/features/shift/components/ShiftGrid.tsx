@@ -19,10 +19,11 @@ interface ShiftGridProps {
   members: Staff[]
   shifts: Shift[]
   closedDays?: DayOfWeek[]
+  showBalanceBar?: boolean
   onCellClick?: (cell: SelectedCell) => void
 }
 
-export function ShiftGrid({ dates, members, shifts, closedDays = [], onCellClick }: ShiftGridProps) {
+export function ShiftGrid({ dates, members, shifts, closedDays = [], showBalanceBar = true, onCellClick }: ShiftGridProps) {
   const gridTemplateColumns = `${STAFF_COL_WIDTH} repeat(${dates.length}, minmax(${DATE_COL_MIN_WIDTH}, 1fr))`
   const shiftMap = groupShiftsByStaffAndDate(shifts)
 
@@ -30,19 +31,21 @@ export function ShiftGrid({ dates, members, shifts, closedDays = [], onCellClick
     <div className="overflow-x-auto bg-gray-50">
       <div className="w-max min-w-full border-t border-l border-gray-200">
         <DateHeaderRow dates={dates} gridTemplateColumns={gridTemplateColumns} closedDays={closedDays} />
-        <div className="grid" style={{ gridTemplateColumns }}>
-          <div className="border-r-2 border-b border-gray-300 flex items-center px-3">
-            <span className="text-xs text-gray-500">必要人数</span>
-          </div>
-          {dates.map((cell, index) => (
-            <div key={cell.date.toISOString()} className="border-r border-b border-gray-200">
-              <BalanceBar
-                status={randomItem(DUMMY_BALANCE_STATUSES)}
-                diff={randomItem(DUMMY_BALANCE_DIFFS)}
-              />
+        {showBalanceBar && (
+          <div className="grid" style={{ gridTemplateColumns }}>
+            <div className="border-r-2 border-b border-gray-300 flex items-center px-3">
+              <span className="text-xs text-gray-500">必要人数</span>
             </div>
-          ))}
-        </div>
+            {dates.map((cell) => (
+              <div key={cell.date.toISOString()} className="border-r border-b border-gray-200">
+                <BalanceBar
+                  status={randomItem(DUMMY_BALANCE_STATUSES)}
+                  diff={randomItem(DUMMY_BALANCE_DIFFS)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
         {members.map((member, index) => (
           <StaffRow
             key={member.id}

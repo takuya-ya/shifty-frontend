@@ -52,6 +52,7 @@ export function usePeriodNavigation(initialPeriod: ShiftPeriod = getCurrentPerio
 
   const goToPrev = () => setPeriod((p) => getPrevPeriod(p))
   const goToNext = () => setPeriod((p) => getNextPeriod(p))
+  const goToToday = () => setPeriod(getCurrentPeriod())
 
-  return { period, goToPrev, goToNext }
+  return { period, goToPrev, goToNext, goToToday }
 }
