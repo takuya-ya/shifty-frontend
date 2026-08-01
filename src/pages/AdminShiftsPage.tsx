@@ -63,6 +63,7 @@ export function AdminShiftsPage() {
         <ShiftEditModal
           open={!!selectedCell}
           onOpenChange={(open) => { if (!open) handleModalClose() }}
+          staffId={selectedCell.staffId}
           staffName={selectedCell.staffName}
           date={selectedCell.date}
           shift={selectedCell.shift}
