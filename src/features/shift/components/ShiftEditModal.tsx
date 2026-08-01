@@ -40,11 +40,14 @@ export function ShiftEditModal({
 
   function handleFormSubmit(values: ShiftEditFormValues) {
     const payload = toShiftPayload(values, date)
-    mutate({ staffId, payload }, {
-      onSuccess: () => {
-        onOpenChange(false)
-      },
-    })
+    if (mode === 'create') {
+      mutate({ staffId, payload }, {
+        onSuccess: () => {
+          onOpenChange(false)
+        },
+      })
+    }
+    // TODO: mode === 'edit' は useUpdateShift（19.4.3）で対応
   }
 
   // TODO: シフト削除API接続タスクで実装
