@@ -11,7 +11,7 @@ export interface ShiftPayload {
 }
 
 function toDateTime(date: Date, time: string): string {
-  return `${format(date, 'yyyy-MM-dd')}T${time}:00`
+  return `${format(date, 'yyyy-MM-dd')} ${time}:00`
 }
 
 export function toShiftPayload(values: ShiftEditFormValues, date: Date): ShiftPayload {

@@ -17,10 +17,10 @@ describe('toShiftPayload', () => {
 
     expect(result).toEqual({
       position_id: 1,
-      start_at: '2026-04-26T09:00:00',
-      end_at: '2026-04-26T18:00:00',
-      break_start_at: '2026-04-26T12:00:00',
-      break_end_at: '2026-04-26T13:00:00',
+      start_at: '2026-04-26 09:00:00',
+      end_at: '2026-04-26 18:00:00',
+      break_start_at: '2026-04-26 12:00:00',
+      break_end_at: '2026-04-26 13:00:00',
       memo: '早番',
     })
   })
@@ -44,7 +44,7 @@ describe('toShiftPayload', () => {
     const date = new Date(2026, 0, 31)
     const result = toShiftPayload(validValues, date)
 
-    expect(result.start_at).toBe('2026-01-31T09:00:00')
-    expect(result.end_at).toBe('2026-01-31T18:00:00')
+    expect(result.start_at).toBe('2026-01-31 09:00:00')
+    expect(result.end_at).toBe('2026-01-31 18:00:00')
   })
 })
