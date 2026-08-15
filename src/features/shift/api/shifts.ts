@@ -1,4 +1,4 @@
-import { get, post } from '../../../shared/api/client';
+import { get, patch, post } from '../../../shared/api/client';
 import { fetchJson } from '../../../shared/api/error';
 import type { ApiShiftResponse, Shift } from '../types';
 import type { ShiftPayload } from '../utils/toShiftPayload';
@@ -26,5 +26,11 @@ export const fetchShifts = async (from: string, to: string): Promise<Shift[]> =>
 export const createShift = async (staffId: number, payload: ShiftPayload): Promise<Shift> => {
   const response = await post('/api/v1/shifts', { staff_id: staffId, ...payload });
   const body = await fetchJson<{ data: ApiShiftResponse }>(response, 'シフトの作成に失敗しました');
+  return toShift(body.data);
+};
+
+export const updateShift = async (shiftId: number, payload: ShiftPayload): Promise<Shift> => {
+  const response = await patch(`/api/v1/shifts/${shiftId}`, payload);
+  const body = await fetchJson<{ data: ApiShiftResponse }>(response, 'シフトの更新に失敗しました');
   return toShift(body.data);
 };
