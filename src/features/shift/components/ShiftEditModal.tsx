@@ -14,6 +14,7 @@ import { ShiftEditForm } from './ShiftEditForm'
 import type { ShiftEditFormValues } from '../schemas/shiftEditSchema'
 import { toShiftPayload } from '../utils/toShiftPayload'
 import { useCreateShift } from '../hooks/useCreateShift'
+import { useUpdateShift } from '../hooks/useUpdateShift'
 
 type ShiftEditMode = 'create' | 'edit'
 
@@ -36,18 +37,25 @@ export function ShiftEditModal({
 }: ShiftEditModalProps) {
   const mode: ShiftEditMode = shift ? 'edit' : 'create'
   const dateLabel = format(date, 'yyyy年M月d日（E）', { locale: ja })
-  const { mutate, isPending } = useCreateShift()
+  const { mutate: createShift, isPending: isCreating } = useCreateShift()
+  const { mutate: updateShift, isPending: isUpdating } = useUpdateShift()
+  const isPending = isCreating || isUpdating
 
   function handleFormSubmit(values: ShiftEditFormValues) {
     const payload = toShiftPayload(values, date)
-    if (mode === 'create') {
-      mutate({ staffId, payload }, {
+    if (shift) {
+      updateShift({ shiftId: shift.id, payload }, {
+        onSuccess: () => {
+          onOpenChange(false)
+        },
+      })
+    } else {
+      createShift({ staffId, payload }, {
         onSuccess: () => {
           onOpenChange(false)
         },
       })
     }
-    // TODO: mode === 'edit' は useUpdateShift（19.4.3）で対応
   }
 
   // TODO: シフト削除API接続タスクで実装
