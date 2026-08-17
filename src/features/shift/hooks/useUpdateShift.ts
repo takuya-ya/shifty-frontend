@@ -9,7 +9,7 @@ export const useUpdateShift = () => {
     mutationFn: ({ shiftId, payload }: { shiftId: number; payload: ShiftPayload }) =>
       updateShift(shiftId, payload),
     onSuccess: () => {
-      // TODO: [19.8.2] シフト更新成功時のキャッシュ無効化を実装する（shiftQueryKeys.list を使って、キャッシュを一元化）
+      // TODO: [19.8.2] queryKey を shiftQueryKeys.list に一元化する
       void queryClient.invalidateQueries({ queryKey: ['shifts'] });
     },
   });
