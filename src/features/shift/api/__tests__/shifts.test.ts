@@ -135,3 +135,5 @@ describe('updateShift', () => {
     expect(result.staffId).toBe(2);
   });
 });
+
+// deleteShift: レスポンスボディなし（204）のため変換ロジックがなく、部品（del・throwIfNotOk）は個別テスト済み。一貫性のため後日追加予定（#49）
