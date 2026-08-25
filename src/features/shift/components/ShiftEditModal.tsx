@@ -15,6 +15,7 @@ import type { ShiftEditFormValues } from '../schemas/shiftEditSchema'
 import { toShiftPayload } from '../utils/toShiftPayload'
 import { useCreateShift } from '../hooks/useCreateShift'
 import { useUpdateShift } from '../hooks/useUpdateShift'
+import { useDeleteShift } from '../hooks/useDeleteShift'
 
 type ShiftEditMode = 'create' | 'edit'
 
@@ -39,7 +40,8 @@ export function ShiftEditModal({
   const dateLabel = format(date, 'yyyy年M月d日（E）', { locale: ja })
   const { mutate: createShift, isPending: isCreating } = useCreateShift()
   const { mutate: updateShift, isPending: isUpdating } = useUpdateShift()
-  const isPending = isCreating || isUpdating
+  const { mutate: deleteShift, isPending: isDeleting } = useDeleteShift()
+  const isPending = isCreating || isUpdating || isDeleting
 
   function handleFormSubmit(values: ShiftEditFormValues) {
     const payload = toShiftPayload(values, date)
@@ -58,9 +60,13 @@ export function ShiftEditModal({
     }
   }
 
-  // TODO: シフト削除API接続タスクで実装
   function handleDelete() {
-    onOpenChange(false)
+    if (!shift || !window.confirm('このシフトを削除しますか？')) return
+    deleteShift(shift.id, {
+      onSuccess: () => {
+        onOpenChange(false)
+      },
+    })
   }
 
   return (
