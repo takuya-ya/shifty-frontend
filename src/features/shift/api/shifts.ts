@@ -1,5 +1,5 @@
-import { get, patch, post } from '../../../shared/api/client';
-import { fetchJson } from '../../../shared/api/error';
+import { del, get, patch, post } from '../../../shared/api/client';
+import { fetchJson, throwIfNotOk } from '../../../shared/api/error';
 import type { ApiShiftResponse, Shift } from '../types';
 import type { ShiftPayload } from '../utils/toShiftPayload';
 
@@ -33,4 +33,9 @@ export const updateShift = async (shiftId: number, payload: ShiftPayload): Promi
   const response = await patch(`/api/v1/shifts/${shiftId}`, payload);
   const body = await fetchJson<{ data: ApiShiftResponse }>(response, 'シフトの更新に失敗しました');
   return toShift(body.data);
+};
+
+export const deleteShift = async (shiftId: number): Promise<void> => {
+  const response = await del(`/api/v1/shifts/${shiftId}`);
+  await throwIfNotOk(response, 'シフトの削除に失敗しました');
 };
