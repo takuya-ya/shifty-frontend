@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { deleteShift } from '../api/shifts';
 
 export const useDeleteShift = () => {
@@ -9,6 +10,10 @@ export const useDeleteShift = () => {
     onSuccess: () => {
       // TODO: [19.8.2] queryKey を shiftQueryKeys.list に一元化する
       void queryClient.invalidateQueries({ queryKey: ['shifts'] });
+      toast.success('シフトを削除しました');
+    },
+    onError: () => {
+      toast.error('シフトの削除に失敗しました');
     },
   });
 };
