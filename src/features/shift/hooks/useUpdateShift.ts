@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { isApiError } from '@/shared/api/error';
 import { updateShift } from '../api/shifts';
 import type { ShiftPayload } from '../utils/toShiftPayload';
 
@@ -14,8 +15,8 @@ export const useUpdateShift = () => {
       void queryClient.invalidateQueries({ queryKey: ['shifts'] });
       toast.success('シフトを更新しました');
     },
-    onError: () => {
-      toast.error('シフトの更新に失敗しました');
+    onError: (error) => {
+      toast.error(isApiError(error) ? error.message : 'シフトの更新に失敗しました');
     },
   });
 };
