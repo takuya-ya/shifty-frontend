@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { isApiError } from '@/shared/api/error';
 import { deleteShift } from '../api/shifts';
 
 export const useDeleteShift = () => {
@@ -13,8 +12,8 @@ export const useDeleteShift = () => {
       void queryClient.invalidateQueries({ queryKey: ['shifts'] });
       toast.success('シフトを削除しました');
     },
-    onError: (error) => {
-      toast.error(isApiError(error) ? error.message : 'シフトの削除に失敗しました');
+    onError: () => {
+      toast.error('シフトの削除に失敗しました');
     },
   });
 };
