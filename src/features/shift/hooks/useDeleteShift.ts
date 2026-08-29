@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { deleteShift } from '../api/shifts';
+import { shiftQueryKeys } from './useShifts';
 
 export const useDeleteShift = () => {
   const queryClient = useQueryClient();
@@ -8,8 +9,7 @@ export const useDeleteShift = () => {
   return useMutation({
     mutationFn: (shiftId: number) => deleteShift(shiftId),
     onSuccess: () => {
-      // TODO: [19.8.2] queryKey を shiftQueryKeys.list に一元化する
-      void queryClient.invalidateQueries({ queryKey: ['shifts'] });
+      void queryClient.invalidateQueries({ queryKey: shiftQueryKeys.all });
       toast.success('シフトを削除しました');
     },
     onError: () => {

@@ -6,6 +6,7 @@ import type { ShiftPeriod } from '../types';
 const ONE_MINUTE = 60 * 1000;
 
 export const shiftQueryKeys = {
+  all: ['shifts'] as const,
   list: (from: string, to: string) => ['shifts', { from, to }] as const,
 };
 

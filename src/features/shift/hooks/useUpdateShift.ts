@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { updateShift } from '../api/shifts';
 import type { ShiftPayload } from '../utils/toShiftPayload';
+import { shiftQueryKeys } from './useShifts';
 
 export const useUpdateShift = () => {
   const queryClient = useQueryClient();
@@ -10,8 +11,7 @@ export const useUpdateShift = () => {
     mutationFn: ({ shiftId, payload }: { shiftId: number; payload: ShiftPayload }) =>
       updateShift(shiftId, payload),
     onSuccess: () => {
-      // TODO: [19.8.2] queryKey を shiftQueryKeys.list に一元化する
-      void queryClient.invalidateQueries({ queryKey: ['shifts'] });
+      void queryClient.invalidateQueries({ queryKey: shiftQueryKeys.all });
       toast.success('シフトを更新しました');
     },
     onError: () => {
