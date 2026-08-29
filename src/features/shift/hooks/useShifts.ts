@@ -7,7 +7,7 @@ const ONE_MINUTE = 60 * 1000;
 
 export const shiftQueryKeys = {
   all: ['shifts'] as const,
-  list: (from: string, to: string) => ['shifts', { from, to }] as const,
+  list: (from: string, to: string) => [...shiftQueryKeys.all, { from, to }] as const,
 };
 
 export const shiftsQueryOptions = (from: string, to: string) =>
