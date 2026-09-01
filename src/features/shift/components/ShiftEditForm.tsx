@@ -66,6 +66,7 @@ function TimeCombobox({ value, onChange, disabled = false, error }: TimeCombobox
               <Combobox.List>
                 {(item: string) => (
                   <Combobox.Item
+                    key={item}
                     value={item}
                     className="relative flex w-full cursor-default items-center rounded-md py-1 pr-8 pl-2 text-sm outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
                   >
