@@ -1,5 +1,5 @@
 import { get, post } from "../../../shared/api/client";
-import { fetchJson, throwIfNotOk } from "../../../shared/api/error";
+import { parseJsonOrThrow, throwIfNotOk } from "../../../shared/api/error";
 import type { User } from "../types";
 
 export interface LoginPayload {
@@ -46,7 +46,7 @@ export const logout = async (): Promise<void> => {
 export const getCurrentUser = async (): Promise<User | null> => {
   const response = await get("/api/v1/user");
   if (response.status === 401) return null;
-  return fetchJson<User>(response, "ユーザー情報の取得に失敗しました");
+  return parseJsonOrThrow<User>(response, "ユーザー情報の取得に失敗しました");
 };
 
 export const verifyEmail = async (verifyUrl: string): Promise<void> => {
@@ -56,7 +56,7 @@ export const verifyEmail = async (verifyUrl: string): Promise<void> => {
 
 export const resendVerificationEmail = async (): Promise<"sent" | "already-verified"> => {
   const response = await post("/api/v1/email/verification-notification");
-  const data = await fetchJson<{ status?: string }>(response, "確認メールの再送に失敗しました");
+  const data = await parseJsonOrThrow<{ status?: string }>(response, "確認メールの再送に失敗しました");
   return data.status === "already-verified" ? "already-verified" : "sent";
 };
 
