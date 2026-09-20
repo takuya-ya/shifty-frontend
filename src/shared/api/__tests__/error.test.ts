@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { ApiError, isApiError, throwIfNotOk, fetchJson } from '../error'
+import { ApiError, isApiError, throwIfNotOk, parseJsonOrThrow } from '../error'
 
 describe('ApiError', () => {
   it.each([
@@ -102,12 +102,12 @@ describe('throwIfNotOk', () => {
   })
 })
 
-describe('fetchJson', () => {
+describe('parseJsonOrThrow', () => {
   it('成功時、パース済みオブジェクトを返す', async () => {
     const body = { id: 1, name: 'テストユーザー' }
     const response = new Response(JSON.stringify(body), { status: 200 })
 
-    const result = await fetchJson<typeof body>(response, 'フォールバック')
+    const result = await parseJsonOrThrow<typeof body>(response, 'フォールバック')
 
     expect(result).toEqual(body)
   })
@@ -118,7 +118,7 @@ describe('fetchJson', () => {
       status: 422,
     })
 
-    await expect(fetchJson(response, 'フォールバック')).rejects.toMatchObject({
+    await expect(parseJsonOrThrow(response, 'フォールバック')).rejects.toMatchObject({
       type: 'validation',
       errors,
     })
@@ -127,7 +127,7 @@ describe('fetchJson', () => {
   it('失敗時、fallback メッセージで ApiError をスローする', async () => {
     const response = new Response('{}', { status: 500 })
 
-    await expect(fetchJson(response, 'フォールバック')).rejects.toMatchObject({
+    await expect(parseJsonOrThrow(response, 'フォールバック')).rejects.toMatchObject({
       message: 'フォールバック',
       status: 500,
     })
@@ -136,13 +136,13 @@ describe('fetchJson', () => {
   it('失敗時、ApiError のインスタンスをスローする', async () => {
     const response = new Response('{}', { status: 500 })
 
-    await expect(fetchJson(response, 'フォールバック')).rejects.toBeInstanceOf(ApiError)
+    await expect(parseJsonOrThrow(response, 'フォールバック')).rejects.toBeInstanceOf(ApiError)
   })
 
   it('非JSONボディの成功時、空オブジェクトを返す', async () => {
     const response = new Response('not json', { status: 200 })
 
-    const result = await fetchJson(response, 'フォールバック')
+    const result = await parseJsonOrThrow(response, 'フォールバック')
 
     expect(result).toEqual({})
   })
