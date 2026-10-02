@@ -7,6 +7,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { useCreateStaff } from '../hooks/useCreateStaff'
+import type { StaffFormValues } from '../schemas/staffFormSchema'
 import { StaffForm } from './StaffForm'
 
 interface StaffFormModalProps {
@@ -15,7 +17,15 @@ interface StaffFormModalProps {
 }
 
 export function StaffFormModal({ open, onOpenChange }: StaffFormModalProps) {
-  const isPending = false
+  const { mutate: createStaff, isPending } = useCreateStaff()
+
+  function handleFormSubmit(values: StaffFormValues) {
+    createStaff(values, {
+      onSuccess: () => {
+        onOpenChange(false)
+      },
+    })
+  }
 
   return (
     <Dialog open={open} onOpenChange={(next) => { if (!isPending) onOpenChange(next) }}>
@@ -27,7 +37,7 @@ export function StaffFormModal({ open, onOpenChange }: StaffFormModalProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <StaffForm isPending={isPending} onSubmit={() => {}} />
+        <StaffForm isPending={isPending} onSubmit={handleFormSubmit} />
 
         <DialogFooter>
           <Button
