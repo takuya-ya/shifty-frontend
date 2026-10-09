@@ -6,11 +6,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { usePositions } from '@/shared/hooks/usePositions'
 import { staffFormSchema, type StaffFormValues } from '../schemas/staffFormSchema'
-
-const POSITION_COLORS: Record<string, string> = {
-  ホール: 'bg-blue-100 text-blue-700',
-  キッチン: 'bg-green-100 text-green-700',
-}
+import { DEFAULT_POSITION_COLOR, POSITION_COLORS } from '@/features/staff/constants'
 
 interface PositionToggleGroupProps {
   positions: { id: number; name: string }[]
@@ -38,7 +34,7 @@ function PositionToggleGroup({ positions, selectedIds, onChange }: PositionToggl
             onClick={() => toggle(position.id)}
             className={`px-3 py-1.5 rounded-md border transition-colors ${
               isSelected
-                ? `${POSITION_COLORS[position.name] ?? 'bg-gray-100 text-gray-700'} border-transparent`
+                ? `${POSITION_COLORS[position.name] ?? DEFAULT_POSITION_COLOR} border-transparent`
                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
             }`}
           >
