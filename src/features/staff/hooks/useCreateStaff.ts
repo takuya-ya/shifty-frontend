@@ -15,7 +15,8 @@ export const useCreateStaff = () => {
       toast.success('スタッフを登録しました');
     },
     onError: (error) => {
-      const message = isApiError(error) ? error.message : 'スタッフの登録に失敗しました';
+      const message =
+        isApiError(error) && error.type === 'validation' ? error.message : 'スタッフの登録に失敗しました';
       toast.error(message);
     },
   });
