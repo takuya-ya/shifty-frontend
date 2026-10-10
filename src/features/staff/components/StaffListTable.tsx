@@ -10,15 +10,10 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import type { StaffProfile } from '@/features/staff/types'
+import { DEFAULT_POSITION_COLOR, POSITION_COLORS } from '@/features/staff/constants'
 
 interface StaffListTableProps {
   staffs: StaffProfile[]
-}
-
-const POSITION_COLORS: Record<string, string> = {
-  ホール: 'bg-blue-100 text-blue-700',
-  キッチン: 'bg-green-100 text-green-700',
-  レジ: 'bg-purple-100 text-purple-700',
 }
 
 export function StaffListTable({ staffs }: StaffListTableProps) {
@@ -47,7 +42,7 @@ export function StaffListTable({ staffs }: StaffListTableProps) {
                     <Badge
                       key={position.id}
                       variant="secondary"
-                      className={POSITION_COLORS[position.name] ?? 'bg-gray-100 text-gray-700'}
+                      className={POSITION_COLORS[position.name] ?? DEFAULT_POSITION_COLOR}
                     >
                       {position.name}
                     </Badge>

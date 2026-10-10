@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { Shift } from '../types'
-import { usePositions } from '../hooks/usePositions'
+import { usePositions } from '@/shared/hooks/usePositions'
 import {
   shiftEditSchema,
   type ShiftEditFormInput,
