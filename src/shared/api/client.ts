@@ -41,7 +41,7 @@ export const apiClient = async (endpoint: string, options: RequestInit = {}) => 
 export const get = (endpoint: string, options: Omit<RequestInit, 'method'> = {}) =>
   apiClient(endpoint, { ...options, method: 'GET' });
 
-export const post = (endpoint: string, body?: unknown, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
+export const post = <TBody = unknown>(endpoint: string, body?: TBody, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
   apiClient(endpoint, { ...options, method: 'POST', body: body !== undefined ? JSON.stringify(body) : undefined });
 
 export const patch = (endpoint: string, body?: unknown, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
