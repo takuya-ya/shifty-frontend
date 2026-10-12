@@ -1,5 +1,5 @@
-import { get, post } from '../../../shared/api/client';
-import { parseJsonOrThrow } from '../../../shared/api/error';
+import { get, post } from '@/shared/api/client';
+import { parseJsonOrThrow } from '@/shared/api/error';
 import type { StaffFormValues } from '../schemas/staffFormSchema';
 import type { StaffProfile } from '../types';
 

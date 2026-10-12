@@ -1,6 +1,6 @@
 import { useSearchParams, useNavigate, Navigate } from 'react-router-dom';
-import { EmailVerificationPage } from '../features/auth/components/EmailVerificationPage';
-import { PATHS } from '../routes/paths';
+import { EmailVerificationPage } from '@/features/auth/components/EmailVerificationPage';
+import { PATHS } from '@/routes/paths';
 
 const isValidVerifyPath = (path: string) =>
   /^\/api\/v1\/verify-email\//.test(path);

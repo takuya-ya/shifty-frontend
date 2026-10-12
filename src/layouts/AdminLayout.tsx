@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Calendar, Users, Settings } from 'lucide-react'
-import { Sidebar } from '../shared/components/layout/Sidebar'
-import { LogoutModal } from '../features/auth/components/LogoutModal'
-import { PATHS } from '../routes/paths'
+import { Sidebar } from '@/shared/components/layout/Sidebar'
+import { LogoutModal } from '@/features/auth/components/LogoutModal'
+import { PATHS } from '@/routes/paths'
 
 const adminNavItems = [
   { to: PATHS.ADMIN_SHIFTS, label: 'シフト管理', icon: Calendar },

@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { LoginForm } from "../features/auth/components/LoginForm";
-import { PATHS } from "../routes/paths";
+import { LoginForm } from "@/features/auth/components/LoginForm";
+import { PATHS } from "@/routes/paths";
 
 export function LoginPage() {
   const navigate = useNavigate();
