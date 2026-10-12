@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../features/auth/hooks/useAuth';
-import { EmailVerificationPending } from '../features/auth/components/EmailVerificationPending';
-import { PATHS } from '../routes/paths';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { EmailVerificationPending } from '@/features/auth/components/EmailVerificationPending';
+import { PATHS } from '@/routes/paths';
 
 export function EmailVerificationPendingPage() {
   const { user, isEmailVerified } = useAuth();

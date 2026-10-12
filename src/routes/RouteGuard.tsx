@@ -1,5 +1,5 @@
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useAuth } from '../features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 import { PATHS } from './paths'
 
 type Props = {

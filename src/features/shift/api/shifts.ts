@@ -1,5 +1,5 @@
-import { del, get, patch, post } from '../../../shared/api/client';
-import { parseJsonOrThrow, throwIfNotOk } from '../../../shared/api/error';
+import { del, get, patch, post } from '@/shared/api/client';
+import { parseJsonOrThrow, throwIfNotOk } from '@/shared/api/error';
 import type { ApiShiftResponse, Shift } from '../types';
 import type { ShiftPayload } from '../utils/toShiftPayload';
 

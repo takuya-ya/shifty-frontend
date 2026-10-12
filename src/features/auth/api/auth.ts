@@ -1,5 +1,5 @@
-import { get, post } from "../../../shared/api/client";
-import { parseJsonOrThrow, throwIfNotOk } from "../../../shared/api/error";
+import { get, post } from "@/shared/api/client";
+import { parseJsonOrThrow, throwIfNotOk } from "@/shared/api/error";
 import type { User } from "../types";
 
 export interface LoginPayload {

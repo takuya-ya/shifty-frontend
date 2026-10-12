@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { ShiftEditModal } from '../features/shift/components/ShiftEditModal'
-import { ShiftGrid } from '../features/shift/components/ShiftGrid'
-import { TopBar } from '../features/shift/components/TopBar'
-import { useShifts } from '../features/shift/hooks/useShifts'
-import { usePeriodNavigation } from '../features/shift/hooks/usePeriodNavigation'
-import { generateDateRange } from '../features/shift/utils/generateDateRange'
-import type { DayOfWeek, SelectedCell, Staff } from '../features/shift/types'
+import { ShiftEditModal } from '@/features/shift/components/ShiftEditModal'
+import { ShiftGrid } from '@/features/shift/components/ShiftGrid'
+import { TopBar } from '@/features/shift/components/TopBar'
+import { useShifts } from '@/features/shift/hooks/useShifts'
+import { usePeriodNavigation } from '@/features/shift/hooks/usePeriodNavigation'
+import { generateDateRange } from '@/features/shift/utils/generateDateRange'
+import type { DayOfWeek, SelectedCell, Staff } from '@/features/shift/types'
 
 const DUMMY_STAFF: Staff[] = [
   { id: 1, name: '田中 太郎', position: '店長' },

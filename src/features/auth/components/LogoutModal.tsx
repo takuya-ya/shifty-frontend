@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { AlertDialog } from '@base-ui/react/alert-dialog'
 import { AlertCircle } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '../../../components/ui/button'
+import { Button } from '@/components/ui/button'
 import { useLogout } from '../hooks/useLogout'
-import { PATHS } from '../../../routes/paths'
+import { PATHS } from '@/routes/paths'
 
 interface LogoutModalProps {
   open: boolean
