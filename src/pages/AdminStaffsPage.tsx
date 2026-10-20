@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { EditStaffModal } from '@/features/staff/components/EditStaffModal'
 import { StaffFormModal } from '@/features/staff/components/StaffFormModal'
 import { StaffListTable } from '@/features/staff/components/StaffListTable'
 import { useStaffs } from '@/features/staff/hooks/useStaffs'
+import type { StaffProfile } from '@/features/staff/types'
 
 export function AdminStaffsPage() {
   const { data, isPending, isError } = useStaffs()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingStaff, setEditingStaff] = useState<StaffProfile | null>(null)
 
   return (
     <div className="flex flex-col h-full">
@@ -29,11 +32,12 @@ export function AdminStaffsPage() {
           ) : isError ? (
             <p className="p-6 text-red-600">スタッフ情報の取得に失敗しました</p>
           ) : (
-            <StaffListTable staffs={data} />
+            <StaffListTable staffs={data} onEdit={setEditingStaff} />
           )}
         </div>
       </section>
       <StaffFormModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+      <EditStaffModal staff={editingStaff} onOpenChange={(open: boolean) => { if (!open) setEditingStaff(null) }} />
     </div>
   )
 }
