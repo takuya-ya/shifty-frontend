@@ -87,13 +87,10 @@ describe('useUpdateStaff', () => {
   });
 
   it('バリデーションエラー時に API が返したメッセージがエラートーストに表示される', async () => {
-    const validationError = new ApiError(422, '氏名を入力してください', {
-      name: ['氏名を入力してください'],
-    });
-    mockUpdateStaff.mockRejectedValue(validationError);
+    mockUpdateStaff.mockRejectedValue(new ApiError(422, '氏名を入力してください'));
     const { result } = renderUseUpdateStaff();
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({ id: staffId, values: validValues });
     });
 
@@ -104,7 +101,7 @@ describe('useUpdateStaff', () => {
     mockUpdateStaff.mockRejectedValue(new ApiError(500, 'Server Error'));
     const { result } = renderUseUpdateStaff();
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({ id: staffId, values: validValues });
     });
 
