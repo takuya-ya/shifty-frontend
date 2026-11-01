@@ -1,13 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fetchStaffs } from '../staffs';
+import { fetchStaffs, updateStaff } from '../staffs';
+import type { StaffFormValues } from '../../schemas/staffFormSchema';
 
 vi.mock('@/shared/api/client', () => ({
   get: vi.fn(),
+  put: vi.fn(),
 }));
 
-import { get } from '@/shared/api/client';
+import { get, put } from '@/shared/api/client';
 
 const mockGet = vi.mocked(get);
+const mockPut = vi.mocked(put);
 
 const makeSuccessResponse = (data: unknown) =>
   new Response(
@@ -46,6 +49,58 @@ describe('fetchStaffs', () => {
 
     await expect(fetchStaffs()).rejects.toMatchObject({
       message: 'スタッフ一覧の取得に失敗しました',
+      status: 500,
+    });
+  });
+});
+
+describe('updateStaff', () => {
+  const staffId = 1;
+  const formValues: StaffFormValues = {
+    name: '山田太郎',
+    positionIds: [1, 2],
+    hourlyWage: 1300,
+    isStudent: true,
+    memo: '週3日勤務',
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('PUT /api/v1/staffs/{id} に snake_case の body を送り、更新後の data をそのまま返す', async () => {
+    const updatedStaff = {
+      id: staffId,
+      name: '山田太郎',
+      hourly_wage: 1300,
+      is_student: true,
+      memo: '週3日勤務',
+      positions: [
+        { id: 1, name: 'ホール' },
+        { id: 2, name: 'キッチン' },
+      ],
+    };
+    mockPut.mockResolvedValue(makeSuccessResponse(updatedStaff));
+
+    const result = await updateStaff(staffId, formValues);
+
+    expect(mockPut).toHaveBeenCalledWith('/api/v1/staffs/1', {
+      name: '山田太郎',
+      position_ids: [1, 2],
+      hourly_wage: 1300,
+      is_student: true,
+      memo: '週3日勤務',
+    });
+    expect(result).toEqual(updatedStaff);
+  });
+
+  it('レスポンスが失敗のとき ApiError をスローする', async () => {
+    mockPut.mockResolvedValue(
+      new Response(JSON.stringify({}), { status: 500 }),
+    );
+
+    await expect(updateStaff(staffId, formValues)).rejects.toMatchObject({
+      message: 'スタッフの更新に失敗しました',
       status: 500,
     });
   });
