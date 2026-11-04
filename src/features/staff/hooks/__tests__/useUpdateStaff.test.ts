@@ -6,7 +6,6 @@ import { ApiError } from '@/shared/api/error';
 import { createWrapper } from '@/test/utils';
 import { updateStaff } from '../../api/staffs';
 import type { StaffFormValues } from '../../schemas/staffFormSchema';
-import type { StaffProfile } from '../../types';
 import { staffQueryKeys } from '../useStaffs';
 import { useUpdateStaff } from '../useUpdateStaff';
 
@@ -30,15 +29,6 @@ const validValues: StaffFormValues = {
   memo: '',
 };
 
-const updatedStaff: StaffProfile = {
-  id: staffId,
-  name: '山田太郎',
-  hourly_wage: 1200,
-  is_student: false,
-  memo: '',
-  positions: [{ id: 1, name: 'ホール' }],
-};
-
 describe('useUpdateStaff', () => {
   let queryClient: QueryClient;
 
@@ -53,7 +43,7 @@ describe('useUpdateStaff', () => {
     renderHook(() => useUpdateStaff(), { wrapper: createWrapper(queryClient) });
 
   it('mutationFn として updateStaff が (id, values) で呼び出される', async () => {
-    mockUpdateStaff.mockResolvedValue(updatedStaff);
+    mockUpdateStaff.mockResolvedValue(undefined);
     const { result } = renderUseUpdateStaff();
 
     await act(async () => {
@@ -64,7 +54,7 @@ describe('useUpdateStaff', () => {
   });
 
   it('更新成功時にスタッフ一覧のキャッシュが無効化される', async () => {
-    mockUpdateStaff.mockResolvedValue(updatedStaff);
+    mockUpdateStaff.mockResolvedValue(undefined);
     const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
     const { result } = renderUseUpdateStaff();
 
@@ -76,7 +66,7 @@ describe('useUpdateStaff', () => {
   });
 
   it('更新成功時に成功トーストが表示される', async () => {
-    mockUpdateStaff.mockResolvedValue(updatedStaff);
+    mockUpdateStaff.mockResolvedValue(undefined);
     const { result } = renderUseUpdateStaff();
 
     await act(async () => {

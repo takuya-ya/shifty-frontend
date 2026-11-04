@@ -68,7 +68,7 @@ describe('updateStaff', () => {
     vi.clearAllMocks();
   });
 
-  it('PUT /api/v1/staffs/{id} に snake_case の body を送り、更新後の data をそのまま返す', async () => {
+  it('PUT /api/v1/staffs/{id} に snake_case の body を送る', async () => {
     const updatedStaff = {
       id: staffId,
       name: '山田太郎',
@@ -82,7 +82,7 @@ describe('updateStaff', () => {
     };
     mockPut.mockResolvedValue(makeSuccessResponse(updatedStaff));
 
-    const result = await updateStaff(staffId, formValues);
+    await updateStaff(staffId, formValues);
 
     expect(mockPut).toHaveBeenCalledWith('/api/v1/staffs/1', {
       name: '山田太郎',
@@ -91,7 +91,6 @@ describe('updateStaff', () => {
       is_student: true,
       memo: '週3日勤務',
     });
-    expect(result).toEqual(updatedStaff);
   });
 
   it('レスポンスが失敗のとき ApiError をスローする', async () => {
