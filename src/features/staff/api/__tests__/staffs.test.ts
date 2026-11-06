@@ -23,8 +23,8 @@ describe('fetchStaffs', () => {
     vi.clearAllMocks();
   });
 
-  it('GET /api/v1/staffs を呼び出し、data 配列をそのまま返す', async () => {
-    const staffs = [
+  it('GET /api/v1/staffs を呼び出し、null フィールドをデフォルト値に変換して返す', async () => {
+    const apiResponse = [
       {
         id: 1,
         name: '山田太郎',
@@ -33,13 +33,38 @@ describe('fetchStaffs', () => {
         memo: '',
         positions: [{ id: 1, name: 'ホール' }],
       },
+      {
+        id: 2,
+        name: 'テスト太郎',
+        hourly_wage: null,
+        is_student: null,
+        memo: null,
+        positions: [{ id: 2, name: 'キッチン' }],
+      },
     ];
-    mockGet.mockResolvedValue(makeSuccessResponse(staffs));
+    mockGet.mockResolvedValue(makeSuccessResponse(apiResponse));
 
     const result = await fetchStaffs();
 
     expect(mockGet).toHaveBeenCalledWith('/api/v1/staffs');
-    expect(result).toEqual(staffs);
+    expect(result).toEqual([
+      {
+        id: 1,
+        name: '山田太郎',
+        hourly_wage: 1200,
+        is_student: false,
+        memo: '',
+        positions: [{ id: 1, name: 'ホール' }],
+      },
+      {
+        id: 2,
+        name: 'テスト太郎',
+        hourly_wage: 0,
+        is_student: false,
+        memo: '',
+        positions: [{ id: 2, name: 'キッチン' }],
+      },
+    ]);
   });
 
   it('レスポンスが失敗のとき ApiError をスローする', async () => {
