@@ -11,8 +11,9 @@ export const useUpdateStaff = () => {
   return useMutation({
     mutationFn: ({ id, values }: { id: number; values: StaffFormValues }) =>
       updateStaff(id, values),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: staffQueryKeys.all });
+    // 再取得前にモーダルが閉じると、古い一覧が編集フォームの初期値になり、更新済みの値を上書きしてしまうため完了を待つ
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: staffQueryKeys.all });
       toast.success('スタッフ情報を更新しました');
     },
     onError: (error) => {
