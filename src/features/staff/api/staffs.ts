@@ -3,24 +3,10 @@ import { parseJsonOrThrow } from '@/shared/api/error';
 import type { StaffFormValues } from '../schemas/staffFormSchema';
 import type { StaffProfile } from '../types';
 
-interface StaffProfileResponse {
-  id: number;
-  name: string;
-  hourly_wage: number | null;
-  is_student: boolean | null;
-  memo: string | null;
-  positions: { id: number; name: string }[];
-}
-
 export const fetchStaffs = async (): Promise<StaffProfile[]> => {
   const response = await get('/api/v1/staffs');
-  const body = await parseJsonOrThrow<{ data: StaffProfileResponse[] }>(response, 'スタッフ一覧の取得に失敗しました');
-  return body.data.map((staff) => ({
-    ...staff,
-    hourly_wage: staff.hourly_wage ?? 0,
-    is_student: staff.is_student ?? false,
-    memo: staff.memo ?? '',
-  }));
+  const body = await parseJsonOrThrow<{ data: StaffProfile[] }>(response, 'スタッフ一覧の取得に失敗しました');
+  return body.data;
 };
 
 interface StaffRequest {

@@ -13,7 +13,7 @@ export const staffFormSchema = z.object({
     .min(0, '時給は0円以上で入力してください')
     .max(5000, '時給は5000円以下で入力してください'),
   isStudent: z.boolean(),
-  memo: z.string().max(1000, 'メモは1000文字以内で入力してください').optional(),
+  memo: z.string().max(1000, 'メモは1000文字以内で入力してください').optional().nullable(),
 })
 
 export type StaffFormValues = z.infer<typeof staffFormSchema>
