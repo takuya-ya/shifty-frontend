@@ -14,9 +14,10 @@ import { DEFAULT_POSITION_COLOR, POSITION_COLORS } from '@/features/staff/consta
 
 interface StaffListTableProps {
   staffs: StaffProfile[]
+  onEdit: (staff: StaffProfile) => void
 }
 
-export function StaffListTable({ staffs }: StaffListTableProps) {
+export function StaffListTable({ staffs, onEdit }: StaffListTableProps) {
   return (
     <div className="flex-1 overflow-y-auto">
       <Table>
@@ -72,6 +73,7 @@ export function StaffListTable({ staffs }: StaffListTableProps) {
                     size="icon-sm"
                     aria-label={`${staff.name}を編集`}
                     className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                    onClick={() => onEdit(staff)}
                   >
                     <Pencil />
                   </Button>

@@ -46,23 +46,26 @@ function PositionToggleGroup({ positions, selectedIds, onChange }: PositionToggl
   )
 }
 
+const EMPTY_DEFAULT_VALUES: StaffFormValues = {
+  name: '',
+  positionIds: [],
+  hourlyWage: 0,
+  isStudent: false,
+  memo: '',
+}
+
 interface StaffFormProps {
   isPending?: boolean
   onSubmit: (values: StaffFormValues) => void
+  defaultValues?: StaffFormValues
 }
 
-export function StaffForm({ isPending = false, onSubmit }: StaffFormProps) {
+export function StaffForm({ isPending = false, onSubmit, defaultValues }: StaffFormProps) {
   const positions = usePositions()
 
   const { control, register, handleSubmit, formState: { errors } } = useForm<StaffFormValues>({
     resolver: zodResolver(staffFormSchema),
-    defaultValues: {
-      name: '',
-      positionIds: [],
-      hourlyWage: 0,
-      isStudent: false,
-      memo: '',
-    },
+    defaultValues: defaultValues ?? EMPTY_DEFAULT_VALUES,
   })
 
   return (

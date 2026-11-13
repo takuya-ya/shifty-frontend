@@ -44,6 +44,9 @@ export const get = (endpoint: string, options: Omit<RequestInit, 'method'> = {})
 export const post = <TBody = unknown>(endpoint: string, body?: TBody, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
   apiClient(endpoint, { ...options, method: 'POST', body: body !== undefined ? JSON.stringify(body) : undefined });
 
+export const put = <TBody = unknown>(endpoint: string, body?: TBody, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
+  apiClient(endpoint, { ...options, method: 'PUT', body: body !== undefined ? JSON.stringify(body) : undefined });
+
 export const patch = (endpoint: string, body?: unknown, options: Omit<RequestInit, 'method' | 'body'> = {}) =>
   apiClient(endpoint, { ...options, method: 'PATCH', body: body !== undefined ? JSON.stringify(body) : undefined });
 
