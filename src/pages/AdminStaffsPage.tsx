@@ -11,6 +11,7 @@ export function AdminStaffsPage() {
   const { data, isPending, isError } = useStaffs()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingStaff, setEditingStaff] = useState<StaffProfile | null>(null)
+  const [, setDeletingStaff] = useState<StaffProfile | null>(null)
 
   return (
     <div className="flex flex-col h-full">
@@ -32,7 +33,7 @@ export function AdminStaffsPage() {
           ) : isError ? (
             <p className="p-6 text-red-600">スタッフ情報の取得に失敗しました</p>
           ) : (
-            <StaffListTable staffs={data} onEdit={setEditingStaff} />
+            <StaffListTable staffs={data} onEdit={setEditingStaff} onDelete={setDeletingStaff} />
           )}
         </div>
       </section>
