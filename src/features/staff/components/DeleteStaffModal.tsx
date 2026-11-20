@@ -1,28 +1,39 @@
 import { AlertDialog } from '@base-ui/react/alert-dialog'
 import { AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { isApiError } from '@/shared/api/error'
+import { useDeleteStaff } from '../hooks/useDeleteStaff'
+import type { StaffProfile } from '../types'
 
-interface DeleteStaffDialogProps {
-  open: boolean
+const HTTP_STATUS_NOT_FOUND = 404
+
+interface DeleteStaffModalProps {
+  staff: StaffProfile | null
   onOpenChange: (open: boolean) => void
-  staffName: string
-  onConfirm: () => void
-  isPending: boolean
 }
 
-export function DeleteStaffDialog({
-  open,
-  onOpenChange,
-  staffName,
-  onConfirm,
-  isPending,
-}: DeleteStaffDialogProps) {
+export function DeleteStaffModal({ staff, onOpenChange }: DeleteStaffModalProps) {
+  const { mutate, isPending } = useDeleteStaff()
+
+  function handleConfirm() {
+    if (staff === null) return
+
+    mutate(staff.id, {
+      onSuccess: () => {
+        onOpenChange(false)
+      },
+      onError: (error) => {
+        if (isApiError(error) && error.status === HTTP_STATUS_NOT_FOUND) {
+          onOpenChange(false)
+        }
+      },
+    })
+  }
+
   return (
     <AlertDialog.Root
-      open={open}
-      onOpenChange={(isOpen) => {
-        if (!isOpen && !isPending) onOpenChange(false)
-      }}
+      open={staff !== null}
+      onOpenChange={(next) => { if (!isPending) onOpenChange(next) }}
     >
       <AlertDialog.Portal>
         <AlertDialog.Backdrop className="fixed inset-0 bg-gray-900/50 z-40" />
@@ -40,7 +51,7 @@ export function DeleteStaffDialog({
           </AlertDialog.Description>
           <div className="mt-3 mb-6 p-3 bg-red-50 rounded-md border border-red-200">
             <p className="text-gray-900">
-              削除対象：<strong>{staffName}</strong>
+              削除対象：<strong>{staff?.name ?? ''}</strong>
             </p>
           </div>
           <div className="flex gap-3 justify-end">
@@ -52,7 +63,7 @@ export function DeleteStaffDialog({
               キャンセル
             </Button>
             <Button
-              onClick={onConfirm}
+              onClick={handleConfirm}
               disabled={isPending}
               className="bg-red-600 hover:bg-red-700 text-white border-transparent"
             >
