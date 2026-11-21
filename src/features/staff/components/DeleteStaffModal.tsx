@@ -16,6 +16,7 @@ export function DeleteStaffModal({ staff, onOpenChange }: DeleteStaffModalProps)
   const { mutate, isPending } = useDeleteStaff()
 
   function handleConfirm() {
+    // staff の型に null が残っていると staff.id でエラーになるため、null を除外して型を絞り込む。実行時はモーダルが開かず到達しない
     if (staff === null) return
 
     mutate(staff.id, {
