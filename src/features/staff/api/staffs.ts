@@ -1,5 +1,5 @@
-import { get, post, put } from '@/shared/api/client';
-import { parseJsonOrThrow } from '@/shared/api/error';
+import { del, get, post, put } from '@/shared/api/client';
+import { parseJsonOrThrow, throwIfNotOk } from '@/shared/api/error';
 import type { StaffFormValues } from '../schemas/staffFormSchema';
 import type { StaffProfile } from '../types';
 
@@ -38,4 +38,9 @@ export const updateStaff = async (id: number, values: StaffFormValues): Promise<
     memo: values.memo || null,
   });
   await parseJsonOrThrow<unknown>(response, 'スタッフの更新に失敗しました');
+};
+
+export const deleteStaff = async (staffId: number): Promise<void> => {
+  const response = await del(`/api/v1/staffs/${staffId}`);
+  await throwIfNotOk(response, 'スタッフの削除に失敗しました');
 };

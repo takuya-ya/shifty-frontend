@@ -4,15 +4,16 @@ import { QueryClient } from '@tanstack/react-query';
 import { AdminStaffsPage } from '../AdminStaffsPage';
 import { createWrapper } from '@/test/utils';
 import type { StaffProfile } from '@/features/staff/types';
-import { fetchStaffs, updateStaff } from '@/features/staff/api/staffs';
+import { deleteStaff, fetchStaffs, updateStaff } from '@/features/staff/api/staffs';
 
-// useStaffs / useUpdateStaff / TanStack Query は本物を動かし、通信する API 関数だけを差し替える
+// useStaffs / useUpdateStaff / useDeleteStaff / TanStack Query は本物を動かし、通信する API 関数だけを差し替える
 vi.mock('@/features/staff/api/staffs');
 // 保存成功時のトーストは確認対象外で、通知の副作用を起こさないため差し替える
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 const mockFetchStaffs = vi.mocked(fetchStaffs);
 const mockUpdateStaff = vi.mocked(updateStaff);
+const mockDeleteStaff = vi.mocked(deleteStaff);
 
 // 氏名・時給・高校生・メモのすべてを 2 人で変え、別の行の値が入ってもテストが落ちるようにする
 const staffs: StaffProfile[] = [
@@ -104,6 +105,30 @@ describe('AdminStaffsPage', () => {
         isStudent: true,
         memo: '土日のみ',
       });
+    });
+  });
+
+  it('削除ボタンを押すと、押した行のスタッフの氏名が削除確認モーダルに表示される', async () => {
+    mockFetchStaffs.mockResolvedValue(staffs);
+    render(<AdminStaffsPage />, { wrapper: createWrapper(queryClient) });
+
+    fireEvent.click(await screen.findByRole('button', { name: '鈴木花子を削除' }));
+
+    const dialog = await screen.findByRole('alertdialog');
+    expect(within(dialog).getByText('鈴木花子')).toBeInTheDocument();
+  });
+
+  it('削除するを押すと、押した行のスタッフの ID で deleteStaff が呼ばれる', async () => {
+    mockFetchStaffs.mockResolvedValue(staffs);
+    mockDeleteStaff.mockResolvedValue(undefined);
+    render(<AdminStaffsPage />, { wrapper: createWrapper(queryClient) });
+    fireEvent.click(await screen.findByRole('button', { name: '鈴木花子を削除' }));
+    const dialog = await screen.findByRole('alertdialog');
+
+    fireEvent.click(within(dialog).getByRole('button', { name: '削除する' }));
+
+    await waitFor(() => {
+      expect(mockDeleteStaff).toHaveBeenCalledWith(2);
     });
   });
 });

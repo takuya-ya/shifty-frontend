@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { DeleteStaffModal } from '@/features/staff/components/DeleteStaffModal'
 import { EditStaffModal } from '@/features/staff/components/EditStaffModal'
 import { StaffFormModal } from '@/features/staff/components/StaffFormModal'
 import { StaffListTable } from '@/features/staff/components/StaffListTable'
@@ -11,6 +12,7 @@ export function AdminStaffsPage() {
   const { data, isPending, isError } = useStaffs()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingStaff, setEditingStaff] = useState<StaffProfile | null>(null)
+  const [deletingStaff, setDeletingStaff] = useState<StaffProfile | null>(null)
 
   return (
     <div className="flex flex-col h-full">
@@ -32,12 +34,13 @@ export function AdminStaffsPage() {
           ) : isError ? (
             <p className="p-6 text-red-600">スタッフ情報の取得に失敗しました</p>
           ) : (
-            <StaffListTable staffs={data} onEdit={setEditingStaff} />
+            <StaffListTable staffs={data} onEdit={setEditingStaff} onDelete={setDeletingStaff} />
           )}
         </div>
       </section>
       <StaffFormModal open={isModalOpen} onOpenChange={setIsModalOpen} />
       <EditStaffModal staff={editingStaff} onOpenChange={(open: boolean) => { if (!open) setEditingStaff(null) }} />
+      <DeleteStaffModal staff={deletingStaff} onOpenChange={(open: boolean) => { if (!open) setDeletingStaff(null) }} />
     </div>
   )
 }

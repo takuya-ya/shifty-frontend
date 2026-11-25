@@ -15,9 +15,10 @@ import { DEFAULT_POSITION_COLOR, POSITION_COLORS } from '@/features/staff/consta
 interface StaffListTableProps {
   staffs: StaffProfile[]
   onEdit: (staff: StaffProfile) => void
+  onDelete: (staff: StaffProfile) => void
 }
 
-export function StaffListTable({ staffs, onEdit }: StaffListTableProps) {
+export function StaffListTable({ staffs, onEdit, onDelete }: StaffListTableProps) {
   return (
     <div className="flex-1 overflow-y-auto">
       <Table>
@@ -82,6 +83,7 @@ export function StaffListTable({ staffs, onEdit }: StaffListTableProps) {
                     size="icon-sm"
                     aria-label={`${staff.name}を削除`}
                     className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    onClick={() => onDelete(staff)}
                   >
                     <Trash2 />
                   </Button>
